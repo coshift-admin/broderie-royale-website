@@ -454,6 +454,20 @@ html[lang="ar"] .fc-label { letter-spacing: 0.05em; font-size: 13px; }
 .reveal.d3 { transition-delay: .3s; } .reveal.d4 { transition-delay: .4s; }
 @media (prefers-reduced-motion: reduce){ .reveal { opacity: 1; transform: none; } }
 
+/* ============================================================
+   CLS guards — reserve space for dynamic content so the page doesn't
+   reflow as the API resolves. Lighthouse measured CLS at 1.99 before
+   these rules; static images are already in positioned containers with
+   explicit dimensions so the only remaining shift sources are the
+   skeleton-to-real swaps below and the hero crest height (handled via
+   width/height attrs on <img>).
+   ============================================================ */
+.hero-crest, .hero-crown { height: auto; }
+.partner-grid { min-height: 200px; }
+.testimonial-grid { min-height: 280px; }
+.prestige-list { min-height: 220px; }
+.faq-list, #faqList { min-height: 280px; }
+
 /* slot placeholder styling (drop-zones for generated assets) */
 .slot { display: grid; place-items: center; background:
   repeating-linear-gradient(45deg, color-mix(in srgb, var(--gold) 8%, var(--ink)) 0 12px, color-mix(in srgb, var(--gold) 4%, var(--ink)) 12px 24px);

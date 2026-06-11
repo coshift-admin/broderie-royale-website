@@ -68,6 +68,11 @@ function getProduct(id) {
 
   async function loadCore() {
     var lang = document.documentElement.getAttribute("lang") || "fr";
+    // Skip re-fetch if we already have data for this language. Without
+    // this guard, every br:langchange dispatch (including no-op ones at
+    // boot when localStorage agrees with the SSG default) re-fetches
+    // products + categories.
+    if (window.__brDataLoadedLang === lang) return true;
     try {
       var [catRes, prodRes] = await Promise.all([
         window.BR_API.getCategories({ lang: lang }),
@@ -77,6 +82,7 @@ function getProduct(id) {
       PRODUCTS = (prodRes.products || []).map(function (p) { return adaptProduct(p, lang); });
       window.CATEGORIES = CATEGORIES;
       window.PRODUCTS = PRODUCTS;
+      window.__brDataLoadedLang = lang;
       window.dispatchEvent(new CustomEvent("br:data-loaded"));
       return true;
     } catch (err) {

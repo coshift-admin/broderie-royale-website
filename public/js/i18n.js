@@ -312,6 +312,15 @@ window.I18N = I18N;
 function applyLang(lang){
   if (!LANGS.includes(lang)) lang = "fr";
   const html = document.documentElement;
+  // Skip the no-op case: when the lang we're applying already matches what
+  // the page is rendered in (e.g. on initial load with localStorage agreeing
+  // with the SSG default), DOM rewrites and the langchange event are pure
+  // waste — shop-data.js refetches products/categories on every dispatch.
+  const noop = html.getAttribute("lang") === lang && html.getAttribute("dir") === (lang === "ar" ? "rtl" : "ltr");
+  if (noop) {
+    document.querySelectorAll(".lang-btn").forEach(b => b.classList.toggle("active", b.dataset.lang === lang));
+    return;
+  }
   html.setAttribute("lang", lang);
   html.setAttribute("dir", lang === "ar" ? "rtl" : "ltr");
   document.querySelectorAll("[data-i18n]").forEach(el => {
