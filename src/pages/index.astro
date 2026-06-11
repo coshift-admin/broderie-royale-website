@@ -184,35 +184,43 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             });
           }
           if (!window.BR_API) return;
-          var list = document.getElementById("prestigeList");
-          var section = document.getElementById("prestige");
-          if (!list) return;
           function esc(s) {
             if (s == null) return "";
             return String(s).replace(/[&<>"']/g, function (c) {
               return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
             });
           }
-          try {
-            var res = await window.BR_API.getReferences();
-            var items = res.references || [];
-            if (!items.length) { if (section) section.style.display = "none"; return; }
-            // No `reveal` class: the scroll observer was set up before these
-            // rows existed, so it would never fire `.in` on them and they'd
-            // stay at opacity 0. Render them already visible instead.
-            list.innerHTML = items.map(function (r) {
-              var place = r.subtitle
-                ? '<span class="prestige-place">' + esc(r.subtitle) + '</span>'
-                : '';
-              return '<div class="prestige-row">'
-                +    '<span class="prestige-yr">' + esc(r.year) + '</span>'
-                +    '<span class="prestige-name">' + esc(r.title) + '</span>'
-                +    place
-                +  '</div>';
-            }).join("");
-          } catch (err) {
-            console.error("[BR] references fetch failed", err);
-            if (section) section.style.display = "none";
+          async function render() {
+            var list = document.getElementById("prestigeList");
+            var section = document.getElementById("prestige");
+            if (!list) return;
+            try {
+              var res = await window.BR_API.getReferences();
+              var items = res.references || [];
+              if (!items.length) { if (section) section.style.display = "none"; return; }
+              if (section) section.style.display = "";
+              // No `reveal` class: the scroll observer was set up before these
+              // rows existed, so it would never fire `.in` on them and they'd
+              // stay at opacity 0. Render them already visible instead.
+              list.innerHTML = items.map(function (r) {
+                var place = r.subtitle
+                  ? '<span class="prestige-place">' + esc(r.subtitle) + '</span>'
+                  : '';
+                return '<div class="prestige-row">'
+                  +    '<span class="prestige-yr">' + esc(r.year) + '</span>'
+                  +    '<span class="prestige-name">' + esc(r.title) + '</span>'
+                  +    place
+                  +  '</div>';
+              }).join("");
+            } catch (err) {
+              console.error("[BR] references fetch failed", err);
+              if (section) section.style.display = "none";
+            }
+          }
+          render();
+          if (!window.__brReferencesLangBound) {
+            window.__brReferencesLangBound = true;
+            window.addEventListener("br:langchange", render);
           }
         })();
       </script>
@@ -267,32 +275,42 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             });
           }
           if (!window.BR_API) return;
-          var grid = document.getElementById("partnersGrid");
-          var section = document.getElementById("partners");
-          if (!grid) return;
-          try {
-            var res = await window.BR_API.getPartners();
-            var partners = res.partners || [];
-            if (!partners.length) {
-              if (section) section.style.display = "none";
-              return;
-            }
-            function esc(s) {
-              if (s == null) return "";
-              return String(s).replace(/[&<>"']/g, function (c) {
-                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
-              });
-            }
-            grid.innerHTML = partners.map(function (p) {
-              var img = '<img src="' + esc(p.logo_url) + '" alt="' + esc(p.name) + '" loading="lazy" />';
-              if (p.website_url) {
-                return '<a class="partner-tile" href="' + esc(p.website_url) + '" target="_blank" rel="noopener">' + img + '</a>';
+          function esc(s) {
+            if (s == null) return "";
+            return String(s).replace(/[&<>"']/g, function (c) {
+              return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+            });
+          }
+          async function render() {
+            var grid = document.getElementById("partnersGrid");
+            var section = document.getElementById("partners");
+            if (!grid) return;
+            try {
+              var res = await window.BR_API.getPartners();
+              var partners = res.partners || [];
+              if (!partners.length) {
+                if (section) section.style.display = "none";
+                return;
               }
-              return '<div class="partner-tile">' + img + '</div>';
-            }).join("");
-          } catch (err) {
-            console.error("[BR] partners fetch failed", err);
-            if (section) section.style.display = "none";
+              if (section) section.style.display = "";
+              grid.innerHTML = partners.map(function (p) {
+                var img = '<img src="' + esc(p.logo_url) + '" alt="' + esc(p.name) + '" loading="lazy" />';
+                if (p.website_url) {
+                  return '<a class="partner-tile" href="' + esc(p.website_url) + '" target="_blank" rel="noopener">' + img + '</a>';
+                }
+                return '<div class="partner-tile">' + img + '</div>';
+              }).join("");
+            } catch (err) {
+              console.error("[BR] partners fetch failed", err);
+              if (section) section.style.display = "none";
+            }
+          }
+          render();
+          // Re-render on language change. Guarded so Astro re-execution
+          // doesn't stack multiple listeners.
+          if (!window.__brPartnersLangBound) {
+            window.__brPartnersLangBound = true;
+            window.addEventListener("br:langchange", render);
           }
         })();
       </script>
@@ -323,9 +341,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             });
           }
           if (!window.BR_API) return;
-          var grid = document.getElementById("testimonialsGrid");
-          var section = document.getElementById("testimonials");
-          if (!grid) return;
           function esc(s) {
             if (s == null) return "";
             return String(s).replace(/[&<>"']/g, function (c) {
@@ -340,28 +355,39 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             for (var i = 0; i < 5; i++) s += '<span class="tst-star ' + (i < n ? "on" : "") + '">★</span>';
             return '<div class="tst-stars">' + s + '</div>';
           }
-          try {
-            var res = await window.BR_API.getTestimonials();
-            var items = res.testimonials || [];
-            if (!items.length) { if (section) section.style.display = "none"; return; }
-            grid.innerHTML = items.map(function (t) {
-              var photo = t.author_photo_url
-                ? '<img class="tst-photo" src="' + esc(t.author_photo_url) + '" alt="' + esc(t.author) + '" loading="lazy" />'
-                : '<div class="tst-photo tst-photo-blank">' + esc((t.author || "?").slice(0, 1).toUpperCase()) + '</div>';
-              var role = t.author_role ? '<div class="tst-role">' + esc(t.author_role) + '</div>' : "";
-              return '<article class="testimonial-card">'
-                +    '<div class="tst-mark" aria-hidden="true">&ldquo;</div>'
-                +    '<blockquote class="tst-quote">' + nl2br(t.quote) + '</blockquote>'
-                +    stars(t.rating)
-                +    '<footer class="tst-author">'
-                +      photo
-                +      '<div class="tst-meta"><div class="tst-name">' + esc(t.author) + '</div>' + role + '</div>'
-                +    '</footer>'
-                +  '</article>';
-            }).join("");
-          } catch (err) {
-            console.error("[BR] testimonials fetch failed", err);
-            if (section) section.style.display = "none";
+          async function render() {
+            var grid = document.getElementById("testimonialsGrid");
+            var section = document.getElementById("testimonials");
+            if (!grid) return;
+            try {
+              var res = await window.BR_API.getTestimonials();
+              var items = res.testimonials || [];
+              if (!items.length) { if (section) section.style.display = "none"; return; }
+              if (section) section.style.display = "";
+              grid.innerHTML = items.map(function (t) {
+                var photo = t.author_photo_url
+                  ? '<img class="tst-photo" src="' + esc(t.author_photo_url) + '" alt="' + esc(t.author) + '" loading="lazy" />'
+                  : '<div class="tst-photo tst-photo-blank">' + esc((t.author || "?").slice(0, 1).toUpperCase()) + '</div>';
+                var role = t.author_role ? '<div class="tst-role">' + esc(t.author_role) + '</div>' : "";
+                return '<article class="testimonial-card">'
+                  +    '<div class="tst-mark" aria-hidden="true">&ldquo;</div>'
+                  +    '<blockquote class="tst-quote">' + nl2br(t.quote) + '</blockquote>'
+                  +    stars(t.rating)
+                  +    '<footer class="tst-author">'
+                  +      photo
+                  +      '<div class="tst-meta"><div class="tst-name">' + esc(t.author) + '</div>' + role + '</div>'
+                  +    '</footer>'
+                  +  '</article>';
+              }).join("");
+            } catch (err) {
+              console.error("[BR] testimonials fetch failed", err);
+              if (section) section.style.display = "none";
+            }
+          }
+          render();
+          if (!window.__brTestimonialsLangBound) {
+            window.__brTestimonialsLangBound = true;
+            window.addEventListener("br:langchange", render);
           }
         })();
       </script>
@@ -390,9 +416,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             });
           }
           if (!window.BR_API) return;
-          var list = document.getElementById("faqList");
-          var section = document.getElementById("faq");
-          if (!list) return;
           function esc(s) {
             if (s == null) return "";
             return String(s).replace(/[&<>"']/g, function (c) {
@@ -400,19 +423,30 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             });
           }
           function nl2br(s) { return esc(s).replace(/\n/g, "<br/>"); }
-          try {
-            var res = await window.BR_API.getFaq();
-            var items = res.faq || [];
-            if (!items.length) { if (section) section.style.display = "none"; return; }
-            list.innerHTML = items.map(function (f, i) {
-              return '<details class="faq-item"' + (i === 0 ? " open" : "") + '>'
-                +    '<summary class="faq-q"><span class="faq-q-text">' + esc(f.question) + '</span><span class="faq-toggle" aria-hidden="true"></span></summary>'
-                +    '<div class="faq-a">' + nl2br(f.answer) + '</div>'
-                +  '</details>';
-            }).join("");
-          } catch (err) {
-            console.error("[BR] faq fetch failed", err);
-            if (section) section.style.display = "none";
+          async function render() {
+            var list = document.getElementById("faqList");
+            var section = document.getElementById("faq");
+            if (!list) return;
+            try {
+              var res = await window.BR_API.getFaq();
+              var items = res.faq || [];
+              if (!items.length) { if (section) section.style.display = "none"; return; }
+              if (section) section.style.display = "";
+              list.innerHTML = items.map(function (f, i) {
+                return '<details class="faq-item"' + (i === 0 ? " open" : "") + '>'
+                  +    '<summary class="faq-q"><span class="faq-q-text">' + esc(f.question) + '</span><span class="faq-toggle" aria-hidden="true"></span></summary>'
+                  +    '<div class="faq-a">' + nl2br(f.answer) + '</div>'
+                  +  '</details>';
+              }).join("");
+            } catch (err) {
+              console.error("[BR] faq fetch failed", err);
+              if (section) section.style.display = "none";
+            }
+          }
+          render();
+          if (!window.__brFaqLangBound) {
+            window.__brFaqLangBound = true;
+            window.addEventListener("br:langchange", render);
           }
         })();
       </script>
