@@ -74,7 +74,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <p class="lead reveal d2" data-i18n="at.body">Chaque écusson naît d’un geste précis, répété des milliers de fois. Le fil d’or épouse le tissu, point après point, jusqu’à révéler la couronne. La broderie est notre signature ; le détail, notre obsession.</p>
       </div>
       <div class="atelier-media reveal d1" data-parallax="0.12">
-        <img src="/assets/photo-embroidery-machine.webp" alt="Broderie machine"  loading="lazy" />
+        <img src="/assets/photo-embroidery-machine.webp" alt="Broderie machine" width="1121" height="421" loading="lazy" decoding="async" />
         <div class="media-caption" data-i18n="at.cap">Broderie machine multi-têtes — Atelier d’Alger</div>
       </div>
     </div>
@@ -89,7 +89,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
     <div class="metiers-track" id="metiersTrack">
       <article class="metier-card">
-        <img src="/assets/photo-flag-international.webp" alt=""  loading="lazy" />
+        <img src="/assets/photo-flag-international.webp" alt="" width="1144" height="767" loading="lazy" decoding="async" />
         <div class="metier-body">
           <span class="metier-idx">01</span>
           <h3 class="metier-name" data-i18n="me.1n">Drapeaux</h3>
@@ -97,7 +97,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </article>
       <article class="metier-card">
-        <img src="/assets/texture-embroidery-patch.webp" alt=""  loading="lazy" />
+        <img src="/assets/texture-embroidery-patch.webp" alt="" width="1920" height="1080" loading="lazy" decoding="async" />
         <div class="metier-body">
           <span class="metier-idx">02</span>
           <h3 class="metier-name" data-i18n="me.2n">Écussons</h3>
@@ -105,7 +105,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </article>
       <article class="metier-card">
-        <img src="/assets/photo-pennant.webp" alt=""  loading="lazy" />
+        <img src="/assets/photo-pennant.webp" alt="" width="1071" height="827" loading="lazy" decoding="async" />
         <div class="metier-body">
           <span class="metier-idx">03</span>
           <h3 class="metier-name" data-i18n="me.3n">Fanions</h3>
@@ -113,7 +113,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </article>
       <article class="metier-card">
-        <img src="/assets/metier-broderie.webp" alt=""  loading="lazy" />
+        <img src="/assets/metier-broderie.webp" alt="" width="928" height="1152" loading="lazy" decoding="async" />
         <div class="metier-body">
           <span class="metier-idx">04</span>
           <h3 class="metier-name" data-i18n="me.4n">Broderie</h3>
@@ -121,7 +121,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </article>
       <article class="metier-card">
-        <img src="/assets/metier-polyester.webp" alt=""  loading="lazy" />
+        <img src="/assets/metier-polyester.webp" alt="" width="2400" height="1792" loading="lazy" decoding="async" />
         <div class="metier-body">
           <span class="metier-idx">05</span>
           <h3 class="metier-name" data-i18n="me.5n">Impression polyester</h3>
@@ -129,7 +129,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
       </article>
       <article class="metier-card">
-        <img src="/assets/metier-coton.webp" alt=""  loading="lazy" />
+        <img src="/assets/metier-coton.webp" alt="" width="928" height="1152" loading="lazy" decoding="async" />
         <div class="metier-body">
           <span class="metier-idx">06</span>
           <h3 class="metier-name" data-i18n="me.6n">Impression coton</h3>
@@ -146,7 +146,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <!-- ============== IV · FLAG ============== -->
   <section id="flag" data-thread-node>
     <div class="flag-media" data-parallax-bg>
-      <img src="/assets/photo-flag-lobby.webp" alt="Drapeau algérien dans un hall de marbre"  loading="lazy" />
+      <img src="/assets/photo-flag-lobby.webp" alt="Drapeau algérien dans un hall de marbre" width="1536" height="1024" loading="lazy" decoding="async" />
     </div>
     <div class="flag-scrim"></div>
     <div class="flag-content">
@@ -294,7 +294,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               }
               if (section) section.style.display = "";
               grid.innerHTML = partners.map(function (p) {
-                var img = '<img src="' + esc(p.logo_url) + '" alt="' + esc(p.name) + '" loading="lazy" />';
+                var img = '<img src="' + esc(p.logo_url) + '" alt="' + esc(p.name) + '" width="220" height="165" loading="lazy" decoding="async" />';
                 if (p.website_url) {
                   return '<a class="partner-tile" href="' + esc(p.website_url) + '" target="_blank" rel="noopener">' + img + '</a>';
                 }
@@ -366,7 +366,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               if (section) section.style.display = "";
               grid.innerHTML = items.map(function (t) {
                 var photo = t.author_photo_url
-                  ? '<img class="tst-photo" src="' + esc(t.author_photo_url) + '" alt="' + esc(t.author) + '" loading="lazy" />'
+                  ? '<img class="tst-photo" src="' + esc(t.author_photo_url) + '" alt="' + esc(t.author) + '" width="44" height="44" loading="lazy" decoding="async" />'
                   : '<div class="tst-photo tst-photo-blank">' + esc((t.author || "?").slice(0, 1).toUpperCase()) + '</div>';
                 var role = t.author_role ? '<div class="tst-role">' + esc(t.author_role) + '</div>' : "";
                 return '<article class="testimonial-card">'

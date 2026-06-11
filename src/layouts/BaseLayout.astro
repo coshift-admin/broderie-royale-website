@@ -146,7 +146,7 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
 
 {showOverture && (
   <div id="overture">
-    <img class="overture-crest" src="/assets/logo-crest-white.png" alt="Broderie Royale crest" />
+    <img class="overture-crest" src="/assets/logo-crest-white.png" alt="Broderie Royale crest" width="794" height="853" decoding="async" />
     <div class="overture-line" data-i18n="ov.line">MAISON DU DRAPEAU · DEPUIS 1986</div>
   </div>
 )}
@@ -158,13 +158,13 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
 <nav class="nav" id="nav">
   {isHero ? (
     <div class="nav-brand" data-goto="hero">
-      <img class="nb-crest" src="/assets/nav-crest.png" alt="BR" />
-      <img class="nb-mark" src="/assets/nav-wordmark-light.png" alt="Broderie Royale Algérie — Maison du Drapeau" />
+      <img class="nb-crest" src="/assets/nav-crest.png" alt="BR" width="794" height="853" />
+      <img class="nb-mark" src="/assets/nav-wordmark-light.png" alt="Broderie Royale Algérie — Maison du Drapeau" width="1440" height="429" />
     </div>
   ) : (
     <a class="nav-brand" href="/" style="text-decoration:none">
-      <img class="nb-crest" src="/assets/nav-crest.png" alt="BR" />
-      <img class="nb-mark" src="/assets/nav-wordmark-light.png" alt="Broderie Royale Algérie — Maison du Drapeau" />
+      <img class="nb-crest" src="/assets/nav-crest.png" alt="BR" width="794" height="853" />
+      <img class="nb-mark" src="/assets/nav-wordmark-light.png" alt="Broderie Royale Algérie — Maison du Drapeau" width="1440" height="429" />
     </a>
   )}
   <div class="nav-links">
@@ -220,8 +220,8 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
 <slot />
 
 <footer class="footer-banner">
-  <img class="fb-crest" src="/assets/footer-crest-white.png" alt="Broderie Royale" />
-  <img class="fb-mark" src="/assets/footer-wordmark-white.png" alt="Broderie Royale Algérie — Maison du Drapeau · depuis 1986" />
+  <img class="fb-crest" src="/assets/footer-crest-white.png" alt="Broderie Royale" width="794" height="853" loading="lazy" decoding="async" />
+  <img class="fb-mark" src="/assets/footer-wordmark-white.png" alt="Broderie Royale Algérie — Maison du Drapeau · depuis 1986" width="1440" height="429" loading="lazy" decoding="async" />
   <div class="fb-contact">
     <a href="https://wa.me/213560998877">+213 560 99 88 77 · Mobile / Viber / WhatsApp</a>
     <a href="mailto:info@broderieroyale.com">info@broderieroyale.com</a>
@@ -231,7 +231,7 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
   <div class="fb-credit">
     <a class="fc-row" href="https://coshift.agency" target="_blank" rel="noopener">
       <span class="fc-label" data-i18n="fb.credit">Conçu & développé par</span>
-      <img class="fc-logo" src="/assets/coshift-logo-white.png" alt="Coshift" />
+      <img class="fc-logo" src="/assets/coshift-logo-white.png" alt="Coshift" width="1873" height="313" loading="lazy" decoding="async" />
     </a>
   </div>
 </footer>

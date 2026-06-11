@@ -256,8 +256,12 @@ html[lang="ar"] .hero-eyebrow { letter-spacing: 0.1em; font-size: 15px; }
 .scroll-hint span { font-size: 11px; letter-spacing: 0.3em; text-transform: uppercase; opacity: .8; }
 html[lang="ar"] .scroll-hint span { letter-spacing: 0.08em; font-size: 14px; }
 .scroll-hint .dot { width: 1px; height: 46px; background: linear-gradient(var(--gold), transparent); position: relative; overflow: hidden; }
-.scroll-hint .dot::after { content: ""; position: absolute; top: -50%; left: 0; width: 100%; height: 50%; background: var(--gold-bright); animation: threadDrop 1.8s var(--ease) infinite; }
-@keyframes threadDrop { 0% { top: -50%; } 100% { top: 100%; } }
+/* threadDrop animates the pseudo-element fully through the .dot. Originally
+   animated `top`, which is paint/layout-bound and flagged by Lighthouse as a
+   non-composited animation. Anchor the pseudo at top:0 and animate
+   `transform: translateY()` instead — same visual, GPU-composited. */
+.scroll-hint .dot::after { content: ""; position: absolute; top: 0; left: 0; width: 100%; height: 50%; background: var(--gold-bright); animation: threadDrop 1.8s var(--ease) infinite; will-change: transform; }
+@keyframes threadDrop { 0% { transform: translateY(-100%); } 100% { transform: translateY(200%); } }
 
 /* particles canvas */
 #particles { position: fixed; inset: 0; z-index: 90; pointer-events: none; }
