@@ -27,7 +27,7 @@
     return u;
   }
 
-  async function rawFetch(path, params, init) {
+  async function rawFetchUncached(path, params, init) {
     var res = await fetch(buildUrl(path, params), Object.assign({
       headers: { "X-API-Key": cfg().apiKey, "Accept": "application/json" },
     }, init || {}));
@@ -42,6 +42,37 @@
     }
     return data;
   }
+
+  // GET-side cache: dedupes concurrent callers (one fetch when 3 page
+  // sections all ask for /products on load) and serves repeat reads
+  // from memory for a short TTL. POSTs bypass via rawFetchUncached.
+  var _inFlight = new Map();
+  var _results = new Map();
+  var GET_TTL_MS = 5 * 60 * 1000;
+
+  async function rawFetch(path, params, init) {
+    var method = (init && init.method ? init.method : "GET").toUpperCase();
+    if (method !== "GET") return rawFetchUncached(path, params, init);
+    var key = buildUrl(path, params);
+    var cached = _results.get(key);
+    if (cached && cached.expires > Date.now()) return cached.data;
+    var inflight = _inFlight.get(key);
+    if (inflight) return inflight;
+    var p = rawFetchUncached(path, params, init).then(function (data) {
+      _results.set(key, { data: data, expires: Date.now() + GET_TTL_MS });
+      _inFlight.delete(key);
+      return data;
+    }, function (err) {
+      _inFlight.delete(key);
+      throw err;
+    });
+    _inFlight.set(key, p);
+    return p;
+  }
+
+  // Invalidate the GET cache after a write (e.g. order POST may change
+  // stock) or on demand. Cheap belt-and-braces — most callers won't need it.
+  function invalidateCache() { _results.clear(); }
 
   window.BR_API = {
     // --- products / categories ---
@@ -149,5 +180,7 @@
         body: fd,
       });
     },
+
+    invalidateCache: invalidateCache,
   };
 })();
