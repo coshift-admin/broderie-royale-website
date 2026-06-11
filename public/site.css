@@ -191,11 +191,25 @@ main { position: relative; z-index: 2; }
 /* Skip layout/paint for chapters offscreen. Excludes #metiers-pin, whose
    GSAP ScrollTrigger needs real measurements while the user scrolls into
    it (content-visibility:auto returns approximate sizes that break the
-   pinned horizontal scroll). */
+   pinned horizontal scroll).
+   The `auto` keyword in contain-intrinsic-size makes the browser cache
+   each chapter's real rendered height after first visit, so subsequent
+   skip/unskip cycles incur zero CLS. The fallback values below are the
+   first-paint estimates per chapter — picked from the actual content
+   density so the very first scroll-through stays close to truth.
+   Re-measure (DevTools > Insights > Layout shift culprits) and tune if
+   any chapter still flags. */
 .chapter:not(#metiers-pin):not(:first-of-type) {
   content-visibility: auto;
-  contain-intrinsic-size: 1px 1200px;
+  contain-intrinsic-size: auto 900px;
 }
+#atelier  { contain-intrinsic-size: auto 1100px; }
+#prestige { contain-intrinsic-size: auto 900px;  }
+#serve    { contain-intrinsic-size: auto 850px;  }
+#partners { contain-intrinsic-size: auto 700px;  }
+#testimonials { contain-intrinsic-size: auto 900px; }
+#faq      { contain-intrinsic-size: auto 800px;  }
+#catalogue { contain-intrinsic-size: auto 650px; }
 
 .wrap { max-width: 1240px; margin: 0 auto; position: relative; }
 .measure { max-width: 60ch; }
