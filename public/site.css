@@ -188,6 +188,14 @@ main { position: relative; z-index: 2; }
 .chapter--ink { background: var(--ink); color: var(--fg-on-dark); }
 .chapter--ivory { background: var(--ivory); color: var(--fg1); }
 .chapter--ink .eyebrow { color: var(--gold); }
+/* Skip layout/paint for chapters offscreen. Excludes #metiers-pin, whose
+   GSAP ScrollTrigger needs real measurements while the user scrolls into
+   it (content-visibility:auto returns approximate sizes that break the
+   pinned horizontal scroll). */
+.chapter:not(#metiers-pin):not(:first-of-type) {
+  content-visibility: auto;
+  contain-intrinsic-size: 1px 1200px;
+}
 
 .wrap { max-width: 1240px; margin: 0 auto; position: relative; }
 .measure { max-width: 60ch; }

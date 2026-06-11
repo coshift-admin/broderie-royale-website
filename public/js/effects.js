@@ -127,7 +127,10 @@
   }
   function initMotes() {
     motes = [];
-    const n = Math.min(46, Math.round(window.innerWidth / 34));
+    // Particle count reduced (was 46 cap, ~34 px/mote) — the rich count
+    // melted low-end CPUs because the canvas was redrawn every RAF.
+    // Halving the count is invisible to the eye but doubles the budget.
+    const n = Math.min(22, Math.round(window.innerWidth / 70));
     for (let i = 0; i < n; i++) {
       motes.push({
         x: Math.random() * W, y: Math.random() * H,
@@ -155,8 +158,15 @@
     if (now - lastSpark > 34) { addSpark(e.clientX, e.clientY); lastSpark = now; }
   });
 
+  // Pause the canvas when the tab is hidden — saves CPU/battery while
+  // the user is on another tab.
+  document.addEventListener("visibilitychange", function () {
+    if (document.hidden) running = false;
+    else if (ctx) { running = true; requestAnimationFrame(renderParticles); }
+  });
+
   function renderParticles() {
-    if (!ctx) return;
+    if (!ctx || !running) return;
     ctx.clearRect(0, 0, W, H);
     // motes
     for (const m of motes) {
@@ -179,7 +189,7 @@
       ctx.fillStyle = "rgba(243,223,168," + (s.life * 0.85).toFixed(3) + ")";
       ctx.fill();
     }
-    if (running) requestAnimationFrame(renderParticles);
+    requestAnimationFrame(renderParticles);
   }
 
   /* ---------- master scroll loop ---------- */

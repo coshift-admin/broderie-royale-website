@@ -64,17 +64,43 @@
     el.classList.remove("reveal", "d1", "d2", "d3", "d4");
   }
   // Safety net: IntersectionObserver misfires inside GSAP-pinned/transformed
-  // containers (like #metiers-pin), leaving "Six métiers, une exigence." and
-  // similar headings clipped at inset(0 100% 0 0) — visually invisible.
-  // Re-check on every scroll/resize and force .in for any stitched heading
-  // that is currently within the viewport.
-  function revealVisibleStitch() {
-    collectHeads().forEach(function (e) {
-      if (e.classList.contains("stitch") && !e.classList.contains("in")) {
-        var r = e.getBoundingClientRect();
-        if (r.top < innerHeight && r.bottom > 0) e.classList.add("in");
-      }
+  // containers (like #metiers-pin), leaving stitched headings clipped at
+  // inset(0 100% 0 0) — visually invisible.
+  //
+  // This runs on every scroll, so it MUST be cheap. Optimisations:
+  // 1. Cache the not-yet-revealed list — we only need to walk shrinking
+  //    candidates, and we forget headings once they've revealed.
+  // 2. RAF-throttle so multiple scroll events in one frame coalesce.
+  // 3. Exit early once the candidate list is empty (no more work for the
+  //    rest of the session unless a new heading is added via SPA nav).
+  var _pendingStitch = [];
+  var _stitchScheduled = false;
+  function _refreshStitchCandidates() {
+    _pendingStitch = collectHeads().filter(function (e) {
+      return e.classList.contains("stitch") && !e.classList.contains("in");
     });
+  }
+  function _doRevealVisibleStitch() {
+    _stitchScheduled = false;
+    if (!_pendingStitch.length) return;
+    var vh = innerHeight;
+    var still = [];
+    for (var i = 0; i < _pendingStitch.length; i++) {
+      var e = _pendingStitch[i];
+      if (e.classList.contains("in")) continue;
+      var r = e.getBoundingClientRect();
+      if (r.top < vh && r.bottom > 0) {
+        e.classList.add("in");
+      } else {
+        still.push(e);
+      }
+    }
+    _pendingStitch = still;
+  }
+  function revealVisibleStitch() {
+    if (_stitchScheduled || !_pendingStitch.length) return;
+    _stitchScheduled = true;
+    requestAnimationFrame(_doRevealVisibleStitch);
   }
 
   // Hard fallback: after this delay, force-reveal any stitched heading that
@@ -100,11 +126,14 @@
       if (e.getBoundingClientRect().top < innerHeight * 0.92) e.classList.add("in");
       else stitchIO.observe(e);
     });
-    // Sweep at next frame (catches layout settling), then a few delayed sweeps.
-    requestAnimationFrame(revealVisibleStitch);
-    setTimeout(revealVisibleStitch, 300);
-    setTimeout(revealVisibleStitch, 800);
-    setTimeout(revealVisibleStitch, 1600);
+    // Build the pending-list once; subsequent scroll-driven calls walk it
+    // and shrink it as headings reveal. When it's empty, scroll-time work
+    // is literally one boolean check.
+    _refreshStitchCandidates();
+    requestAnimationFrame(_doRevealVisibleStitch);
+    setTimeout(_doRevealVisibleStitch, 300);
+    setTimeout(_doRevealVisibleStitch, 800);
+    setTimeout(_doRevealVisibleStitch, 1600);
     // Hard fallback — anything still clipped after 2.5s gets revealed unconditionally.
     setTimeout(forceRevealAllStitch, 2500);
   }
