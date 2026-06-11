@@ -52,7 +52,11 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
     them at your reverse proxy in production (Nginx: `add_header
     X-Frame-Options "SAMEORIGIN"` + a Content-Security-Policy header that
     repeats this <meta>'s directives plus `frame-ancestors 'self'`). */}
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: http://localhost:8069; media-src 'self'; connect-src 'self' http://localhost:8069; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests;" />
+{/* `upgrade-insecure-requests` removed — when the storefront is served
+   over plain HTTP (the validation phase on port 8090), that directive
+   makes the browser request every same-origin asset as HTTPS, which
+   404s. Re-add it once a TLS cert is on the public origin. */}
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: http://localhost:8069 https://erp.broderieroyale.com; media-src 'self'; connect-src 'self' http://localhost:8069 https://erp.broderieroyale.com; form-action 'self'; base-uri 'self'; object-src 'none';" />
 <meta http-equiv="X-Content-Type-Options" content="nosniff" />
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
