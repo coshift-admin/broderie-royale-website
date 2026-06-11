@@ -1,0 +1,300 @@
+---
+import { ClientRouter } from 'astro:transitions';
+
+interface Props {
+  title: string;
+  ogTitle?: string;
+  description?: string;
+  bodyClass?: string;
+  dataPage?: string;
+  /** Show the opening overture screen (index only) */
+  showOverture?: boolean;
+  /** Load GSAP/ScrollTrigger, scenes.js, effects.js, image-slot.js, particles canvas, thread track */
+  storyEffects?: boolean;
+  /** Use the scroll-to-hero div nav-brand variant instead of an anchor (index only) */
+  isHero?: boolean;
+  /** Set to true on /confirmation, /panier, /404, /motifs so search engines skip them */
+  noindex?: boolean;
+  /** Set to true on the homepage to emit the LocalBusiness JSON-LD block */
+  emitLocalBusiness?: boolean;
+}
+
+const {
+  title,
+  ogTitle = title,
+  description = "Broderie Royale Algérie — Maison du Drapeau, depuis 1986. Drapeaux, écussons et broderie d'exception.",
+  bodyClass,
+  dataPage,
+  showOverture = false,
+  storyEffects = false,
+  isHero = false,
+  noindex = false,
+  emitLocalBusiness = false,
+} = Astro.props;
+
+// Site origin — change to the production domain at deploy time.
+// Used to build absolute URLs for canonical, og:url, hreflang, sitemap.
+const SITE = "https://broderieroyale.com";
+const pathname = Astro.url.pathname;
+const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""));
+---
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+{/* ----- Security headers (also enforce these at the reverse proxy in production) -----
+   CSP keeps 'unsafe-inline' for now because we use inline <script> in contact/galerie/motifs
+   and onclick handlers in index. Tighten with nonces or hashes in a future pass.
+   connect-src 'self' must be widened to your Odoo origin before wiring Odoo.       */}
+{/* `frame-ancestors` and `X-Frame-Options` are intentionally NOT in the
+    <meta> CSP — browsers ignore them there and emit a console warning. Set
+    them at your reverse proxy in production (Nginx: `add_header
+    X-Frame-Options "SAMEORIGIN"` + a Content-Security-Policy header that
+    repeats this <meta>'s directives plus `frame-ancestors 'self'`). */}
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: http://localhost:8069; media-src 'self'; connect-src 'self' http://localhost:8069; form-action 'self'; base-uri 'self'; object-src 'none'; upgrade-insecure-requests;" />
+<meta http-equiv="X-Content-Type-Options" content="nosniff" />
+<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
+<link rel="icon" type="image/png" href="/assets/favicon.png" />
+<link rel="apple-touch-icon" href="/assets/favicon.png" />
+<meta name="description" content={description} />
+<meta name="robots" content={noindex ? "noindex, nofollow" : "index, follow"} />
+<link rel="canonical" href={canonicalUrl} />
+{/* hreflang block — tells Google the same logical page exists in three
+    languages. Currently language is switched client-side via the FR/AR/EN
+    toggle, so all three hreflangs point at the same URL with a ?lang=
+    query. When you move to URL-based locales (/en/, /ar/), update these. */}
+<link rel="alternate" hreflang="fr" href={canonicalUrl} />
+<link rel="alternate" hreflang="ar" href={canonicalUrl + (canonicalUrl.includes('?') ? '&' : '?') + 'lang=ar'} />
+<link rel="alternate" hreflang="en" href={canonicalUrl + (canonicalUrl.includes('?') ? '&' : '?') + 'lang=en'} />
+<link rel="alternate" hreflang="x-default" href={canonicalUrl} />
+<meta property="og:type" content="website" />
+<meta property="og:title" content={ogTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonicalUrl} />
+<meta property="og:image" content={SITE + "/assets/og-card.png"} />
+<meta property="og:site_name" content="Broderie Royale Algérie" />
+<meta property="og:locale" content="fr_FR" />
+<meta property="og:locale:alternate" content="ar_DZ" />
+<meta property="og:locale:alternate" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={ogTitle} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={SITE + "/assets/og-card.png"} />
+<title>{title}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/brand.css" />
+<link rel="stylesheet" href="/site.css" />
+<link rel="stylesheet" href="/shop.css" />
+<link rel="stylesheet" href="/luxe.css" />
+<ClientRouter />
+<slot name="head" />
+{/* Organization JSON-LD — always emit. Helps Google build the knowledge
+    panel and surface contact info in search results. */}
+<script is:inline type="application/ld+json" set:html={JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Broderie Royale Algérie",
+  "alternateName": "Maison du Drapeau",
+  "url": SITE,
+  "logo": SITE + "/assets/logo-crest-color.png",
+  "foundingDate": "1986",
+  "description": description,
+  "sameAs": [],
+  "contactPoint": [{
+    "@type": "ContactPoint",
+    "telephone": "+213-23-82-30-81",
+    "contactType": "customer service",
+    "areaServed": "DZ",
+    "availableLanguage": ["French", "Arabic", "English"]
+  }]
+})} />
+{/* LocalBusiness JSON-LD — homepage only. Drives Google Maps / local-pack
+    listings for the Alger showroom. */}
+{emitLocalBusiness && (
+  <script is:inline type="application/ld+json" set:html={JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Broderie Royale Algérie",
+    "image": SITE + "/assets/logo-crest-color.png",
+    "url": SITE,
+    "telephone": "+213-23-82-30-81",
+    "priceRange": "$$",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Lotissement Soufflerie n°12, Dar El-Beïda",
+      "addressLocality": "Alger",
+      "postalCode": "16100",
+      "addressCountry": "DZ"
+    },
+    "openingHoursSpecification": [{
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Saturday","Sunday","Monday","Tuesday","Wednesday","Thursday"],
+      "opens": "09:00",
+      "closes": "17:00"
+    }]
+  })} />
+)}
+</head>
+<body class={bodyClass} data-page={dataPage}>
+
+{showOverture && (
+  <div id="overture">
+    <img class="overture-crest" src="/assets/logo-crest-white.png" alt="Broderie Royale crest" />
+    <div class="overture-line" data-i18n="ov.line">MAISON DU DRAPEAU · DEPUIS 1986</div>
+  </div>
+)}
+
+{storyEffects && (
+  <div class="progress-rail"><div class="progress-fill" id="progressFill"></div></div>
+)}
+
+<nav class="nav" id="nav">
+  {isHero ? (
+    <div class="nav-brand" data-goto="hero">
+      <img class="nb-crest" src="/assets/nav-crest.png" alt="BR" />
+      <img class="nb-mark" src="/assets/nav-wordmark-light.png" alt="Broderie Royale Algérie — Maison du Drapeau" />
+    </div>
+  ) : (
+    <a class="nav-brand" href="/" style="text-decoration:none">
+      <img class="nb-crest" src="/assets/nav-crest.png" alt="BR" />
+      <img class="nb-mark" src="/assets/nav-wordmark-light.png" alt="Broderie Royale Algérie — Maison du Drapeau" />
+    </a>
+  )}
+  <div class="nav-links">
+    {isHero ? (
+      <span class="nav-link" data-goto="heritage" data-i18n="nav.histoire">L'Histoire</span>
+    ) : (
+      <a class="nav-link" href="/" data-i18n="nav.histoire">L'Histoire</a>
+    )}
+    <a class="nav-link" href="/galerie" data-i18n="nav.galerie">Galerie</a>
+    <a class="nav-link" href="/boutique" data-i18n="nav.boutique">Boutique</a>
+    <a class="nav-link" href="/contact" data-i18n="nav.contact">Contact</a>
+  </div>
+  <div style="display:flex;align-items:center;gap:10px">
+    <div class="lang-switch">
+      <button class="lang-btn" data-lang="fr">FR</button>
+      <button class="lang-btn" data-lang="en">EN</button>
+      <button class="lang-btn" data-lang="ar">ع</button>
+    </div>
+    <a class="cart-icon" href="/panier" aria-label="Panier">
+      <svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      <span class="cart-count">0</span>
+    </a>
+    {/* Hamburger — visible only below 900px (see site.css .nav-toggle). */}
+    <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false" aria-controls="mobileMenu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</nav>
+
+{/* Fullscreen mobile drawer — same links as desktop, populated by i18n via [data-i18n].
+    Lang buttons share the .lang-btn class so i18n.js initLang() binds them too. */}
+<div class="mobile-menu" id="mobileMenu" aria-hidden="true">
+  <div class="mm-links">
+    <a class="mm-link" href="/" data-i18n="nav.histoire">L'Histoire</a>
+    <a class="mm-link" href="/galerie" data-i18n="nav.galerie">Galerie</a>
+    <a class="mm-link" href="/boutique" data-i18n="nav.boutique">Boutique</a>
+    <a class="mm-link" href="/contact" data-i18n="nav.contact">Contact</a>
+  </div>
+  <div class="mm-lang">
+    <button class="lang-btn" data-lang="fr">FR</button>
+    <button class="lang-btn" data-lang="en">EN</button>
+    <button class="lang-btn" data-lang="ar">ع</button>
+  </div>
+</div>
+
+{storyEffects && (
+  <>
+    <canvas id="particles"></canvas>
+    <div class="thread-track" id="threadTrack" aria-hidden="true"></div>
+  </>
+)}
+
+<slot />
+
+<footer class="footer-banner">
+  <img class="fb-crest" src="/assets/footer-crest-white.png" alt="Broderie Royale" />
+  <img class="fb-mark" src="/assets/footer-wordmark-white.png" alt="Broderie Royale Algérie — Maison du Drapeau · depuis 1986" />
+  <div class="fb-contact">
+    <a href="https://wa.me/213560998877">+213 560 99 88 77 · Mobile / Viber / WhatsApp</a>
+    <a href="mailto:info@broderieroyale.com">info@broderieroyale.com</a>
+    {storyEffects && <span>broderieroyale.com</span>}
+  </div>
+  <div class="fb-legal" data-i18n="fb.legal">© Broderie Royale Algérie — Tous droits réservés.</div>
+  <div class="fb-credit">
+    <a class="fc-row" href="https://coshift.agency" target="_blank" rel="noopener">
+      <span class="fc-label" data-i18n="fb.credit">Conçu & développé par</span>
+      <img class="fc-logo" src="/assets/coshift-logo-white.png" alt="Coshift" />
+    </a>
+  </div>
+</footer>
+
+{/* Mobile-nav toggle. Inline + data-astro-rerun so it re-binds to the fresh
+    nav DOM after every ClientRouter navigation. */}
+<script is:inline data-astro-rerun>
+  (function(){
+    var t = document.getElementById('navToggle');
+    var m = document.getElementById('mobileMenu');
+    if (!t || !m) return;
+    function setOpen(o){
+      m.classList.toggle('open', o);
+      m.setAttribute('aria-hidden', o ? 'false' : 'true');
+      t.setAttribute('aria-expanded', o ? 'true' : 'false');
+      document.body.classList.toggle('mobile-menu-open', o);
+    }
+    t.addEventListener('click', function(){ setOpen(!m.classList.contains('open')); });
+    m.querySelectorAll('.mm-link').forEach(function(a){
+      a.addEventListener('click', function(){ setOpen(false); });
+    });
+    // Close on Esc
+    document.addEventListener('keydown', function(e){
+      if (e.key === 'Escape' && m.classList.contains('open')) setOpen(false);
+    });
+  })();
+</script>
+
+{/* Per-page scripts: data-astro-rerun so they re-execute after each ClientRouter
+    navigation (otherwise they would only run on the very first page load and the
+    cart/products/i18n would be dead on every subsequent page). Library scripts
+    (GSAP, Lenis) load once and are reused across navigations. */}
+{storyEffects ? (
+  <>
+    <script is:inline src="/image-slot.js" data-astro-rerun></script>
+    <script is:inline src="/js/config.js"></script>
+    <script is:inline src="/js/api.js"></script>
+    <script is:inline src="/js/i18n.js" data-astro-rerun></script>
+    <script is:inline src="/js/shop-data.js" data-astro-rerun></script>
+    <script is:inline src="/js/shop.js" data-astro-rerun></script>
+    {/* GSAP / ScrollTrigger / Lenis MUST load before scenes.js / smooth.js /
+        luxe.js / effects.js below — those reference window.gsap and
+        window.Lenis synchronously. `defer` broke that ordering and killed
+        the métiers horizontal-pin scroll, so we leave these blocking.
+        They're tiny relative to the rest of the page now that images are
+        WebP, so the perf cost is minor. */}
+    <script is:inline src="/js/vendor/gsap.min.js"></script>
+    <script is:inline src="/js/vendor/ScrollTrigger.min.js"></script>
+    <script is:inline src="/js/vendor/lenis.min.js"></script>
+    <script is:inline src="/js/smooth.js" data-astro-rerun></script>
+    <script is:inline src="/js/luxe.js" data-astro-rerun></script>
+    <script is:inline src="/js/effects.js" data-astro-rerun></script>
+    <script is:inline src="/js/scenes.js" data-astro-rerun></script>
+  </>
+) : (
+  <>
+    <script is:inline src="/js/vendor/lenis.min.js"></script>
+    <script is:inline src="/js/smooth.js" data-astro-rerun></script>
+    <script is:inline src="/js/luxe.js" data-astro-rerun></script>
+    <script is:inline src="/js/config.js"></script>
+    <script is:inline src="/js/api.js"></script>
+    <script is:inline src="/js/file-picker.js"></script>
+    <script is:inline src="/js/i18n.js" data-astro-rerun></script>
+    <script is:inline src="/js/shop-data.js" data-astro-rerun></script>
+    <script is:inline src="/js/shop.js" data-astro-rerun></script>
+  </>
+)}
+
+</body>
+</html>

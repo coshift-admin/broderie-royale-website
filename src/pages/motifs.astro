@@ -1,0 +1,207 @@
+---
+// Standalone designer's pattern picker. Does not use BaseLayout —
+// it only needs brand.css and has its own self-contained chrome.
+---
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Motifs — Broderie Royale</title>
+<link rel="stylesheet" href="/brand.css" />
+<style is:global>
+  * { box-sizing: border-box; }
+  body { margin: 0; background: var(--ink); color: var(--ivory); font-family: var(--font-body); }
+  .head { padding: 40px clamp(20px,5vw,72px) 10px; }
+  .head .eyebrow { color: var(--gold); }
+  .head h1 { font-family: var(--font-display); color: var(--ivory); font-size: clamp(1.8rem,4vw,2.8rem); margin: 10px 0 6px; }
+  .head p { color: var(--fg-on-dark-2); max-width: 72ch; line-height: 1.6; }
+
+  .controls { position: sticky; top: 0; z-index: 10; display: flex; flex-wrap: wrap; gap: 26px; align-items: center;
+    padding: 18px clamp(20px,5vw,72px); background: color-mix(in srgb, var(--ink) 92%, transparent); backdrop-filter: blur(10px);
+    border-bottom: 1px solid color-mix(in srgb, var(--gold) 22%, transparent); }
+  .ctrl { display: flex; flex-direction: column; gap: 6px; min-width: 170px; }
+  .ctrl label { font-size: 11px; letter-spacing: .14em; text-transform: uppercase; color: var(--fg-on-dark-2); display: flex; justify-content: space-between; gap: 10px; }
+  .ctrl label b { color: var(--gold-bright); font-weight: 400; }
+  .ctrl label .dot { width: 9px; height: 9px; border-radius: 50%; display: inline-block; margin-inline-end: 6px; vertical-align: middle; }
+  input[type=range] { accent-color: var(--gold); width: 100%; }
+  #opRed { accent-color: var(--royal-red-soft); }
+  .seg { display: flex; gap: 4px; background: color-mix(in srgb, var(--ink) 50%, transparent); border: 1px solid color-mix(in srgb,var(--gold) 26%, transparent); border-radius: var(--r-pill); padding: 4px; }
+  .seg button { background: none; border: 0; color: var(--fg-on-dark-2); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; padding: 7px 14px; border-radius: var(--r-pill); cursor: pointer; }
+  .seg button.on { background: var(--gold); color: var(--ink); }
+
+  .group-h { padding: 26px clamp(20px,5vw,72px) 0; font-family: var(--font-display); font-style: italic; color: var(--gold); font-size: 1.1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 22px; padding: 14px clamp(20px,5vw,72px) 30px; }
+  .card { border: 1px solid color-mix(in srgb, var(--gold) 20%, transparent); border-radius: var(--r-md); overflow: hidden; background: var(--ink-80); transition: border-color .3s, transform .3s; }
+  .card.sel { border-color: var(--gold); box-shadow: var(--shadow-gold); }
+  .swatches { display: grid; grid-template-rows: 1fr 1fr; height: 230px; }
+  .sw { position: relative; display: flex; align-items: flex-end; }
+  .sw .tag { position: relative; z-index: 2; font-size: 10px; letter-spacing: .16em; text-transform: uppercase; padding: 8px 12px; opacity: .65; }
+  .sw.red { background: var(--royal-red); }
+  .sw.red .tag { color: #fff; }
+  .sw.ivory { background: var(--ivory); }
+  .sw.ivory .tag { color: var(--ink); }
+  .sw .pat { position: absolute; inset: 0; z-index: 1; }
+  .card .meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 13px 16px; border-top: 1px solid color-mix(in srgb,var(--gold) 16%, transparent); }
+  .card .meta .nm { font-family: var(--font-display); font-weight: 700; color: var(--ivory); font-size: 1.02rem; }
+  .card .meta .nm small { display: block; font-weight: 400; font-style: italic; color: var(--gold); font-size: .78rem; }
+  .picks { display: flex; gap: 6px; }
+  .pick { background: none; border: 1px solid color-mix(in srgb,var(--gold) 50%, transparent); color: var(--fg-on-dark-2); border-radius: var(--r-pill); padding: 7px 12px; font-size: 10.5px; letter-spacing: .1em; text-transform: uppercase; cursor: pointer; transition: all .22s; white-space: nowrap; }
+  .pick:hover { border-color: var(--gold); color: var(--ivory); }
+  .pick.on-red { background: var(--royal-red); border-color: var(--royal-red); color: #fff; }
+  .pick.on-ivory { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+
+  .note { position: sticky; bottom: 0; z-index: 9; padding: 14px clamp(20px,5vw,72px); background: color-mix(in srgb, var(--ink) 94%, transparent); backdrop-filter: blur(10px); border-top: 1px solid color-mix(in srgb,var(--gold) 26%, transparent); }
+  .note .box { color: var(--fg-on-dark-2); line-height: 1.55; font-size: 14px; }
+  .note b { color: var(--gold-bright); }
+  .chip { display: inline-block; padding: 2px 8px; border-radius: var(--r-pill); font-size: 12px; }
+  .chip.r { background: color-mix(in srgb,var(--royal-red) 55%, transparent); color: #fff; }
+  .chip.i { background: color-mix(in srgb,var(--gold) 30%, transparent); color: var(--gold-bright); }
+</style>
+</head>
+<body>
+  <div class="head">
+    <div class="eyebrow">BRODERIE ROYALE · TEXTURES</div>
+    <h1>Motifs pour les grands aplats</h1>
+    <p>Motifs tirés du vocabulaire de la maison. Réglez séparément l’intensité sur le <b style="color:var(--royal-red-soft)">rouge</b> et sur l’<b style="color:var(--gold-bright)">ivoire</b>, puis attribuez un motif à chaque surface (le même ou deux différents).</p>
+  </div>
+
+  <div class="controls">
+    <div class="ctrl">
+      <label><span><span class="dot" style="background:var(--royal-red-soft)"></span>Intensité — Rouge</span> <b id="opRedVal">6%</b></label>
+      <input type="range" id="opRed" min="2" max="24" value="6" />
+    </div>
+    <div class="ctrl">
+      <label><span><span class="dot" style="background:var(--gold-bright)"></span>Intensité — Ivoire</span> <b id="opIvVal">6%</b></label>
+      <input type="range" id="opIvory" min="2" max="24" value="6" />
+    </div>
+    <div class="ctrl">
+      <label>Échelle <b id="scVal">1.0×</b></label>
+      <input type="range" id="scale" min="60" max="180" value="100" />
+    </div>
+    <div class="ctrl" style="min-width:auto">
+      <label>Aperçu</label>
+      <div class="seg" id="bgSeg">
+        <button data-bg="both" class="on">Les deux</button>
+        <button data-bg="red">Rouge</button>
+        <button data-bg="ivory">Ivoire</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="group-h">Couronnes — du plus marqué au plus doux</div>
+  <div class="grid" id="gridCrowns"></div>
+  <div class="group-h">Autres motifs de la maison</div>
+  <div class="grid" id="gridOthers"></div>
+
+  <div class="note">
+    <div class="box" id="noteBox">Attribuez un motif : « Rouge » pour le pied de page, « Ivoire » pour les sections claires.</div>
+  </div>
+
+<script is:inline>
+/* ---------- crown geometry helpers ---------- */
+function crownBody(cx,cy,w,h){ const hw=w/2; return `M${(cx-hw).toFixed(1)} ${(cy+h*0.32).toFixed(1)} L ${(cx-hw*0.92).toFixed(1)} ${(cy-h*0.5).toFixed(1)} L ${(cx-hw*0.42).toFixed(1)} ${(cy-h*0.02).toFixed(1)} L ${cx.toFixed(1)} ${(cy-h*0.72).toFixed(1)} L ${(cx+hw*0.42).toFixed(1)} ${(cy-h*0.02).toFixed(1)} L ${(cx+hw*0.92).toFixed(1)} ${(cy-h*0.5).toFixed(1)} L ${(cx+hw).toFixed(1)} ${(cy+h*0.32).toFixed(1)} Z`; }
+function crownOpen(cx,cy,w,h){ const hw=w/2; return `M${(cx-hw).toFixed(1)} ${(cy+h*0.3).toFixed(1)} L ${(cx-hw*0.92).toFixed(1)} ${(cy-h*0.5).toFixed(1)} L ${(cx-hw*0.42).toFixed(1)} ${(cy-h*0.02).toFixed(1)} L ${cx.toFixed(1)} ${(cy-h*0.72).toFixed(1)} L ${(cx+hw*0.42).toFixed(1)} ${(cy-h*0.02).toFixed(1)} L ${(cx+hw*0.92).toFixed(1)} ${(cy-h*0.5).toFixed(1)} L ${(cx+hw).toFixed(1)} ${(cy+h*0.3).toFixed(1)}`; }
+function crownBalls(cx,cy,w,h,r){ const hw=w/2; return `<circle cx="${(cx-hw*0.92).toFixed(1)}" cy="${(cy-h*0.56).toFixed(1)}" r="${r}"/><circle cx="${cx.toFixed(1)}" cy="${(cy-h*0.8).toFixed(1)}" r="${r}"/><circle cx="${(cx+hw*0.92).toFixed(1)}" cy="${(cy-h*0.56).toFixed(1)}" r="${r}"/>`; }
+function crown5(cx,cy,w,h){ const hw=w/2; const p=[[cx-hw,cy+h*0.3],[cx-hw*0.95,cy-h*0.32],[cx-hw*0.62,cy+h*0.02],[cx-hw*0.55,cy-h*0.5],[cx-hw*0.22,cy+h*0.04],[cx,cy-h*0.72],[cx+hw*0.22,cy+h*0.04],[cx+hw*0.55,cy-h*0.5],[cx+hw*0.62,cy+h*0.02],[cx+hw*0.95,cy-h*0.32],[cx+hw,cy+h*0.3]]; return "M"+p.map(q=>q[0].toFixed(1)+" "+q[1].toFixed(1)).join(" L ")+" Z"; }
+function crown5Balls(cx,cy,w,h,r){ const hw=w/2; return [[-0.95,-0.4],[-0.55,-0.58],[0,-0.8],[0.55,-0.58],[0.95,-0.4]].map(([dx,dy])=>`<circle cx="${(cx+hw*dx).toFixed(1)}" cy="${(cy+h*dy).toFixed(1)}" r="${r}"/>`).join(""); }
+
+/* ---------- pattern library ---------- */
+const CROWNS = {
+  couronne_pleine: { name: "Couronne pleine", sub: "marquée", tile: 84, draw:(s)=>`<g fill="currentColor"><path d="${crownBody(s*0.5,s*0.56,s*0.44,s*0.4)}"/>${crownBalls(s*0.5,s*0.56,s*0.44,s*0.4,s*0.032)}</g>` },
+  couronne_fine: { name: "Couronne fine", sub: "contour léger", tile: 84, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"><path d="${crownBody(s*0.5,s*0.56,s*0.44,s*0.4)}"/></g><g fill="currentColor">${crownBalls(s*0.5,s*0.56,s*0.44,s*0.4,s*0.028)}</g>` },
+  couronne_trait: { name: "Couronne trait", sub: "ligne ouverte, très douce", tile: 80, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round" stroke-linecap="round"><path d="${crownOpen(s*0.5,s*0.56,s*0.44,s*0.4)}"/></g><g fill="currentColor">${crownBalls(s*0.5,s*0.56,s*0.44,s*0.4,s*0.026)}</g>` },
+  couronne_semis: { name: "Couronne semis", sub: "espacée, en diagonale", tile: 120, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round">`+
+      `<path d="${crownBody(s*0.27,s*0.32,s*0.26,s*0.24)}"/><path d="${crownBody(s*0.77,s*0.82,s*0.26,s*0.24)}"/></g>`+
+      `<g fill="currentColor">${crownBalls(s*0.27,s*0.32,s*0.26,s*0.24,s*0.018)}${crownBalls(s*0.77,s*0.82,s*0.26,s*0.24,s*0.018)}</g>` },
+  couronne_perles: { name: "Couronne perles", sub: "perles soulignées", tile: 88, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="0.9" stroke-linejoin="round"><path d="${crownOpen(s*0.5,s*0.57,s*0.44,s*0.38)}"/></g><g fill="currentColor">${crownBalls(s*0.5,s*0.57,s*0.44,s*0.38,s*0.042)}</g>` },
+  couronne_royale: { name: "Couronne royale", sub: "cinq pointes, contour", tile: 100, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="1" stroke-linejoin="round"><path d="${crown5(s*0.5,s*0.56,s*0.5,s*0.42)}"/></g><g fill="currentColor">${crown5Balls(s*0.5,s*0.56,s*0.5,s*0.42,s*0.026)}</g>` },
+  couronne_diademe: { name: "Diadème", sub: "arc fin et perlé", tile: 96, draw:(s)=>{ const cx=s*0.5,cy=s*0.58,hw=s*0.24; let dots=""; for(let i=0;i<=6;i++){const t=i/6;const x=cx-hw+2*hw*t;const y=cy-Math.sin(Math.PI*t)*s*0.16;dots+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(i===3?s*0.035:s*0.02).toFixed(1)}"/>`;} return `<g fill="none" stroke="currentColor" stroke-width="0.9"><path d="M${cx-hw} ${cy} Q ${cx} ${(cy-s*0.34).toFixed(1)}, ${cx+hw} ${cy}"/></g><g fill="currentColor">${dots}</g>`; } },
+};
+const OTHERS = {
+  laurier: { name: "Laurier", sub: "la couronne de laurier", tile: 90, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="1.1" stroke-linecap="round"><path d="M${s*0.5} ${s*0.12} C ${s*0.5} ${s*0.4}, ${s*0.5} ${s*0.6}, ${s*0.5} ${s*0.88}"/>${[0.22,0.36,0.5,0.64,0.78].map(p=>`<path d="M${s*0.5} ${s*p} q ${-s*0.13} ${-s*0.05} ${-s*0.17} ${s*0.04}"/><path d="M${s*0.5} ${s*(p+0.02)} q ${s*0.13} ${-s*0.05} ${s*0.17} ${s*0.04}"/>`).join("")}</g>` },
+  monogramme: { name: "Monogramme", sub: "le sigle BR", tile: 96, draw:(s)=>`<g fill="currentColor" font-family="Georgia, serif" font-weight="700" font-size="${s*0.26}" text-anchor="middle"><text x="${s*0.27}" y="${s*0.33}">BR</text><text x="${s*0.77}" y="${s*0.83}">BR</text></g>` },
+  etoile: { name: "Étoile", sub: "l’étoile du blason", tile: 78, draw:(s)=>{ const star=(cx,cy,r)=>{let p="";for(let i=0;i<10;i++){const ang=Math.PI/5*i-Math.PI/2;const rr=i%2?r*0.42:r;p+=(i?"L":"M")+(cx+rr*Math.cos(ang)).toFixed(1)+" "+(cy+rr*Math.sin(ang)).toFixed(1)+" ";}return p+"Z";}; return `<g fill="currentColor"><path d="${star(s*0.28,s*0.28,s*0.13)}"/><path d="${star(s*0.74,s*0.74,s*0.13)}"/></g>`; } },
+  broderie: { name: "Broderie", sub: "le point de couture", tile: 26, draw:(s)=>`<g stroke="currentColor" stroke-width="1.4" stroke-linecap="round"><line x1="${s*0.15}" y1="${s*0.5}" x2="${s*0.42}" y2="${s*0.5}"/><line x1="${s*0.58}" y1="0" x2="${s*0.58}" y2="${s*0.22}"/><line x1="${s*0.58}" y1="${s*0.78}" x2="${s*0.58}" y2="${s}"/></g>` },
+  damas: { name: "Damas", sub: "l’arabesque royale", tile: 110, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="1.2"><path d="M${s*0.5} ${s*0.06} C ${s*0.86} ${s*0.2}, ${s*0.86} ${s*0.5}, ${s*0.5} ${s*0.5} C ${s*0.14} ${s*0.5}, ${s*0.14} ${s*0.2}, ${s*0.5} ${s*0.06} Z"/><path d="M${s*0.5} ${s*0.94} C ${s*0.86} ${s*0.8}, ${s*0.86} ${s*0.5}, ${s*0.5} ${s*0.5} C ${s*0.14} ${s*0.5}, ${s*0.14} ${s*0.8}, ${s*0.5} ${s*0.94} Z"/><circle cx="${s*0.5}" cy="${s*0.5}" r="${s*0.05}" fill="currentColor" stroke="none"/></g>` },
+  zellige: { name: "Zellige", sub: "l’étoile à huit branches", tile: 80, draw:(s)=>{ const c=s/2,R=s*0.46;let p="";for(let i=0;i<16;i++){const ang=Math.PI/8*i;const rr=i%2?R*0.56:R;p+=(i?"L":"M")+(c+rr*Math.cos(ang)).toFixed(1)+" "+(c+rr*Math.sin(ang)).toFixed(1)+" ";} return `<g fill="none" stroke="currentColor" stroke-width="1.1"><path d="${p}Z"/></g>`; } },
+  fil: { name: "Fil", sub: "le fil ondulé", tile: 60, draw:(s)=>`<g fill="none" stroke="currentColor" stroke-width="1.1"><path d="M0 ${s*0.3} Q ${s*0.25} ${s*0.12}, ${s*0.5} ${s*0.3} T ${s} ${s*0.3}"/><path d="M0 ${s*0.7} Q ${s*0.25} ${s*0.52}, ${s*0.5} ${s*0.7} T ${s} ${s*0.7}"/></g>` },
+};
+const ALL = Object.assign({}, CROWNS, OTHERS);
+
+const INK_RED   = "#4A0E0E";
+const INK_IVORY = "#9A8A66";
+let state = { opRed: 0.06, opIvory: 0.06, scale: 1.0, bg: "both", selRed: null, selIvory: null };
+
+function tileURL(id, color){
+  const p = ALL[id];
+  const s = Math.round(p.tile * state.scale);
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='${s}' height='${s}' viewBox='0 0 ${p.tile} ${p.tile}'><g color='${color}'>${p.draw(p.tile)}</g></svg>`;
+  return "url(\"data:image/svg+xml," + encodeURIComponent(svg) + "\")";
+}
+
+function cardHTML(id){
+  const p = ALL[id];
+  return `<div class="card" data-id="${id}">
+    <div class="swatches">
+      <div class="sw red"><div class="pat" data-red></div><span class="tag">Pied de page · rouge</span></div>
+      <div class="sw ivory"><div class="pat" data-ivory></div><span class="tag">Sections · ivoire</span></div>
+    </div>
+    <div class="meta">
+      <div class="nm">${p.name}<small>${p.sub}</small></div>
+      <div class="picks">
+        <button class="pick" data-role="red">Rouge</button>
+        <button class="pick" data-role="ivory">Ivoire</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+function build(){
+  document.getElementById("gridCrowns").innerHTML = Object.keys(CROWNS).map(cardHTML).join("");
+  document.getElementById("gridOthers").innerHTML = Object.keys(OTHERS).map(cardHTML).join("");
+  document.querySelectorAll(".card").forEach(card => {
+    const id = card.dataset.id;
+    card.querySelectorAll(".pick").forEach(btn => btn.addEventListener("click", () => {
+      const role = btn.dataset.role;
+      if (role==="red")   state.selRed   = state.selRed===id ? null : id;
+      if (role==="ivory") state.selIvory = state.selIvory===id ? null : id;
+      refresh();
+    }));
+  });
+  refresh();
+}
+
+function refresh(){
+  document.querySelectorAll(".card").forEach(card => {
+    const id = card.dataset.id;
+    const red = card.querySelector("[data-red]");
+    const ivory = card.querySelector("[data-ivory]");
+    red.style.backgroundImage = tileURL(id, INK_RED);
+    ivory.style.backgroundImage = tileURL(id, INK_IVORY);
+    red.style.opacity = state.opRed;
+    ivory.style.opacity = state.opIvory;
+    card.querySelector(".sw.red").style.display = state.bg==="ivory" ? "none":"flex";
+    card.querySelector(".sw.ivory").style.display = state.bg==="red" ? "none":"flex";
+    card.querySelector(".swatches").style.gridTemplateRows = state.bg==="both" ? "1fr 1fr":"1fr";
+    card.querySelector(".swatches").style.height = state.bg==="both" ? "230px":"150px";
+    const rb = card.querySelector('[data-role=red]'), ib = card.querySelector('[data-role=ivory]');
+    rb.classList.toggle("on-red", state.selRed===id);
+    ib.classList.toggle("on-ivory", state.selIvory===id);
+    card.classList.toggle("sel", state.selRed===id || state.selIvory===id);
+  });
+  const box = document.getElementById("noteBox");
+  const r = state.selRed ? `<span class="chip r">${ALL[state.selRed].name}</span> à <b>${Math.round(state.opRed*100)}%</b>` : "<i>non défini</i>";
+  const i = state.selIvory ? `<span class="chip i">${ALL[state.selIvory].name}</span> à <b>${Math.round(state.opIvory*100)}%</b>` : "<i>non défini</i>";
+  box.innerHTML = `Pied de page (rouge) : ${r}  ·  Sections (ivoire) : ${i}  ·  échelle <b>${state.scale.toFixed(1)}×</b><br>Quand cela vous convient, dites « applique » et je l’intègre au site.`;
+}
+
+document.getElementById("opRed").addEventListener("input", e => { state.opRed=+e.target.value/100; document.getElementById("opRedVal").textContent=e.target.value+"%"; refresh(); });
+document.getElementById("opIvory").addEventListener("input", e => { state.opIvory=+e.target.value/100; document.getElementById("opIvVal").textContent=e.target.value+"%"; refresh(); });
+document.getElementById("scale").addEventListener("input", e => { state.scale=+e.target.value/100; document.getElementById("scVal").textContent=state.scale.toFixed(1)+"×"; refresh(); });
+document.getElementById("bgSeg").addEventListener("click", e => { const b=e.target.closest("button"); if(!b)return; document.querySelectorAll("#bgSeg button").forEach(x=>x.classList.remove("on")); b.classList.add("on"); state.bg=b.dataset.bg; refresh(); });
+
+build();
+</script>
+</body>
+</html>

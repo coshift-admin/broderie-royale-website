@@ -1,0 +1,27 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Confirmation — Broderie Royale Algérie"
+  ogTitle="Confirmation — Broderie Royale Algérie"
+  bodyClass="shop"
+  dataPage="confirmation"
+  noindex={true}
+>
+<main>
+  <div class="confirm-wrap" id="confirmRoot">
+    <img class="confirm-seal" src="/assets/logo-crest-color.png" alt="Broderie Royale" />
+    <h1 data-i18n="cf.title">Merci pour votre commande !</h1>
+    <p data-i18n="cf.msg">Votre commande a bien été enregistrée. Notre équipe vous contactera très prochainement pour la confirmer.</p>
+    <div class="confirm-card">
+      <div><div class="cc-k" data-i18n="cf.order">N° de commande</div><div class="cc-v" id="cfRef">—</div></div>
+      <div><div class="cc-k" data-i18n="cf.total">Total à régler</div><div class="cc-v" id="cfTotal">—</div></div>
+      <div><div class="cc-k" data-i18n="cf.pay">Paiement à la livraison</div><div class="cc-v" style="color:var(--gold-deep)">⛟</div></div>
+    </div>
+    <div class="confirm-actions">
+      <a class="btn-royal" href="/boutique"><span data-i18n="cf.backshop">Retour à la boutique</span><span class="ar"></span></a>
+      <a class="btn-ghost" href="/"><span data-i18n="cf.home">Retour à l’accueil</span></a>
+    </div>
+  </div>
+</main>
+</BaseLayout>

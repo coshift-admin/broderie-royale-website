@@ -1,0 +1,112 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Commande — Broderie Royale Algérie"
+  ogTitle="Commande — Broderie Royale Algérie"
+  bodyClass="shop"
+  dataPage="commande"
+  noindex={true}
+>
+<main>
+  <div class="shop-body" style="padding-top:clamp(110px,15vh,170px)">
+    <div class="eyebrow" data-i18n="co.eyebrow" style="color:var(--gold-deep)">FINALISER</div>
+    <h1 class="shop-h1" data-i18n="co.title">Vos coordonnées</h1>
+    <div class="shop-lead" data-i18n="co.sub">Nous vous appelons pour confirmer avant l’expédition.</div>
+
+    <div class="checkout-grid">
+      <form class="checkout-form" id="checkoutForm" novalidate>
+        <div class="field">
+          <label><span data-i18n="co.name">Nom complet</span> <span class="req">*</span></label>
+          <input name="fName" type="text" autocomplete="name" required />
+        </div>
+        <div class="field row2">
+          <div class="field">
+            <label><span data-i18n="co.phone">Téléphone</span> <span class="req">*</span></label>
+            <input name="fPhone" type="tel" inputmode="tel" autocomplete="tel" required />
+          </div>
+          <div class="field">
+            <label><span data-i18n="co.wilaya">Wilaya</span> <span class="req">*</span></label>
+            <select name="fWilaya" id="fWilaya" required></select>
+          </div>
+        </div>
+
+        {/* Delivery type — Home vs Pickup. The blocks below are toggled by shop.js. */}
+        <div class="field">
+          <label data-i18n="co.delivery_type">Mode de livraison</label>
+          <div class="delivery-tabs" id="deliveryTabs">
+            <button type="button" class="delivery-tab active" data-type="home">
+              <span data-i18n="co.delivery_home">Livraison à domicile</span>
+            </button>
+            <button type="button" class="delivery-tab" data-type="pickup">
+              <span data-i18n="co.delivery_pickup">Point relais</span>
+            </button>
+          </div>
+        </div>
+
+        <div id="homeAddrBlock">
+          <div class="field">
+            <label data-i18n="co.commune">Commune</label>
+            <input name="fCommune" type="text" />
+          </div>
+          <div class="field">
+            <label><span data-i18n="co.address">Adresse de livraison</span> <span class="req">*</span></label>
+            <textarea name="fAddress" required></textarea>
+          </div>
+        </div>
+
+        <div id="pickupBlock" style="display:none">
+          <div class="field">
+            <label><span data-i18n="co.pickup_point">Point relais</span> <span class="req">*</span></label>
+            <select name="fPickupPoint" id="fPickupPoint">
+              <option value="" data-i18n="co.pickup_choose">Choisissez une wilaya d'abord</option>
+            </select>
+            <small style="display:block;margin-top:6px;color:var(--fg2)" data-i18n="co.pickup_hint">Sélectionnez d'abord une wilaya pour voir les points relais disponibles.</small>
+          </div>
+        </div>
+
+        <div class="field">
+          <label data-i18n="co.notes">Notes (optionnel)</label>
+          <textarea name="fNotes"></textarea>
+        </div>
+
+        {/* File-upload picker. shop.js wires this up via BR_FilePicker on
+            render and includes the files in the multipart order POST. */}
+        <div class="field">
+          <label data-i18n="co.attach_label">Joindre des fichiers (optionnel)</label>
+          <div id="commandeFilePicker"></div>
+        </div>
+
+        <div class="field" style="margin-top:8px">
+          <label data-i18n="co.payment">Mode de paiement</label>
+          <div class="pay-methods">
+            <div class="pay-opt selected">
+              <span class="pay-radio"></span>
+              <div><strong data-i18n="co.cod">Paiement à la livraison</strong><span data-i18n="co.codsub">En espèces, à la réception de votre commande.</span></div>
+            </div>
+            <div class="pay-opt disabled">
+              <span class="pay-radio" style="border-color:var(--ivory-line)"></span>
+              <div><strong data-i18n="co.online">Paiement en ligne</strong></div>
+              <span class="pay-soon" data-i18n="co.soon">Bientôt disponible</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-error" id="formError" data-i18n="co.required">Merci de remplir les champs requis.</div>
+        <button type="submit" class="btn-royal full" style="margin-top:10px"><span data-i18n="co.confirm">Confirmer la commande</span><span class="ar"></span></button>
+      </form>
+
+      <aside class="order-aside">
+        <h3 data-i18n="co.summary">Votre commande</h3>
+        {/* Replaced by shop.js once BR_DATA_READY resolves and wilayas load. */}
+        <div class="br-loading" data-loading-slot style="padding:40px 0">
+          <div class="br-loading-ring" aria-hidden="true"></div>
+          <div class="br-loading-text" data-i18n="co.loading">Chargement</div>
+        </div>
+        <div id="orderSummary"></div>
+        <div class="cod-note" style="margin-top:18px">⛟ <span data-i18n="pa.payinfo">Paiement à la livraison uniquement</span></div>
+      </aside>
+    </div>
+  </div>
+</main>
+</BaseLayout>

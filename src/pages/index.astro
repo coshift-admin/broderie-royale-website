@@ -1,0 +1,466 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Broderie Royale Algérie — Maison du Drapeau"
+  showOverture={true}
+  storyEffects={true}
+  isHero={true}
+  emitLocalBusiness={true}
+>
+<main>
+
+  <!-- ============== HERO ============== -->
+  <section id="hero" data-thread-node>
+    <div class="hero-bg">
+      <video id="heroBg" autoplay muted loop playsinline poster="/assets/texture-embroidery-patch.webp">
+        <source src="/assets/hero-loop.mp4" type="video/mp4" />
+      </video>
+    </div>
+    <div class="hero-inner">
+      <div class="hero-crest-wrap">
+        <img class="hero-crest" id="heroCrestBase" src="/assets/hero-crest-base.png" alt="Broderie Royale Algérie" />
+        <img class="hero-crown" id="heroCrown" src="/assets/hero-crown.png" alt="" />
+      </div>
+      <div class="hero-eyebrow" data-i18n="hero.eyebrow">MAISON DU DRAPEAU · DEPUIS 1986</div>
+      <h1 class="hero-title" data-i18n="hero.title" data-i18n-html>Nous brodons l’âme <em>d’une Nation.</em></h1>
+      <p class="hero-sub" data-i18n="hero.sub">Communication visuelle par le textile de haute qualité. Drapeaux, écussons et broderie d’exception — signés à Alger depuis près de quarante ans.</p>
+    </div>
+    <div class="scroll-hint">
+      <span data-i18n="hero.scroll">Suivez le fil</span>
+      <div class="dot"></div>
+    </div>
+  </section>
+
+  <!-- ============== I · HERITAGE ============== -->
+  <section id="heritage" class="chapter chapter--ivory" data-thread-node>
+    <div class="wrap heritage-grid">
+      <div>
+        <span class="chap-num reveal" data-i18n="her.num">I — La Maison</span>
+        <hr class="gold-rule reveal d1" />
+        <h2 class="chap-title reveal d1" data-i18n="her.title">Une maison familiale de référence.</h2>
+        <p class="lead reveal d2 measure" data-i18n="her.body">Depuis 1986, Broderie Royale Algérie cultive un savoir-faire rare : donner aux institutions, aux corps constitués et aux marques une identité textile durable, conçue pour marquer les esprits.</p>
+        <div class="values-row reveal d3">
+          <span class="value-chip" data-i18n="her.v1">Excellence</span>
+          <span class="value-chip" data-i18n="her.v2">Précision</span>
+          <span class="value-chip" data-i18n="her.v3">Tradition</span>
+          <span class="value-chip" data-i18n="her.v4">Prestige</span>
+        </div>
+      </div>
+      <div class="stat-stack reveal d2">
+        <div class="stat">
+          <div class="stat-num" data-i18n="her.s1n">1986</div>
+          <div class="stat-lab" data-i18n="her.s1l">L’année fondatrice</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-i18n="her.s2n">≈ 40</div>
+          <div class="stat-lab" data-i18n="her.s2l">Années de savoir-faire</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num" data-i18n="her.s3n">2</div>
+          <div class="stat-lab" data-i18n="her.s3l">Maisons — Alger & Djelfa</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== II · ATELIER ============== -->
+  <section id="atelier" class="chapter chapter--ink atelier" data-thread-node>
+    <div class="wrap atelier-grid">
+      <div>
+        <span class="chap-num reveal" data-i18n="at.num">II — Le Geste</span>
+        <hr class="gold-rule reveal d1" />
+        <h2 class="chap-title reveal d1" data-i18n="at.title">Le fil, l’aiguille, la main.</h2>
+        <p class="lead reveal d2" data-i18n="at.body">Chaque écusson naît d’un geste précis, répété des milliers de fois. Le fil d’or épouse le tissu, point après point, jusqu’à révéler la couronne. La broderie est notre signature ; le détail, notre obsession.</p>
+      </div>
+      <div class="atelier-media reveal d1" data-parallax="0.12">
+        <img src="/assets/photo-embroidery-machine.webp" alt="Broderie machine"  loading="lazy" />
+        <div class="media-caption" data-i18n="at.cap">Broderie machine multi-têtes — Atelier d’Alger</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== III · METIERS (horizontal) ============== -->
+  <section id="metiers-pin" data-thread-node>
+    <div class="metiers-head">
+      <span class="chap-num" data-i18n="me.num">III — Les Métiers</span>
+      <hr class="gold-rule" />
+      <h2 class="chap-title" data-i18n="me.title">Six métiers, une exigence.</h2>
+    </div>
+    <div class="metiers-track" id="metiersTrack">
+      <article class="metier-card">
+        <img src="/assets/photo-flag-international.webp" alt=""  loading="lazy" />
+        <div class="metier-body">
+          <span class="metier-idx">01</span>
+          <h3 class="metier-name" data-i18n="me.1n">Drapeaux</h3>
+          <p class="metier-desc" data-i18n="me.1d">Drapeaux nationaux, internationaux, de table et de mât, sur supports haute résistance.</p>
+        </div>
+      </article>
+      <article class="metier-card">
+        <img src="/assets/texture-embroidery-patch.webp" alt=""  loading="lazy" />
+        <div class="metier-body">
+          <span class="metier-idx">02</span>
+          <h3 class="metier-name" data-i18n="me.2n">Écussons</h3>
+          <p class="metier-desc" data-i18n="me.2d">Patches et insignes brodés, fil d’or sur tissu, pour corps et clubs.</p>
+        </div>
+      </article>
+      <article class="metier-card">
+        <img src="/assets/photo-pennant.webp" alt=""  loading="lazy" />
+        <div class="metier-body">
+          <span class="metier-idx">03</span>
+          <h3 class="metier-name" data-i18n="me.3n">Fanions</h3>
+          <p class="metier-desc" data-i18n="me.3d">Fanions cérémoniels et décoratifs, frange dorée, finition main.</p>
+        </div>
+      </article>
+      <article class="metier-card">
+        <img src="/assets/metier-broderie.webp" alt=""  loading="lazy" />
+        <div class="metier-body">
+          <span class="metier-idx">04</span>
+          <h3 class="metier-name" data-i18n="me.4n">Broderie</h3>
+          <p class="metier-desc" data-i18n="me.4d">Personnalisation premium : polos, t-shirts, casquettes et vêtements de travail.</p>
+        </div>
+      </article>
+      <article class="metier-card">
+        <img src="/assets/metier-polyester.webp" alt=""  loading="lazy" />
+        <div class="metier-body">
+          <span class="metier-idx">05</span>
+          <h3 class="metier-name" data-i18n="me.5n">Impression polyester</h3>
+          <p class="metier-desc" data-i18n="me.5d">Impression numérique sur tissu polyester, couleurs éclatantes et tenue durable.</p>
+        </div>
+      </article>
+      <article class="metier-card">
+        <img src="/assets/metier-coton.webp" alt=""  loading="lazy" />
+        <div class="metier-body">
+          <span class="metier-idx">06</span>
+          <h3 class="metier-name" data-i18n="me.6n">Impression coton</h3>
+          <p class="metier-desc" data-i18n="me.6d">Impression numérique sur tissu coton, douceur et précision du détail.</p>
+        </div>
+      </article>
+    </div>
+    <div class="metiers-hint">
+      <span data-i18n="me.sub">Faites glisser pour explorer.</span>
+      <span class="arrow"></span>
+    </div>
+  </section>
+
+  <!-- ============== IV · FLAG ============== -->
+  <section id="flag" data-thread-node>
+    <div class="flag-media" data-parallax-bg>
+      <img src="/assets/photo-flag-lobby.webp" alt="Drapeau algérien dans un hall de marbre"  loading="lazy" />
+    </div>
+    <div class="flag-scrim"></div>
+    <div class="flag-content">
+      <div class="flag-inner">
+        <span class="chap-num reveal" data-i18n="fl.num">IV — Le Drapeau</span>
+        <hr class="gold-rule reveal d1" />
+        <h2 class="flag-quote reveal d1" data-i18n="fl.quote" data-i18n-html>Du salon d’honneur à la tribune officielle, nos drapeaux portent <em>haut les couleurs.</em></h2>
+        <p class="lead reveal d2 mt-m" data-i18n="fl.body">Conception et fabrication de drapeaux institutionnels, événementiels et publicitaires. La Maison du Drapeau, au service de la Nation.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== V · PRESTIGE ============== -->
+  <section id="prestige" class="chapter chapter--ink" data-thread-node>
+    <div class="wrap">
+      <span class="chap-num reveal" data-i18n="pr.num">V — La Confiance</span>
+      <hr class="gold-rule reveal d1" />
+      <h2 class="chap-title reveal d1" data-i18n="pr.title">Ils nous ont fait confiance.</h2>
+      <p class="lead reveal d2 measure" data-i18n="pr.lead">Des commandes officielles et de grande envergure, portées par la même exigence.</p>
+      {/* Populated at runtime by the inline script below from
+          /api/v1/website/references. If Odoo has zero references, the
+          whole section is hidden — same pattern as the partners /
+          testimonials / FAQ bands. */}
+      <div class="prestige-list" id="prestigeList">
+        <div class="prestige-row reveal prestige-skel"></div>
+        <div class="prestige-row reveal prestige-skel"></div>
+        <div class="prestige-row reveal prestige-skel"></div>
+      </div>
+
+      <script is:inline data-astro-rerun>
+        (async function () {
+          if (document.readyState === "loading") {
+            await new Promise(function (r) {
+              document.addEventListener("DOMContentLoaded", r, { once: true });
+            });
+          }
+          if (!window.BR_API) return;
+          var list = document.getElementById("prestigeList");
+          var section = document.getElementById("prestige");
+          if (!list) return;
+          function esc(s) {
+            if (s == null) return "";
+            return String(s).replace(/[&<>"']/g, function (c) {
+              return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+            });
+          }
+          try {
+            var res = await window.BR_API.getReferences();
+            var items = res.references || [];
+            if (!items.length) { if (section) section.style.display = "none"; return; }
+            // No `reveal` class: the scroll observer was set up before these
+            // rows existed, so it would never fire `.in` on them and they'd
+            // stay at opacity 0. Render them already visible instead.
+            list.innerHTML = items.map(function (r) {
+              var place = r.subtitle
+                ? '<span class="prestige-place">' + esc(r.subtitle) + '</span>'
+                : '';
+              return '<div class="prestige-row">'
+                +    '<span class="prestige-yr">' + esc(r.year) + '</span>'
+                +    '<span class="prestige-name">' + esc(r.title) + '</span>'
+                +    place
+                +  '</div>';
+            }).join("");
+          } catch (err) {
+            console.error("[BR] references fetch failed", err);
+            if (section) section.style.display = "none";
+          }
+        })();
+      </script>
+    </div>
+  </section>
+
+  <!-- ============== VI · SERVE ============== -->
+  <section id="serve" class="chapter chapter--ivory" data-thread-node>
+    <div class="wrap">
+      <span class="chap-num reveal" data-i18n="sv.num">VI — Au Service de</span>
+      <hr class="gold-rule reveal d1" />
+      <h2 class="chap-title reveal d1" data-i18n="sv.title">Au service de ceux qui représentent.</h2>
+      <div class="serve-grid">
+        <div class="serve-cell reveal"><svg class="serve-motif" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M18 44 L50 26 L82 44"/><path pathLength="1" d="M22 44 L78 44"/><path pathLength="1" d="M28 46 L28 74"/><path pathLength="1" d="M42 46 L42 74"/><path pathLength="1" d="M58 46 L58 74"/><path pathLength="1" d="M72 46 L72 74"/><path pathLength="1" d="M20 74 L80 74"/><path pathLength="1" d="M14 80 L86 80"/><path pathLength="1" d="M50 9 L51.41 13.06 L55.71 13.15 L52.28 15.74 L53.53 19.85 L50 17.4 L46.47 19.85 L47.72 15.74 L44.29 13.15 L48.59 13.06 Z"/></svg><span class="sn">01</span><span class="serve-rule"></span><span class="st" data-i18n="sv.1">Corps constitués & institutions de l’État</span></div>
+        <div class="serve-cell reveal d1"><svg class="serve-motif" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M16 80 L84 80"/><path pathLength="1" d="M22 80 L22 56 L38 56 L38 80"/><path pathLength="1" d="M42 80 L42 40 L60 40 L60 80"/><path pathLength="1" d="M62 80 L62 60 L78 60 L78 80"/><path pathLength="1" d="M51 40 L51 30"/><path pathLength="1" d="M51 31 L61 33.5 L51 36"/></svg><span class="sn">02</span><span class="serve-rule"></span><span class="st" data-i18n="sv.2">Collectivités locales</span></div>
+        <div class="serve-cell reveal d2"><svg class="serve-motif" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M50 16 L76 26 L76 50 C76 66 64 76 50 82 C36 76 24 66 24 50 L24 26 Z"/><path pathLength="1" d="M38 48 L47 57 L64 38"/></svg><span class="sn">03</span><span class="serve-rule"></span><span class="st" data-i18n="sv.3">Sociétés de sécurité & de gardiennage</span></div>
+        <div class="serve-cell reveal"><svg class="serve-motif" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M28 62 A22 22 0 0 1 72 62"/><circle pathLength="1" cx="50" cy="34" r="2.6"/><path pathLength="1" d="M50 36.6 L50 40"/><path pathLength="1" d="M22 66 L78 66"/><path pathLength="1" d="M32 70 Q50 75 68 70"/></svg><span class="sn">04</span><span class="serve-rule"></span><span class="st" data-i18n="sv.4">Hôtels & restaurants</span></div>
+        <div class="serve-cell reveal d1"><svg class="serve-motif" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M38 34 L62 34 L60 50 C60 58 55 62 50 62 C45 62 40 58 40 50 Z"/><path pathLength="1" d="M38 36 C30 36 30 50 41 50"/><path pathLength="1" d="M62 36 C70 36 70 50 59 50"/><path pathLength="1" d="M50 62 L50 70"/><path pathLength="1" d="M40 70 L60 70"/><path pathLength="1" d="M36 76 L64 76"/></svg><span class="sn">05</span><span class="serve-rule"></span><span class="st" data-i18n="sv.5">Clubs sportifs</span></div>
+        <div class="serve-cell reveal d2"><svg class="serve-motif" viewBox="0 0 100 100" aria-hidden="true"><path pathLength="1" d="M40 28 L26 40 L34 48 L34 76 L66 76 L66 48 L74 40 L60 28"/><path pathLength="1" d="M40 28 L50 38 L60 28"/><path pathLength="1" d="M50 38 L50 54"/></svg><span class="sn">06</span><span class="serve-rule"></span><span class="st" data-i18n="sv.6">Particuliers</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============== VI·b · PARTNERS ============== -->
+  <section id="partners" class="chapter chapter--ivory partners" data-thread-node>
+    <div class="wrap">
+      <span class="chap-num reveal" data-i18n="pt.eyebrow">PARTENAIRES & RÉFÉRENCES</span>
+      <hr class="gold-rule reveal d1" style="margin-inline:auto;" />
+      <h2 class="chap-title reveal d1" data-i18n="pt.title">La confiance des institutions.</h2>
+      <p class="lead reveal d2" data-i18n="pt.sub">Corps constitués, collectivités, clubs et grandes marques nous confient leur image depuis près de quarante ans.</p>
+      {/* Populated at runtime by the inline script below from
+          /api/v1/website/partners. The skeleton tiles are placeholders
+          for the brief moment before the fetch resolves; if there are
+          no partners in Odoo, the whole section is hidden. */}
+      <div class="partner-grid reveal d2" id="partnersGrid">
+        <div class="partner-tile partner-skel"></div>
+        <div class="partner-tile partner-skel"></div>
+        <div class="partner-tile partner-skel"></div>
+        <div class="partner-tile partner-skel"></div>
+        <div class="partner-tile partner-skel"></div>
+      </div>
+
+      <script is:inline data-astro-rerun>
+        (async function () {
+          // Initial load: scripts at the end of <body> haven't run yet, so
+          // BR_API isn't defined. Wait for DOMContentLoaded. On a SPA nav
+          // via ClientRouter, BR_API is already on window — readyState is
+          // "interactive"/"complete", so we run immediately.
+          if (document.readyState === "loading") {
+            await new Promise(function (r) {
+              document.addEventListener("DOMContentLoaded", r, { once: true });
+            });
+          }
+          if (!window.BR_API) return;
+          var grid = document.getElementById("partnersGrid");
+          var section = document.getElementById("partners");
+          if (!grid) return;
+          try {
+            var res = await window.BR_API.getPartners();
+            var partners = res.partners || [];
+            if (!partners.length) {
+              if (section) section.style.display = "none";
+              return;
+            }
+            function esc(s) {
+              if (s == null) return "";
+              return String(s).replace(/[&<>"']/g, function (c) {
+                return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+              });
+            }
+            grid.innerHTML = partners.map(function (p) {
+              var img = '<img src="' + esc(p.logo_url) + '" alt="' + esc(p.name) + '" loading="lazy" />';
+              if (p.website_url) {
+                return '<a class="partner-tile" href="' + esc(p.website_url) + '" target="_blank" rel="noopener">' + img + '</a>';
+              }
+              return '<div class="partner-tile">' + img + '</div>';
+            }).join("");
+          } catch (err) {
+            console.error("[BR] partners fetch failed", err);
+            if (section) section.style.display = "none";
+          }
+        })();
+      </script>
+    </div>
+  </section>
+
+  <!-- ============== VI·c · TESTIMONIALS ============== -->
+  <section id="testimonials" class="chapter chapter--ink testimonials" data-thread-node>
+    <div class="wrap">
+      <span class="chap-num reveal" data-i18n="ts.eyebrow">TÉMOIGNAGES</span>
+      <hr class="gold-rule reveal d1" style="margin-inline:auto;" />
+      <h2 class="chap-title reveal d1" data-i18n="ts.title">La voix de nos clients.</h2>
+      <p class="lead reveal d2" data-i18n="ts.sub">Quelques retours de ceux qui nous ont confié leur identité textile.</p>
+
+      {/* Populated by inline script. Hidden entirely if Odoo returns no
+          testimonials. Same pattern as the partners band above. */}
+      <div class="testimonial-grid reveal d2" id="testimonialsGrid">
+        <div class="testimonial-card testimonial-skel"></div>
+        <div class="testimonial-card testimonial-skel"></div>
+        <div class="testimonial-card testimonial-skel"></div>
+      </div>
+
+      <script is:inline data-astro-rerun>
+        (async function () {
+          if (document.readyState === "loading") {
+            await new Promise(function (r) {
+              document.addEventListener("DOMContentLoaded", r, { once: true });
+            });
+          }
+          if (!window.BR_API) return;
+          var grid = document.getElementById("testimonialsGrid");
+          var section = document.getElementById("testimonials");
+          if (!grid) return;
+          function esc(s) {
+            if (s == null) return "";
+            return String(s).replace(/[&<>"']/g, function (c) {
+              return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+            });
+          }
+          function nl2br(s) { return esc(s).replace(/\n/g, "<br/>"); }
+          function stars(n) {
+            n = Math.max(0, Math.min(5, parseInt(n, 10) || 0));
+            if (!n) return "";
+            var s = "";
+            for (var i = 0; i < 5; i++) s += '<span class="tst-star ' + (i < n ? "on" : "") + '">★</span>';
+            return '<div class="tst-stars">' + s + '</div>';
+          }
+          try {
+            var res = await window.BR_API.getTestimonials();
+            var items = res.testimonials || [];
+            if (!items.length) { if (section) section.style.display = "none"; return; }
+            grid.innerHTML = items.map(function (t) {
+              var photo = t.author_photo_url
+                ? '<img class="tst-photo" src="' + esc(t.author_photo_url) + '" alt="' + esc(t.author) + '" loading="lazy" />'
+                : '<div class="tst-photo tst-photo-blank">' + esc((t.author || "?").slice(0, 1).toUpperCase()) + '</div>';
+              var role = t.author_role ? '<div class="tst-role">' + esc(t.author_role) + '</div>' : "";
+              return '<article class="testimonial-card">'
+                +    '<div class="tst-mark" aria-hidden="true">&ldquo;</div>'
+                +    '<blockquote class="tst-quote">' + nl2br(t.quote) + '</blockquote>'
+                +    stars(t.rating)
+                +    '<footer class="tst-author">'
+                +      photo
+                +      '<div class="tst-meta"><div class="tst-name">' + esc(t.author) + '</div>' + role + '</div>'
+                +    '</footer>'
+                +  '</article>';
+            }).join("");
+          } catch (err) {
+            console.error("[BR] testimonials fetch failed", err);
+            if (section) section.style.display = "none";
+          }
+        })();
+      </script>
+    </div>
+  </section>
+
+  <!-- ============== VI·d · FAQ ============== -->
+  <section id="faq" class="chapter chapter--ivory faq" data-thread-node>
+    <div class="wrap">
+      <span class="chap-num reveal" data-i18n="fq.eyebrow">QUESTIONS FRÉQUENTES</span>
+      <hr class="gold-rule reveal d1" style="margin-inline:auto;" />
+      <h2 class="chap-title reveal d1" data-i18n="fq.title">Bon à savoir.</h2>
+      <p class="lead reveal d2 measure" style="margin:0 auto" data-i18n="fq.sub">Les réponses aux questions que l'on nous pose le plus souvent.</p>
+
+      <div class="faq-list reveal d2" id="faqList">
+        <div class="faq-item faq-skel"></div>
+        <div class="faq-item faq-skel"></div>
+        <div class="faq-item faq-skel"></div>
+      </div>
+
+      <script is:inline data-astro-rerun>
+        (async function () {
+          if (document.readyState === "loading") {
+            await new Promise(function (r) {
+              document.addEventListener("DOMContentLoaded", r, { once: true });
+            });
+          }
+          if (!window.BR_API) return;
+          var list = document.getElementById("faqList");
+          var section = document.getElementById("faq");
+          if (!list) return;
+          function esc(s) {
+            if (s == null) return "";
+            return String(s).replace(/[&<>"']/g, function (c) {
+              return { "&": "&amp;", "<": "&lt;", ">": "&gt;", "\"": "&quot;", "'": "&#39;" }[c];
+            });
+          }
+          function nl2br(s) { return esc(s).replace(/\n/g, "<br/>"); }
+          try {
+            var res = await window.BR_API.getFaq();
+            var items = res.faq || [];
+            if (!items.length) { if (section) section.style.display = "none"; return; }
+            list.innerHTML = items.map(function (f, i) {
+              return '<details class="faq-item"' + (i === 0 ? " open" : "") + '>'
+                +    '<summary class="faq-q"><span class="faq-q-text">' + esc(f.question) + '</span><span class="faq-toggle" aria-hidden="true"></span></summary>'
+                +    '<div class="faq-a">' + nl2br(f.answer) + '</div>'
+                +  '</details>';
+            }).join("");
+          } catch (err) {
+            console.error("[BR] faq fetch failed", err);
+            if (section) section.style.display = "none";
+          }
+        })();
+      </script>
+    </div>
+  </section>
+
+  <!-- ============== VII · CATALOGUE / CONTACT ============== -->
+  <section id="catalogue" class="chapter chapter--ink" data-thread-node>
+    <div class="wrap">
+      <span class="chap-num reveal" data-i18n="ca.num">VII — Le Catalogue</span>
+      <hr class="gold-rule reveal d1" style="margin-inline:auto;" />
+      <h2 class="chap-title reveal d1" data-i18n="ca.title">Explorez le catalogue.</h2>
+      <p class="lead reveal d2" style="max-width:60ch;margin:0 auto;" data-i18n="ca.lead">Six familles de produits, un seul niveau d’exigence. Donnez à votre identité une visibilité d’exception.</p>
+
+      <div class="cat-cards reveal d2">
+        <a class="cat-card" href="/boutique?cat=drapeaux"><span class="cc-idx">01</span><div class="cc-name" data-i18n="me.1n">Drapeaux</div><p class="cc-desc" data-i18n="me.1d"></p></a>
+        <a class="cat-card" href="/boutique?cat=ecussons"><span class="cc-idx">02</span><div class="cc-name" data-i18n="me.2n">Écussons</div><p class="cc-desc" data-i18n="me.2d"></p></a>
+        <a class="cat-card" href="/boutique?cat=fanions"><span class="cc-idx">03</span><div class="cc-name" data-i18n="me.3n">Fanions</div><p class="cc-desc" data-i18n="me.3d"></p></a>
+        <a class="cat-card" href="/boutique?cat=broderie"><span class="cc-idx">04</span><div class="cc-name" data-i18n="me.4n">Broderie</div><p class="cc-desc" data-i18n="me.4d"></p></a>
+        <a class="cat-card" href="/boutique?cat=polyester"><span class="cc-idx">05</span><div class="cc-name" data-i18n="me.5n">Impression polyester</div><p class="cc-desc" data-i18n="me.5d"></p></a>
+        <a class="cat-card" href="/boutique?cat=coton"><span class="cc-idx">06</span><div class="cc-name" data-i18n="me.6n">Impression coton</div><p class="cc-desc" data-i18n="me.6d"></p></a>
+      </div>
+
+      <button class="btn-royal reveal d2" onclick="location.href='/boutique'">
+        <span data-i18n="ca.cta">Explorer le catalogue</span>
+        <span class="ar"></span>
+      </button>
+
+      <div class="maisons reveal d2">
+        <div class="maison">
+          <div class="ml" data-i18n="ms.alger.l">Showroom principal</div>
+          <div class="mt" data-i18n="ms.alger.t">Alger</div>
+          <div class="md">
+            Lotissement Soufflerie n°12,<br />Dar El-Beida, 16100, Alger.<br />
+            <a href="tel:+213238230081">+213 23 82 30 81</a>
+          </div>
+        </div>
+        <div class="maison">
+          <div class="ml" data-i18n="ms.djelfa.l">Showroom</div>
+          <div class="mt" data-i18n="ms.djelfa.t">Djelfa</div>
+          <div class="md">
+            RN n°1, BP 273,<br />Aïn Ouessara, 17200, Djelfa.<br />
+            <a href="tel:+213278220096">+213 27 82 20 96</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+</BaseLayout>

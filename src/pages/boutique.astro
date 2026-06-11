@@ -1,0 +1,40 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Boutique — Broderie Royale Algérie"
+  ogTitle="Boutique — Broderie Royale Algérie"
+  bodyClass="shop"
+  dataPage="boutique"
+>
+<header class="shop-hero">
+  <div class="inner">
+    <div class="eyebrow" data-i18n="bo.eyebrow">BOUTIQUE EN LIGNE · MAISON DU DRAPEAU</div>
+    <h1 data-i18n="bo.title">La Boutique Royale.</h1>
+    <p data-i18n="bo.sub">Drapeaux, écussons et broderie d’exception, livrés chez vous. Paiement à la livraison, partout en Algérie.</p>
+  </div>
+</header>
+
+<main>
+  <div class="shop-body">
+    <div class="cat-filters" id="catFilters"></div>
+    {/* Replaced by shop.js once BR_DATA_READY resolves. */}
+    <div class="br-loading" data-loading-slot>
+      <div class="br-loading-ring" aria-hidden="true"></div>
+      <div class="br-loading-text" data-i18n="bo.loading">Chargement de la collection</div>
+    </div>
+    <div class="product-grid" id="productGrid"></div>
+  </div>
+
+  <section class="devis-banner">
+    <div class="db-inner">
+      <div class="db-text">
+        <div class="eyebrow" data-i18n="dv.eyebrow" style="color:var(--gold-bright)">DEVIS SUR-MESURE</div>
+        <h2 data-i18n="ga.cta_h">Un projet sur-mesure ?</h2>
+        <p data-i18n="ga.cta_p">Confiez-nous votre identité textile. Demandez un devis personnalisé.</p>
+      </div>
+      <a class="btn-royal" href="/contact#devis"><span data-i18n="ct.tab_devis">Demander un devis</span><span class="ar"></span></a>
+    </div>
+  </section>
+</main>
+</BaseLayout>

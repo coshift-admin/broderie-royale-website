@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="404 — Broderie Royale Algérie"
+  ogTitle="404 — Broderie Royale Algérie"
+  bodyClass="shop"
+  dataPage="404"
+  noindex={true}
+>
+<main>
+  <div class="nf-wrap">
+    <div>
+      <img class="nf-crest" src="/assets/logo-crest-color.png" alt="Broderie Royale" />
+      <div class="nf-code" data-i18n="nf.code">404</div>
+      <h1 class="nf-title" data-i18n="nf.title">Cette page s’est égarée.</h1>
+      <p class="nf-sub" data-i18n="nf.sub">Le fil mène ailleurs. Revenons à la Maison.</p>
+      <div class="nf-actions">
+        <a class="btn-royal" href="/"><span data-i18n="nf.home">Retour à l’accueil</span><span class="ar"></span></a>
+        <a class="nf-ghost" href="/boutique"><span data-i18n="nf.shop">La Boutique</span></a>
+      </div>
+    </div>
+  </div>
+</main>
+</BaseLayout>

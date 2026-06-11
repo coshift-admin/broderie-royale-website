@@ -1,0 +1,132 @@
+/* ============================================================
+   contact.css — Contact page (extends brand/site/shop)
+   ============================================================ */
+.contact-body { max-width: 1240px; margin: 0 auto; padding: clamp(40px,6vw,72px) clamp(20px,6vw,120px) 80px; }
+
+/* ---- mode toggle (Devis ⇄ Nous écrire) ---- */
+.contact-toggle {
+  display: flex; justify-content: center; gap: 6px; width: fit-content;
+  margin: 0 auto clamp(34px,4vw,52px);
+  background: var(--bg-elevated); border: 1px solid var(--ivory-line);
+  border-radius: var(--r-pill); padding: 6px; box-shadow: var(--shadow-sm);
+}
+.ctab {
+  font-family: var(--font-display); font-weight: 700; font-size: 15px; letter-spacing: .01em;
+  color: var(--fg2); background: none; border: 0; cursor: pointer;
+  padding: 13px 26px; border-radius: var(--r-pill);
+  display: inline-flex; align-items: center; gap: 9px;
+  transition: color .3s var(--ease), background .3s var(--ease), box-shadow .3s var(--ease);
+  white-space: nowrap;
+}
+.ctab .ico { width: 17px; height: 17px; flex: none; }
+.ctab .ico svg { width: 100%; height: 100%; fill: none; stroke: currentColor; stroke-width: 1.7; }
+.ctab:hover { color: var(--ink); }
+.ctab.active { background: var(--royal-red); color: var(--ivory); box-shadow: var(--shadow-md); }
+html[lang="ar"] .ctab { font-family: var(--font-arabic); font-size: 17px; }
+@media (max-width: 520px){
+  .contact-toggle { width: 100%; }
+  .ctab { flex: 1; justify-content: center; padding: 13px 12px; font-size: 14px; }
+}
+.cmode { display: none; }
+.cmode.on { display: block; }
+.cmode.anim { animation: riseIn .45s var(--ease); }
+
+.contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(28px,4vw,60px); align-items: start; }
+@media (max-width: 920px){ .contact-grid { grid-template-columns: 1fr; } }
+
+/* ---- form card ---- */
+.contact-card { background: var(--bg-elevated); border: 1px solid var(--ivory-line); border-radius: var(--r-md); padding: clamp(26px,3vw,40px); box-shadow: var(--shadow-md); position: sticky; top: 92px; }
+.contact-card h2 { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: clamp(1.3rem,2vw,1.7rem); margin: 0 0 22px; }
+html[lang="ar"] .contact-card h2 { font-family: var(--font-arabic); }
+.contact-form { display: grid; gap: 16px; }
+.contact-form .field { display: flex; flex-direction: column; gap: 7px; }
+.contact-form label { font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); }
+html[lang="ar"] .contact-form label { letter-spacing: .02em; font-size: 15px; }
+.contact-form .req { color: var(--royal-red); }
+.contact-form input, .contact-form textarea {
+  font-family: var(--font-body); font-size: 15px; color: var(--ink); background: var(--ivory);
+  border: 1px solid var(--ivory-line); border-radius: var(--r-sm); padding: 13px 14px; outline: none;
+  transition: border-color .25s var(--ease); width: 100%;
+}
+.contact-form input:focus, .contact-form textarea:focus { border-color: var(--gold); }
+.contact-form textarea { resize: vertical; min-height: 130px; }
+.contact-form .invalid { border-color: var(--royal-red); }
+.form-error { color: var(--royal-red); font-size: 14px; display: none; }
+.form-error.show { display: block; }
+.contact-sent { display: none; text-align: center; padding: 30px 10px; }
+.contact-sent.show { display: block; animation: riseIn .7s var(--ease); }
+.contact-sent .seal { width: 64px; margin: 0 auto 18px; }
+.contact-sent h3 { font-family: var(--font-display); color: var(--ink); font-size: 1.5rem; margin: 0 0 10px; }
+html[lang="ar"] .contact-sent h3 { font-family: var(--font-arabic); }
+.contact-sent p { color: var(--fg2); line-height: 1.6; max-width: 38ch; margin: 0 auto; }
+
+/* ---- info column ---- */
+.info-col { display: grid; gap: 22px; }
+.info-block { background: var(--bg-elevated); border: 1px solid var(--ivory-line); border-radius: var(--r-md); padding: 28px 30px; }
+.info-block .ib-eyebrow { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold-deep); display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+html[lang="ar"] .info-block .ib-eyebrow { letter-spacing: .03em; font-size: 14px; }
+.info-block .ib-eyebrow::before { content: ""; width: 22px; height: 1px; background: var(--gold); }
+.info-block h3 { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: 1.3rem; margin: 0 0 6px; }
+html[lang="ar"] .info-block h3 { font-family: var(--font-arabic); }
+.info-block .addr { color: var(--fg2); line-height: 1.6; font-size: 14.5px; margin-bottom: 18px; }
+.ph-label { font-size: 11px; letter-spacing: .16em; text-transform: uppercase; color: var(--fg2); margin: 16px 0 8px; }
+html[lang="ar"] .ph-label { letter-spacing: .02em; font-size: 14px; }
+.ph-list { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px 18px; }
+@media (max-width: 520px){ .ph-list { grid-template-columns: 1fr; } }
+.ph-list a { display: inline-flex; align-items: center; gap: 9px; color: var(--ink); font-size: 15px; padding: 5px 0; transition: color .2s var(--ease); font-variant-numeric: tabular-nums; }
+.ph-list a:hover { color: var(--royal-red); }
+.ph-list a::before { content: ""; width: 5px; height: 5px; border-radius: 50%; background: var(--gold); flex: none; }
+.contact-line { display: flex; align-items: center; gap: 12px; padding: 12px 0; }
+.contact-line a { color: var(--ink); font-size: 16px; }
+.contact-line a:hover { color: var(--royal-red); }
+.contact-line .ci { width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, var(--gold) 14%, transparent); color: var(--gold-deep); flex: none; }
+.contact-line .ci svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.6; }
+.msg-highlight { margin-top: 8px; padding: 16px 18px; border: 1px solid color-mix(in srgb, var(--gold) 38%, transparent); border-radius: var(--r-sm); background: color-mix(in srgb, var(--gold) 6%, transparent); }
+.msg-highlight .mh-k { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--gold-deep); margin-bottom: 4px; }
+html[lang="ar"] .msg-highlight .mh-k { letter-spacing: .02em; font-size: 14px; }
+.msg-highlight a { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; color: var(--royal-red); }
+
+/* ---- services strip ---- */
+.services-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--ivory-line); border: 1px solid var(--ivory-line); border-radius: var(--r-md); overflow: hidden; }
+@media (max-width: 600px){ .services-grid { grid-template-columns: 1fr; } }
+.svc-cell { background: var(--bg-elevated); padding: 22px 22px; transition: background .3s var(--ease); }
+.svc-cell:hover { background: var(--ivory-warm); }
+.svc-cell .sc-name { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: 1.02rem; margin-bottom: 10px; }
+html[lang="ar"] .svc-cell .sc-name { font-family: var(--font-arabic); }
+.svc-cell a { display: block; color: var(--fg2); font-size: 14.5px; padding: 3px 0; font-variant-numeric: tabular-nums; }
+.svc-cell a:hover { color: var(--royal-red); }
+
+/* ============================================================
+   ALGERIA MAP — gold thread draw + dropping pins
+   ============================================================ */
+.map-section { background: var(--ink); color: var(--ivory); padding: 0; position: relative; overflow: clip; min-height: 300vh; }
+.map-sticky { position: sticky; top: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(20px,3vw,40px); padding: clamp(60px,8vw,110px) clamp(20px,6vw,120px); }
+.map-section .map-head { text-align: center; max-width: 60ch; margin: 0 auto; }
+.map-section .eyebrow { color: var(--gold); }
+.map-section h2 { font-family: var(--font-display); font-weight: 700; color: var(--ivory); font-size: clamp(1.8rem,4vw,3rem); margin: 12px 0 14px; }
+html[lang="ar"] .map-section h2 { font-family: var(--font-arabic); }
+.map-section .map-sub { color: var(--fg-on-dark-2); font-size: clamp(1rem,1.4vw,1.2rem); line-height: 1.6; }
+.map-wrap { width: 100%; max-width: 1120px; height: 76vh; margin: 0 auto; }
+.alg-map { width: 100%; height: 100%; display: block; overflow: visible; }
+.alg-map .vanish { opacity: 0; }
+
+.alg-map .m-wash { opacity: 0; }
+.alg-map .m-border { stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 5px color-mix(in srgb, var(--gold) 55%, transparent)); }
+.alg-map .marker { opacity: 0; transform: translateY(-10px); transform-box: fill-box; transform-origin: center bottom; filter: drop-shadow(0 5px 8px rgba(0,0,0,.5)); }
+.alg-map .halo { opacity: 0; }
+.alg-map .lbl-group { opacity: 0; }
+.alg-map .lbl { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: 1.5px; fill: var(--ivory); }
+.alg-map .lbl-sub { font-family: var(--font-display); font-style: italic; font-size: 13px; fill: var(--gold-bright); letter-spacing: .5px; }
+.alg-map .lbl-rule { stroke: var(--gold); stroke-width: 1; opacity: .5; vector-effect: non-scaling-stroke; }
+.alg-map .beacon { opacity: 0; transform-box: fill-box; transform-origin: center; }
+
+/* sonar pulses begin only once a pin is placed by the scroll-driven script */
+.alg-map .pin.placed .b1 { animation: mapSonar 4.4s ease-out 0s infinite; }
+.alg-map .pin.placed .b2 { animation: mapSonar 4.4s ease-out 2.2s infinite; }
+
+@keyframes mapSonar { 0% { opacity: .5; transform: scale(1); } 70% { opacity: 0; } 100% { opacity: 0; transform: scale(7); } }
+@media (prefers-reduced-motion: reduce){
+  .alg-map .m-border { stroke-dashoffset: 0 !important; }
+  .alg-map .m-wash, .alg-map .marker, .alg-map .halo, .alg-map .lbl-group { opacity: 1 !important; transform: none !important; }
+  .alg-map .beacon { display: none; }
+}

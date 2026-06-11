@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Produit — Broderie Royale Algérie"
+  ogTitle="Produit — Broderie Royale Algérie"
+  bodyClass="shop"
+  dataPage="produit"
+>
+<main>
+  <div class="shop-body" style="padding-top:clamp(110px,15vh,170px)">
+    {/* Replaced by shop.js once BR_DATA_READY resolves. */}
+    <div class="br-loading" data-loading-slot>
+      <div class="br-loading-ring" aria-hidden="true"></div>
+      <div class="br-loading-text" data-i18n="pd.loading">Chargement du produit</div>
+    </div>
+    <div id="productDetail"></div>
+    <section class="related">
+      <h2 id="relatedHead" data-i18n="pd.related">Vous aimerez aussi</h2>
+      <div class="rel-grid" id="relatedGrid"></div>
+    </section>
+  </div>
+</main>
+</BaseLayout>

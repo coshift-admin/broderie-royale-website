@@ -1,0 +1,41 @@
+# Broderie Royale storefront — Docker Compose.
+#
+# Local use:
+#   cp .env.example .env  # edit BR_API_BASE + BR_API_KEY
+#   docker compose up -d --build
+#   curl -I http://localhost:8080
+#
+# VPS use (same file works):
+#   On 51.210.176.162: just `docker compose up -d --build` after pulling.
+#   Port 8080 is the agreed validation port — change here if Odoo or
+#   another service already owns it.
+
+services:
+  storefront:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: broderie-royale-web:latest
+    container_name: broderie-royale-web
+    restart: unless-stopped
+    ports:
+      # host:container — change "8080" to whichever public port the
+      # client validation site should answer on.
+      - "${BR_PUBLIC_PORT:-8080}:80"
+    environment:
+      # Picked up by docker/entrypoint.sh and rewritten into the
+      # served public/js/config.js when the container starts.
+      BR_API_BASE: "${BR_API_BASE:-}"
+      BR_API_KEY:  "${BR_API_KEY:-}"
+    networks:
+      - storefront
+    healthcheck:
+      test: ["CMD", "wget", "-q", "-O-", "http://localhost/"]
+      interval: 30s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
+
+networks:
+  storefront:
+    driver: bridge

@@ -1,0 +1,155 @@
+/* ============================================================
+   BRODERIE ROYALE ALGÉRIE — Colors & Type
+   Maison du Drapeau · depuis 1986
+   ------------------------------------------------------------
+   Source of truth: brand guidelines deck (Cocreative Agency).
+   Both brand typefaces are self-hosted (brand-licensed) from fonts/:
+     Latin   = OPTIMA  (Light/Dark + italics)
+     Arabic  = MASHQ   (display)
+   No external font CDN required.
+   ============================================================ */
+
+/* ---- Optima (brand Latin typeface) — self-hosted ---- */
+@font-face {
+  font-family: 'Optima';
+  src: url('fonts/optima-light.woff2') format('woff2'), url('fonts/optima-light.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Optima';
+  src: url('fonts/optima-light-italic.woff2') format('woff2'), url('fonts/optima-light-italic.ttf') format('truetype');
+  font-weight: 400; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Optima';
+  src: url('fonts/optima-dark.woff2') format('woff2'), url('fonts/optima-dark.ttf') format('truetype');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Optima';
+  src: url('fonts/optima-dark-italic.woff2') format('woff2'), url('fonts/optima-dark-italic.ttf') format('truetype');
+  font-weight: 700; font-style: italic; font-display: swap;
+}
+
+/* ---- Mashq (brand Arabic display typeface) — self-hosted ---- */
+@font-face {
+  font-family: 'Mashq';
+  src: url('fonts/mashq-regular.woff2') format('woff2'), url('fonts/mashq-regular.ttf') format('truetype');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* ---- Brand palette (exact, from guidelines) ---- */
+  --royal-red:   #831B1A;  /* Main color — passion, tradition, prestige */
+  --ink:         #1A1A1A;  /* Near-black — authority, depth */
+  --ivory:       #F5F2EB;  /* Cream paper — calm, premium ground */
+  --gold:        #A98847;  /* Antique gold — crown, laurel, excellence */
+
+  /* ---- Extended tints / shades (derived in-palette) ---- */
+  --royal-red-deep: #5E1212;
+  --royal-red-soft: #9C2A28;
+  --gold-bright:    #C9A45A;
+  --gold-deep:      #876A33;
+  --ink-80:         #2A2A2A;
+  --ink-60:         #4A4744;
+  --ivory-warm:     #EDE7DA;
+  --ivory-line:     #E0D8C8;  /* hairline on ivory */
+
+  /* ---- Semantic surfaces ---- */
+  --bg:           var(--ivory);
+  --bg-elevated:  #FFFFFF;
+  --bg-ink:       var(--ink);
+  --surface-line: var(--ivory-line);
+
+  /* ---- Semantic text ---- */
+  --fg1:          var(--ink);        /* primary text on light */
+  --fg2:          var(--ink-60);     /* secondary text on light */
+  --fg-on-dark:   var(--ivory);      /* primary text on ink */
+  --fg-on-dark-2: #B8B2A6;           /* secondary text on ink */
+  --fg-gold:      var(--gold);
+  --fg-red:       var(--royal-red);
+
+  /* ---- Typefaces ----
+     Brand spec: Mashq (primary, Arabic display) + Optima (secondary, Latin).
+     BOTH are now self-hosted (brand-licensed). Optima carries all Latin
+     (display, body, italic taglines); Mashq carries Arabic display. */
+  --font-display: 'Optima', 'Palatino Linotype', Georgia, serif;
+  --font-body:    'Optima', 'Segoe UI', system-ui, sans-serif;
+  --font-serif:   'Optima', Georgia, serif;
+  --font-arabic:  'Mashq', 'Amiri', serif;
+
+  /* ---- Type scale (luxury, generous) ---- */
+  --t-display:  clamp(2.75rem, 6vw, 5rem);   /* hero */
+  --t-h1:       clamp(2rem, 4vw, 3.25rem);
+  --t-h2:       1.875rem;   /* 30 */
+  --t-h3:       1.375rem;   /* 22 */
+  --t-body:     1.0625rem;  /* 17 */
+  --t-small:    0.875rem;   /* 14 */
+  --t-micro:    0.75rem;    /* 12 */
+
+  /* tracking */
+  --track-wide:   0.18em;   /* lockup / eyebrow caps */
+  --track-mid:    0.06em;
+  --track-tight: -0.01em;
+
+  /* ---- Spacing (8pt base) ---- */
+  --sp-1: 4px;  --sp-2: 8px;  --sp-3: 12px; --sp-4: 16px;
+  --sp-5: 24px; --sp-6: 32px; --sp-7: 48px; --sp-8: 64px; --sp-9: 96px;
+
+  /* ---- Radii (restrained; crests & flags are rectilinear) ---- */
+  --r-xs: 3px; --r-sm: 6px; --r-md: 10px; --r-lg: 16px; --r-pill: 999px;
+
+  /* ---- Borders ---- */
+  --border-hair: 1px solid var(--ivory-line);
+  --border-gold: 1px solid color-mix(in srgb, var(--gold) 55%, transparent);
+
+  /* ---- Shadows (soft, warm, never harsh) ---- */
+  --shadow-sm: 0 1px 2px rgba(26,26,26,.06), 0 1px 3px rgba(26,26,26,.05);
+  --shadow-md: 0 4px 14px rgba(26,26,26,.08), 0 2px 6px rgba(26,26,26,.05);
+  --shadow-lg: 0 18px 50px rgba(26,26,26,.16);
+  --shadow-gold: 0 6px 20px color-mix(in srgb, var(--gold) 30%, transparent);
+
+  /* ---- Motion ---- */
+  --ease: cubic-bezier(.22,.61,.36,1);
+  --dur:  .28s;
+}
+
+/* ============================================================
+   Base element styles (semantic)
+   ============================================================ */
+body {
+  background: var(--bg);
+  color: var(--fg1);
+  font-family: var(--font-body);
+  font-size: var(--t-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; line-height: 1.1; color: var(--fg1); }
+h1 { font-size: var(--t-h1); letter-spacing: var(--track-tight); }
+h2 { font-size: var(--t-h2); }
+h3 { font-size: var(--t-h3); }
+
+.display { font-family: var(--font-display); font-size: var(--t-display); line-height: 1.04; }
+
+/* Eyebrow / lockup label — the brand's signature spaced caps */
+.eyebrow {
+  font-family: var(--font-body);
+  text-transform: uppercase;
+  letter-spacing: var(--track-wide);
+  font-size: var(--t-micro);
+  font-weight: 600;
+  color: var(--gold-deep);
+}
+
+.arabic { font-family: var(--font-arabic); direction: rtl; }
+
+.tagline { font-family: var(--font-display); font-style: italic; color: var(--gold-deep); }
+
+a { color: var(--royal-red); text-decoration: none; }
+a:hover { color: var(--royal-red-soft); }
+
+/* A thin gold rule the brand uses to frame content */
+.rule-gold { height: 1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); border: 0; }

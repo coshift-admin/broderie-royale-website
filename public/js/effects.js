@@ -1,0 +1,213 @@
+/* ============================================================
+   effects.js — thread draw, gold particles, chrome, reveals
+   ============================================================ */
+(function () {
+  "use strict";
+  const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  /* ---------- OVERTURE dismiss ---------- */
+  const overture = document.getElementById("overture");
+  function dismissOverture() {
+    if (!overture) return;
+    overture.classList.add("done");
+    setTimeout(() => overture && (overture.style.display = "none"), 1100);
+  }
+  window.addEventListener("load", () => setTimeout(dismissOverture, 2400));
+  // safety fallback
+  setTimeout(dismissOverture, 4200);
+
+  /* ---------- NAV: scrolled state + progress ---------- */
+  const nav = document.getElementById("nav");
+  const progressFill = document.getElementById("progressFill");
+  function onScrollChrome() {
+    const y = window.scrollY || window.pageYOffset;
+    if (nav) nav.classList.toggle("scrolled", y > 48);
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const p = max > 0 ? Math.min(1, y / max) : 0;
+    if (progressFill) progressFill.style.width = (p * 100).toFixed(2) + "%";
+  }
+
+  /* ---------- smooth goto ---------- */
+  document.querySelectorAll("[data-goto]").forEach(el => {
+    el.addEventListener("click", () => {
+      const target = document.getElementById(el.getAttribute("data-goto"));
+      if (!target) return;
+      const top = target.getBoundingClientRect().top + window.scrollY - 70;
+      if (window.__lenis) window.__lenis.scrollTo(top, { duration: 1.4 });
+      else window.scrollTo({ top, behavior: "smooth" });
+    });
+  });
+
+  /* ---------- REVEAL on enter ---------- */
+  const revealEls = Array.from(document.querySelectorAll(".reveal"));
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); }
+    });
+  }, { threshold: 0.18, rootMargin: "0px 0px -8% 0px" });
+  revealEls.forEach(el => io.observe(el));
+  // Safety net: never leave copy hidden if IO doesn't fire (some embeds suppress it)
+  function revealInView() {
+    const h = window.innerHeight;
+    for (let i = revealEls.length - 1; i >= 0; i--) {
+      const el = revealEls[i];
+      if (el.classList.contains("in")) { revealEls.splice(i, 1); continue; }
+      if (el.getBoundingClientRect().top < h * 0.92) { el.classList.add("in"); revealEls.splice(i, 1); }
+    }
+  }
+  window.addEventListener("load", () => setTimeout(revealInView, 300));
+  setTimeout(revealInView, 1200);
+
+  /* ============================================================
+     THE THREAD — a gold line that draws as you scroll
+     ============================================================ */
+  const track = document.getElementById("threadTrack");
+  let threadPath, threadLen, needleEl, bandW = 74, amp = 17, waves = 7;
+  function waveX(t) { return bandW / 2 + amp * Math.sin(t * Math.PI * waves); }
+
+  function buildThread() {
+    if (!track) return;
+    const H = window.innerHeight;
+    track.style.cssText =
+      "position:fixed;top:0;left:0;width:" + bandW + "px;height:100vh;z-index:60;pointer-events:none;";
+    if (document.documentElement.dir === "rtl") {
+      track.style.left = "auto"; track.style.right = "0";
+    } else { track.style.right = "auto"; track.style.left = "0"; }
+
+    // build path d
+    let d = "";
+    const steps = 60;
+    for (let i = 0; i <= steps; i++) {
+      const t = i / steps;
+      const x = waveX(t).toFixed(2), y = (t * H).toFixed(2);
+      d += (i === 0 ? "M" : "L") + x + " " + y + " ";
+    }
+    track.innerHTML =
+      '<svg width="' + bandW + '" height="' + H + '" viewBox="0 0 ' + bandW + ' ' + H + '" fill="none">' +
+      '<defs><linearGradient id="threadGrad" x1="0" y1="0" x2="0" y2="1">' +
+      '<stop offset="0" stop-color="#876A33"/><stop offset="0.5" stop-color="#C9A45A"/><stop offset="1" stop-color="#A98847"/>' +
+      '</linearGradient></defs>' +
+      '<path class="thread-base" d="' + d + '"/>' +
+      '<path class="thread-draw" id="threadDraw" d="' + d + '"/>' +
+      '</svg>' +
+      '<div id="threadNeedle" style="position:absolute;width:11px;height:11px;border-radius:50%;background:radial-gradient(circle,#F3DFA8,#A98847);box-shadow:0 0 12px 3px rgba(201,164,90,.8);transform:translate(-50%,-50%);left:0;top:0;opacity:0;transition:opacity .4s ease;"></div>';
+
+    threadPath = document.getElementById("threadDraw");
+    needleEl = document.getElementById("threadNeedle");
+    threadLen = threadPath.getTotalLength();
+    threadPath.style.strokeDasharray = threadLen;
+    threadPath.style.strokeDashoffset = threadLen;
+  }
+
+  function drawThread() {
+    if (!threadPath) return;
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    const y = window.scrollY || 0;
+    const p = max > 0 ? Math.min(1, Math.max(0, y / max)) : 0;
+    // map overall page progress onto the on-screen band
+    const reveal = Math.min(1, 0.06 + p * 1.02);
+    threadPath.style.strokeDashoffset = threadLen * (1 - reveal);
+    if (needleEl) {
+      const H = window.innerHeight;
+      needleEl.style.left = waveX(reveal) + "px";
+      needleEl.style.top = (reveal * H) + "px";
+      needleEl.style.opacity = p > 0.005 && p < 0.992 ? "1" : "0";
+    }
+  }
+
+  /* ============================================================
+     GOLD PARTICLES — ambient motes + cursor sparkle
+     ============================================================ */
+  const canvas = document.getElementById("particles");
+  let ctx, W, H, motes = [], sparks = [], running = true;
+  function sizeCanvas() {
+    if (!canvas) return;
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  function initMotes() {
+    motes = [];
+    const n = Math.min(46, Math.round(window.innerWidth / 34));
+    for (let i = 0; i < n; i++) {
+      motes.push({
+        x: Math.random() * W, y: Math.random() * H,
+        r: Math.random() * 1.6 + 0.4,
+        vx: (Math.random() - 0.5) * 0.16,
+        vy: -(Math.random() * 0.22 + 0.05),
+        a: Math.random() * 0.5 + 0.15,
+        tw: Math.random() * Math.PI * 2
+      });
+    }
+  }
+  function addSpark(x, y) {
+    if (sparks.length > 90) return;
+    for (let i = 0; i < 2; i++) {
+      sparks.push({
+        x, y, r: Math.random() * 1.8 + 0.6,
+        vx: (Math.random() - 0.5) * 1.4, vy: (Math.random() - 0.5) * 1.4 - 0.3,
+        life: 1
+      });
+    }
+  }
+  let lastSpark = 0;
+  window.addEventListener("mousemove", (e) => {
+    const now = performance.now();
+    if (now - lastSpark > 34) { addSpark(e.clientX, e.clientY); lastSpark = now; }
+  });
+
+  function renderParticles() {
+    if (!ctx) return;
+    ctx.clearRect(0, 0, W, H);
+    // motes
+    for (const m of motes) {
+      m.x += m.vx; m.y += m.vy; m.tw += 0.03;
+      if (m.y < -5) { m.y = H + 5; m.x = Math.random() * W; }
+      if (m.x < -5) m.x = W + 5; if (m.x > W + 5) m.x = -5;
+      const tw = (Math.sin(m.tw) * 0.4 + 0.6);
+      ctx.beginPath();
+      ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(201,164,90," + (m.a * tw).toFixed(3) + ")";
+      ctx.fill();
+    }
+    // sparks
+    for (let i = sparks.length - 1; i >= 0; i--) {
+      const s = sparks[i];
+      s.x += s.vx; s.y += s.vy; s.vy += 0.012; s.life -= 0.026;
+      if (s.life <= 0) { sparks.splice(i, 1); continue; }
+      ctx.beginPath();
+      ctx.arc(s.x, s.y, s.r * s.life, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(243,223,168," + (s.life * 0.85).toFixed(3) + ")";
+      ctx.fill();
+    }
+    if (running) requestAnimationFrame(renderParticles);
+  }
+
+  /* ---------- master scroll loop ---------- */
+  let ticking = false;
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => { onScrollChrome(); drawThread(); revealInView(); ticking = false; });
+  }
+
+  function boot() {
+    buildThread();
+    onScrollChrome(); drawThread();
+    if (canvas && !prefersReduced) {
+      ctx = canvas.getContext("2d");
+      sizeCanvas(); initMotes(); renderParticles();
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", () => {
+      buildThread(); drawThread();
+      if (ctx) { sizeCanvas(); initMotes(); }
+    });
+  }
+
+  if (document.readyState === "loading")
+    document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+
+  // rebuild thread side on language (RTL) change
+  window.addEventListener("br:langchange", () => { buildThread(); drawThread(); });
+})();

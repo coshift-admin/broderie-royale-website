@@ -1,0 +1,24 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+<BaseLayout
+  title="Panier — Broderie Royale Algérie"
+  ogTitle="Panier — Broderie Royale Algérie"
+  bodyClass="shop"
+  dataPage="panier"
+  noindex={true}
+>
+<main>
+  <div class="shop-body" style="padding-top:clamp(110px,15vh,170px)">
+    <div class="eyebrow" data-i18n="pa.eyebrow" style="color:var(--gold-deep)">VOTRE COMMANDE</div>
+    <h1 class="shop-h1" data-i18n="pa.title">Votre Panier</h1>
+    <div class="shop-lead" data-i18n="pa.payinfo" style="margin-bottom:30px">Paiement à la livraison uniquement</div>
+    {/* Replaced by shop.js once BR_DATA_READY resolves. */}
+    <div class="br-loading" data-loading-slot>
+      <div class="br-loading-ring" aria-hidden="true"></div>
+      <div class="br-loading-text" data-i18n="pa.loading">Chargement du panier</div>
+    </div>
+    <div id="cartWrap"></div>
+  </div>
+</main>
+</BaseLayout>

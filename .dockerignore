@@ -1,0 +1,37 @@
+# Anything we don't want in the build context (kept fast + slim).
+node_modules
+dist
+.astro
+.vite
+.git
+.gitignore
+.github
+*.log
+
+# Editor / OS noise
+.DS_Store
+Thumbs.db
+.vscode
+.idea
+
+# Source images we already converted to .webp during the perf pass —
+# the WebP versions are committed; the originals are extra weight.
+# Comment these out if you want to keep them in the image as a fallback.
+public/assets/metier-broderie.jpg
+public/assets/metier-coton.jpg
+public/assets/metier-polyester.jpg
+public/assets/photo-desk-flags-br.png
+public/assets/photo-embroidery-machine.png
+public/assets/photo-flag-international.png
+public/assets/photo-flag-lobby.png
+public/assets/photo-flags-row.png
+public/assets/photo-pennant.png
+public/assets/texture-embroidery-patch.png
+
+# Secrets, env files (never bake into image)
+.env
+.env.*
+
+# Local-dev artefacts
+README.md
+scripts/

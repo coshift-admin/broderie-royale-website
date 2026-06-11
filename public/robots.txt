@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /404
+Disallow: /confirmation
+Disallow: /panier
+Disallow: /commande
+Disallow: /motifs
+
+Sitemap: https://broderieroyale.com/sitemap.xml
