@@ -21,15 +21,16 @@ fi
 
 if [ -n "${BR_API_BASE:-}" ]; then
   echo "[entrypoint] setting apiBase to ${BR_API_BASE}"
-  # Escape forward slashes for sed.
-  ESC=$(printf '%s' "$BR_API_BASE" | sed 's|/|\\/|g')
-  sed -i "s/\"apiBase\": *\"[^\"]*\"/\"apiBase\": \"${ESC}\"/" "$CONFIG_FILE"
+  # Use a sed delimiter that won't collide with URL slashes. Match the
+  # JS-object property form `apiBase: "..."` (no quotes on the key).
+  ESC=$(printf '%s' "$BR_API_BASE" | sed 's/[|&]/\\&/g')
+  sed -i "s|apiBase: *\"[^\"]*\"|apiBase: \"${ESC}\"|" "$CONFIG_FILE"
 fi
 
 if [ -n "${BR_API_KEY:-}" ]; then
   echo "[entrypoint] setting apiKey (length ${#BR_API_KEY})"
-  ESC=$(printf '%s' "$BR_API_KEY" | sed 's/[\/&]/\\&/g')
-  sed -i "s/\"apiKey\": *\"[^\"]*\"/\"apiKey\": \"${ESC}\"/" "$CONFIG_FILE"
+  ESC=$(printf '%s' "$BR_API_KEY" | sed 's/[|&]/\\&/g')
+  sed -i "s|apiKey: *\"[^\"]*\"|apiKey: \"${ESC}\"|" "$CONFIG_FILE"
 fi
 
 echo "[entrypoint] config.js after substitution:"
