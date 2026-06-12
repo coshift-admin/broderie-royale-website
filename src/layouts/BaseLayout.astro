@@ -93,10 +93,27 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+{/* Critical CSS — must block first paint: typography vars + font-face
+    (brand.css), page layout (site.css), and the cursor/stitch reveal
+    rules (luxe.css). All three are referenced from above-the-fold DOM. */}
 <link rel="stylesheet" href="/brand.css" />
 <link rel="stylesheet" href="/site.css" />
-<link rel="stylesheet" href="/shop.css" />
 <link rel="stylesheet" href="/luxe.css" />
+{/* Non-critical CSS — defer on pages that don't render shop UI. shop.css
+    styles only the boutique, cart, contact-card, and order pages; the
+    homepage and other story pages never need it for first paint. We use
+    the Filament Group `media="print" onload` pattern: the browser still
+    downloads in parallel but doesn't block render, then swaps to media=all
+    once loaded. <noscript> fallback restores the blocking behaviour for
+    users with JS off so styling still applies. */}
+{storyEffects ? (
+  <>
+    <link rel="stylesheet" href="/shop.css" media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href="/shop.css" /></noscript>
+  </>
+) : (
+  <link rel="stylesheet" href="/shop.css" />
+)}
 <ClientRouter />
 <slot name="head" />
 {/* Organization JSON-LD — always emit. Helps Google build the knowledge
