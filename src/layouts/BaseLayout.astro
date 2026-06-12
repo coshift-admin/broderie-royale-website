@@ -60,7 +60,7 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
     nginx (see docker/nginx.conf). The browser still honours this <meta>
     form for tooling that can't inspect headers; keep the directives in
     sync between the two. */}
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https: https://erp.broderieroyale.com; media-src 'self'; connect-src 'self' https://erp.broderieroyale.com; form-action 'self'; base-uri 'self'; object-src 'none';" />
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: https://erp.broderieroyale.com; media-src 'self'; connect-src 'self' https://erp.broderieroyale.com; form-action 'self'; base-uri 'self'; object-src 'none';" />
 <meta http-equiv="X-Content-Type-Options" content="nosniff" />
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -90,9 +90,9 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
 <meta name="twitter:description" content={description} />
 <meta name="twitter:image" content={SITE + "/assets/og-card.png"} />
 <title>{title}</title>
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet" />
+{/* Fonts are self-hosted in /fonts/ (Optima, Mashq, Amiri) — no
+    third-party CDN preconnect needed. brand.css owns the @font-face
+    declarations. */}
 {/* Critical CSS — must block first paint: typography vars + font-face
     (brand.css), page layout (site.css), and the cursor/stitch reveal
     rules (luxe.css). All three are referenced from above-the-fold DOM. */}

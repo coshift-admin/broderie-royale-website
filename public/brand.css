@@ -38,6 +38,31 @@
   font-weight: 400; font-style: normal; font-display: swap;
 }
 
+/* ---- Amiri (Arabic body text) — self-hosted (previously Google Fonts).
+   unicode-range is the Arabic-subset slice Google ships, so the browser
+   only downloads these files when Arabic glyphs actually appear in the
+   page. font-display: optional means the fallback renders immediately
+   and the custom font swaps in within ~100ms or not at all — eliminates
+   the CLS that font-display:swap was causing on the title reflow. */
+@font-face {
+  font-family: 'Amiri';
+  src: url('fonts/amiri-400-normal.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: optional;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: 'Amiri';
+  src: url('fonts/amiri-700-normal.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: optional;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+@font-face {
+  font-family: 'Amiri';
+  src: url('fonts/amiri-400-italic.woff2') format('woff2');
+  font-weight: 400; font-style: italic; font-display: optional;
+  unicode-range: U+0600-06FF, U+0750-077F, U+0870-088E, U+0890-0891, U+0897-08E1, U+08E3-08FF, U+200C-200E, U+2010-2011, U+204F, U+2E41, U+FB50-FDFF, U+FE70-FE74, U+FE76-FEFC;
+}
+
 :root {
   /* ---- Brand palette (exact, from guidelines) ---- */
   --royal-red:   #831B1A;  /* Main color — passion, tradition, prestige */
