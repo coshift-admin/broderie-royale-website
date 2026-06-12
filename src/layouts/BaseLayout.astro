@@ -92,7 +92,12 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
 <title>{title}</title>
 {/* Fonts are self-hosted in /fonts/ (Optima, Mashq, Amiri) — no
     third-party CDN preconnect needed. brand.css owns the @font-face
-    declarations. */}
+    declarations.
+    Optima bold is the hero-title face on every page and is the LCP
+    candidate on most of them; preload it so the browser starts the
+    fetch in parallel with the HTML stream instead of waiting until
+    brand.css is parsed and the font is referenced. */}
+<link rel="preload" href="/fonts/optima-dark.woff2" as="font" type="font/woff2" crossorigin />
 {/* Critical CSS — must block first paint: typography vars + font-face
     (brand.css), page layout (site.css), and the cursor/stitch reveal
     rules (luxe.css). All three are referenced from above-the-fold DOM. */}

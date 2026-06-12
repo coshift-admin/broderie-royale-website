@@ -240,7 +240,11 @@ html[lang="ar"] .gold-rule { background: linear-gradient(270deg, var(--gold), tr
   radial-gradient(120% 90% at 50% 30%, transparent 0%, rgba(16,16,16,.55) 60%, var(--ink) 100%),
   linear-gradient(180deg, rgba(16,16,16,.55) 0%, transparent 30%, var(--ink) 100%); }
 .hero-inner { position: relative; z-index: 3; text-align: center; padding: 0 24px; }
-.hero-crest-wrap { position: relative; width: clamp(120px, 16vw, 190px); margin: 26px auto 4px; }
+/* aspect-ratio reserves the square box before either crest PNG loads.
+   The two natural PNGs are 1250x1250 so 1:1 is exact — fixes the CLS
+   shift that explicit width/height attrs on the <img> were causing
+   visually (browser overrode CSS sizing in some cases). */
+.hero-crest-wrap { position: relative; width: clamp(120px, 16vw, 190px); aspect-ratio: 1; margin: 26px auto 4px; }
 .hero-crest { width: 100%; filter: drop-shadow(0 8px 30px rgba(0,0,0,.6)); }
 .hero-crown { position: absolute; top: 0; left: 0; width: 100%; filter: drop-shadow(0 6px 18px rgba(0,0,0,.55)); }
 .hero-eyebrow { font-size: var(--t-micro); letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
