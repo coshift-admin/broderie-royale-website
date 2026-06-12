@@ -75,7 +75,7 @@ var I18N = {
   "me.6d": { fr: "Impression numérique sur tissu coton, douceur et précision du détail.", ar: "طباعة رقمية على نسيج القطن، نعومةٌ ودقّةٌ في التفاصيل.", en: "Digital printing on cotton fabric, softness and fine detail." },
 
   // ---- flag ----
-  "fl.num":   { fr: "IV — Le Drapeau", ar: "٤ — العَلَم", en: "IV — The Flag" },
+  "fl.num":   { fr: "V — Le Drapeau", ar: "٥ — العَلَم", en: "V — The Flag" },
   "fl.quote": {
     fr: "Du salon d’honneur à la tribune officielle, nos drapeaux portent <em>haut les couleurs.</em>",
     ar: "من قاعة الشرف إلى المنصّة الرسمية، تحمل أعلامنا <em>الألوان عاليًا.</em>",
@@ -88,7 +88,7 @@ var I18N = {
   },
 
   // ---- prestige ----
-  "pr.num":   { fr: "V — La Confiance", ar: "٥ — الثقة", en: "V — Trust" },
+  "pr.num":   { fr: "VI — La Confiance", ar: "٦ — الثقة", en: "VI — Trust" },
   "pr.title": { fr: "Ils nous ont fait confiance.", ar: "وضعوا ثقتهم فينا.", en: "They placed their trust in us." },
   "pr.lead":  { fr: "Des commandes officielles et de grande envergure, portées par la même exigence.", ar: "طلباتٌ رسمية وكبرى، تحملها العناية نفسها.", en: "Official, large-scale commissions, carried by the same exacting standard." },
   "pr.1n": { fr: "XVIIᵉ Conférence ministérielle du Mouvement des Non-Alignés", ar: "المؤتمر الوزاري السابع عشر لحركة عدم الانحياز", en: "XVII Ministerial Conference of the Non-Aligned Movement" },
@@ -103,7 +103,7 @@ var I18N = {
   "pr.5p": { fr: "Alger", ar: "الجزائر", en: "Algiers" },
 
   // ---- serve ----
-  "sv.num":   { fr: "VI — Au Service de", ar: "٦ — في خدمة", en: "VI — In Service Of" },
+  "sv.num":   { fr: "IV — Au Service de", ar: "٤ — في خدمة", en: "IV — In Service Of" },
   "sv.title": { fr: "Au service de ceux qui représentent.", ar: "في خدمة من يُمثّلون.", en: "In service of those who represent." },
   "sv.1": { fr: "Corps constitués & institutions de l’État", ar: "الهيئات الرسمية ومؤسسات الدولة", en: "Constituted bodies & State institutions" },
   "sv.2": { fr: "Collectivités locales", ar: "الجماعات المحلية", en: "Local authorities" },
