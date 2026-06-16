@@ -48,12 +48,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
               <h2 data-i18n="dv.s1">Le produit</h2>
               <p class="step-hint" data-i18n="dv.product">Type de produit</p>
               <div class="prod-options" id="prodOptions">
-                <div class="prod-opt" data-val="flags" data-i18n="dv.opt_flags"></div>
-                <div class="prod-opt" data-val="crest" data-i18n="dv.opt_crest"></div>
-                <div class="prod-opt" data-val="pennant" data-i18n="dv.opt_pennant"></div>
-                <div class="prod-opt" data-val="apparel" data-i18n="dv.opt_apparel"></div>
-                <div class="prod-opt" data-val="print" data-i18n="dv.opt_print"></div>
-                <div class="prod-opt" data-val="other" data-i18n="dv.opt_other"></div>
+                {/* Fallback French text inside each option so the cards
+                    aren't blank during the brief window before i18n.js
+                    runs and swaps in the right-language label. Without
+                    these, the first paint showed empty boxes until the
+                    visitor changed language and forced applyLang(). */}
+                <div class="prod-opt" data-val="flags" data-i18n="dv.opt_flags">Drapeaux</div>
+                <div class="prod-opt" data-val="crest" data-i18n="dv.opt_crest">Écussons brodés</div>
+                <div class="prod-opt" data-val="pennant" data-i18n="dv.opt_pennant">Fanions</div>
+                <div class="prod-opt" data-val="apparel" data-i18n="dv.opt_apparel">Broderie textile</div>
+                <div class="prod-opt" data-val="print" data-i18n="dv.opt_print">Impression</div>
+                <div class="prod-opt" data-val="other" data-i18n="dv.opt_other">Autre</div>
               </div>
               <input type="hidden" name="product" id="productVal" />
               <div class="form-error" id="err1" data-i18n="dv.required">Merci de compléter cette étape.</div>
