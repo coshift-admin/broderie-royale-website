@@ -214,6 +214,23 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
     width: 100%;
     max-width: 100%;
     height: auto;          /* overrides 52vh/76vh — flex grows it */
+    overflow: hidden;      /* trim SVG overflow when scaled to fill */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  /* viewBox is ~1:1 but the wrap on a tall phone is much taller than
+     wide. preserveAspectRatio="xMidYMin meet" left ~300px of empty SVG
+     canvas below the drawn map. Scale by height instead — width
+     overflows by ~150px each side and gets clipped by the wrap's
+     overflow:hidden. The wrap's flex justify-content:center keeps the
+     overflowing SVG centered horizontally. All three pins sit in the
+     central x range so they stay fully visible. */
+  .alg-map {
+    height: 100%;
+    width: auto;
+    flex: 0 0 auto;
+    max-width: none;
   }
 }
 
