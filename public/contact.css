@@ -181,37 +181,27 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
 }
 
-/* ----- Phone (≤560px) — STATIC MAP, NO LABELS -----
-   Drop the sticky-pin + scroll animation on phone and hide the city
-   labels (the cities are already listed in the title / map-sub line).
-   The map renders in its final state as a normal block; the SVG sized
-   to a 1:1 wrap shows the entire Algeria outline. */
+/* ----- Phone (≤560px) — DEAD-SIMPLE STATIC MAP -----
+   No sticky, no scroll-driven animation, no city-label sidebar
+   (cities are already named in the title sentence above). The
+   SVG sizes itself from its intrinsic viewBox aspect; the wrap
+   shrinks to fit. */
 @media (max-width: 560px) {
   .map-section { min-height: auto; }
   .map-sticky {
     position: static;
     min-height: 0;
+    display: block;            /* drop the flex column on phone */
     padding: clamp(14px, 2vh, 24px) 16px clamp(20px, 3vh, 36px);
-    gap: 10px;
   }
-  .map-section .map-head { padding: 0 4px; }
+  .map-section .map-head { padding: 0 4px; margin-bottom: clamp(14px, 2vh, 22px); }
   .map-section .eyebrow { font-size: 11px; letter-spacing: 0.2em; }
   .map-section h2 { font-size: clamp(1.3rem, 5.4vw, 1.7rem); margin: 6px 0 6px; }
   .map-section .map-sub { font-size: clamp(0.85rem, 3.4vw, 0.95rem); line-height: 1.4; }
-  .map-stage {
-    width: 100%;
-    flex-direction: column;
-    gap: clamp(10px, 1.5vh, 18px);
-  }
-  /* Cities are already named in the map-title and map-sub copy above —
-     showing them again as a label list is redundant on a small screen. */
-  .map-labels { display: none; }
-  .map-wrap {
-    width: 100%;
-    max-width: 100%;
-    aspect-ratio: 1 / 1;    /* square map — matches the SVG's ~1:1 viewBox */
-    height: auto;
-  }
+  .map-stage { display: block; }     /* drop flex on phone too */
+  .map-labels { display: none; }      /* cities already mentioned in the title */
+  .map-wrap { width: 100%; max-width: 100%; height: auto; }
+  .alg-map { width: 100%; height: auto; display: block; }
 }
 
 .alg-map .m-wash { opacity: 0; }
