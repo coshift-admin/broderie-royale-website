@@ -300,45 +300,92 @@ html[lang="ar"] .stat-lab { letter-spacing: 0.02em; font-size: 15px; }
 .atelier-media::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.5)); pointer-events:none; }
 
 /* ============================================================
-   METIERS — horizontal scroll
+   METIERS — vertical card stack
+   Each card pins at top:0 for one viewport, then the next slides up
+   over it. JS (scenes.js) layers a subtle scale-down + dim onto the
+   outgoing card as the next one covers it, for depth.
    ============================================================ */
-#metiers-pin { height: 100vh; overflow: hidden; position: relative; background: var(--ink); }
-.metiers-head { position: absolute; top: clamp(60px, 9vh, 100px); left: clamp(20px, 6vw, 120px); z-index: 5; max-width: 520px; transition: opacity .25s linear; }
-.metiers-head .chap-title { color: var(--ivory); font-size: clamp(1.95rem, 4.5vw, 3.7rem); }
-html[lang="ar"] .metiers-head { left: auto; right: clamp(20px, 6vw, 120px); text-align: right; }
-html[lang="ar"] .metiers-head .gold-rule { margin-inline-start: auto; }
-html[lang="ar"] .metiers-hint { left: clamp(20px, 6vw, 120px); right: auto; flex-direction: row-reverse; }
+#metiers-pin { background: var(--ink); position: relative; }
+.metiers-stack-head { position: relative; z-index: 4; padding: clamp(70px, 10vh, 120px) clamp(20px, 6vw, 120px) clamp(30px, 5vh, 60px); max-width: 720px; }
+.metiers-stack-head .chap-title { color: var(--ivory); font-size: clamp(2rem, 4.6vw, 3.8rem); }
+.metiers-stack-head .lead { color: var(--fg-on-dark-2); margin-top: 14px; }
+html[lang="ar"] .metiers-stack-head { margin-inline-start: auto; text-align: right; }
+html[lang="ar"] .metiers-stack-head .gold-rule { margin-inline-start: auto; }
+
+.metiers-stack { position: relative; }
+.metier-stack-card {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(40px, 6vh, 90px) clamp(20px, 6vw, 120px) clamp(40px, 6vh, 90px);
+  background: var(--ink);
+  /* Each card gets a higher z-index than the one before so the next-up
+     card lands ON TOP of the previous as it slides into view. */
+}
+.metier-stack-card[data-card="1"] { z-index: 1; }
+.metier-stack-card[data-card="2"] { z-index: 2; }
+.metier-stack-card[data-card="3"] { z-index: 3; }
+.metier-stack-card[data-card="4"] { z-index: 4; }
+.metier-stack-card[data-card="5"] { z-index: 5; }
+.metier-stack-inner {
+  position: relative;
+  width: min(96vw, 1100px);
+  aspect-ratio: 16 / 10;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--gold) 28%, transparent);
+  background: var(--ink-80);
+  box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--gold) 14%, transparent);
+  cursor: pointer;
+  transform-origin: center center;
+  /* will-change kept off so we don't promote layers we don't need; JS
+     sets it explicitly only on the cards currently being scaled. */
+}
+.metier-stack-inner img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.metier-stack-inner::after {
+  content: "";
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(16,16,16,.0) 35%, rgba(16,16,16,.85) 78%, rgba(16,16,16,.95) 100%);
+  pointer-events: none;
+}
+.metier-stack-body {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  z-index: 3;
+  padding: clamp(22px, 3vw, 38px) clamp(26px, 4vw, 48px);
+}
+.metier-stack-idx {
+  font-family: var(--font-display); font-style: italic;
+  color: var(--gold);
+  font-size: clamp(13px, 1.4vw, 16px); letter-spacing: 0.18em;
+}
+.metier-stack-name {
+  font-family: var(--font-display); font-weight: 700; color: var(--ivory);
+  font-size: clamp(1.8rem, 3.2vw, 2.6rem);
+  margin: 8px 0 12px;
+  line-height: 1.05;
+}
+.metier-stack-desc {
+  color: var(--fg-on-dark-2);
+  font-size: clamp(1rem, 1.3vw, 1.1rem);
+  line-height: 1.6;
+  max-width: 56ch;
+}
+html[lang="ar"] .metier-stack-name { font-family: var(--font-arabic); }
+@media (prefers-reduced-motion: reduce) {
+  .metier-stack-card { position: relative; height: auto; padding: 40px clamp(16px, 4vw, 60px); }
+}
 
 /* ===== Arabic typography normalization — only Mashq (display) + Amiri (text) ===== */
 html[lang="ar"] .flag-quote { font-family: var(--font-arabic); }
 html[lang="ar"] .serve-cell .st,
-html[lang="ar"] .metier-name,
 html[lang="ar"] .prestige-name,
 html[lang="ar"] .maison .mt,
 html[lang="ar"] .cat-card .cc-name,
 html[lang="ar"] .chap-num,
 html[lang="ar"] .media-caption,
 html[lang="ar"] .btn-royal { font-family: 'Amiri', serif; }
-.metiers-track { display: flex; align-items: center; height: 100%; gap: clamp(20px, 3vw, 44px); padding: 0 clamp(20px, 6vw, 120px); will-change: transform; }
-.metier-card {
-  flex: 0 0 auto; width: clamp(300px, 30vw, 440px); height: clamp(420px, 64vh, 600px);
-  position: relative; border-radius: var(--r-md); overflow: hidden;
-  border: 1px solid color-mix(in srgb, var(--gold) 26%, transparent);
-  background: var(--ink-80); box-shadow: var(--shadow-lg);
-}
-.metier-card:first-child { margin-inline-start: clamp(280px, 34vw, 560px); }
-.metier-card .slot, .metier-card img, .metier-card video, .metier-card image-slot { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1s var(--ease); }
-.metier-card image-slot { display: block; }
-.metier-card:hover img, .metier-card:hover .slot { transform: scale(1.06); }
-.metier-card::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, rgba(16,16,16,.05) 30%, rgba(16,16,16,.92)); }
-.metier-body { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; padding: 28px; }
-.metier-idx { font-family: var(--font-display); font-style: italic; color: var(--gold); font-size: 14px; letter-spacing: 0.1em; }
-.metier-name { font-family: var(--font-display); font-weight: 700; color: var(--ivory); font-size: clamp(1.5rem, 2.4vw, 2rem); margin: 6px 0 10px; }
-.metier-desc { color: var(--fg-on-dark-2); font-size: 14.5px; line-height: 1.55; }
-.metiers-hint { position: absolute; bottom: 34px; right: clamp(20px, 6vw, 120px); z-index: 5; color: var(--gold); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase; display: flex; align-items: center; gap: 12px; }
-html[lang="ar"] .metiers-hint { letter-spacing: 0.05em; font-size:14px; }
-.metiers-hint .arrow { width: 46px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold)); position: relative; }
-.metiers-hint .arrow::after { content:""; position:absolute; right:0; top:-3px; width:7px; height:7px; border-top:1px solid var(--gold); border-right:1px solid var(--gold); transform: rotate(45deg); }
 
 /* ============================================================
    FLAG (Le Drapeau) — full bleed parallax

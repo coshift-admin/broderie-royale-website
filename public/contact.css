@@ -100,7 +100,7 @@ html[lang="ar"] .svc-cell .sc-name { font-family: var(--font-arabic); }
    ALGERIA MAP — gold thread draw + dropping pins
    ============================================================ */
 .map-section { background: var(--ink); color: var(--ivory); padding: 0; position: relative; overflow: clip; min-height: 300vh; }
-.map-sticky { position: sticky; top: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: clamp(20px,3vw,40px); padding: clamp(60px,8vw,110px) clamp(20px,6vw,120px); }
+.map-sticky { position: sticky; top: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: clamp(14px, 2vw, 28px); padding: clamp(40px, 6vh, 70px) clamp(20px, 6vw, 120px) clamp(40px, 6vh, 60px); }
 .map-section .map-head { text-align: center; max-width: 60ch; margin: 0 auto; }
 .map-section .eyebrow { color: var(--gold); }
 .map-section h2 { font-family: var(--font-display); font-weight: 700; color: var(--ivory); font-size: clamp(1.8rem,4vw,3rem); margin: 12px 0 14px; }
@@ -112,7 +112,7 @@ html[lang="ar"] .map-section h2 { font-family: var(--font-arabic); }
 
 .alg-map .m-wash { opacity: 0; }
 .alg-map .m-border { stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 5px color-mix(in srgb, var(--gold) 55%, transparent)); }
-.alg-map .marker { opacity: 0; transform: translateY(-10px); transform-box: fill-box; transform-origin: center bottom; filter: drop-shadow(0 5px 8px rgba(0,0,0,.5)); }
+.alg-map .marker { opacity: 0; transform: translateY(-10px); transform-box: fill-box; transform-origin: center bottom; filter: drop-shadow(0 5px 8px rgba(0,0,0,.5)); will-change: transform, opacity; }
 .alg-map .halo { opacity: 0; }
 .alg-map .lbl-group { opacity: 0; }
 .alg-map .lbl { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: 1.5px; fill: var(--ivory); }

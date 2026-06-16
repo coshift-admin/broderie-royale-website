@@ -508,14 +508,24 @@ function lookupI18n(key) {
     var borders = map.querySelectorAll('.m-border');
     var wash = map.querySelector('.m-wash');
     var vanish = map.querySelector('.vanish');
-    var pins = [map.querySelector('.pin1'), map.querySelector('.pin2')];
+    var pins = [
+      map.querySelector('.pin1'),
+      map.querySelector('.pin2'),
+      map.querySelector('.pin3')
+    ].filter(Boolean);
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var FULL = [0, 0, 1000, 997];
     var ZOOM = [70, -50, 860, 320];
     function c01(v){ return v < 0 ? 0 : v > 1 ? 1 : v; }
     function seg(v, a, b){ return c01((v - a) / (b - a)); }
     function lerp(a, b, t){ return a + (b - a) * t; }
+    // easeInOutCubic — used for border + zoom; smoother than linear into/out of
+    // each scroll segment.
     function easeIO(t){ return t < 0.5 ? 4*t*t*t : 1 - Math.pow(-2*t+2, 3)/2; }
+    // easeOutBack — gentle overshoot for pin landing; gives the pin a "settle"
+    // feel as it drops onto the map instead of clamping linearly.
+    function easeOutBack(t){ var c = 1.40158; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); }
+    function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
     function setVB(t){ var v=[]; for (var j=0;j<4;j++) v.push(lerp(FULL[j], ZOOM[j], t).toFixed(2)); map.setAttribute('viewBox', v.join(' ')); }
     var ticking = false;
     function draw(){
@@ -524,25 +534,38 @@ function lookupI18n(key) {
       var scrolled = -section.getBoundingClientRect().top;
       var sp = total > 0 ? c01(scrolled / total) : 0;
 
+      // Border draw — apply easing so the dash retreats with a soft curve
+      // instead of a constant rate.
       var p = seg(sp, 0, 0.42);
-      var dOff = (1 - p).toFixed(4);
+      var dOff = (1 - easeOutCubic(p)).toFixed(4);
       for (var k = 0; k < borders.length; k++) borders[k].style.strokeDashoffset = dOff;
       var washIn = seg(p, 0.55, 1);
       wash.style.opacity = washIn.toFixed(3);
 
-      setVB(easeIO(seg(sp, 0.44, 0.74)));
+      // viewBox zoom — keep the cubic ease but widen the segment slightly so
+      // the camera move is less abrupt.
+      setVB(easeIO(seg(sp, 0.42, 0.76)));
 
       var mAmt = seg(sp, 0.50, 0.86);
       vanish.style.opacity = mAmt.toFixed(3);
 
+      // Pin landings — three pins, staggered tighter so they fit before the
+      // scroll ends. Each one's reveal is eased twice: opacity rises with a
+      // gentle out-cubic, and the drop transform uses easeOutBack for a
+      // subtle settle. Linear interpolation here used to feel snappy.
+      var pinStart = 0.74;
+      var pinSpan = 0.11;        // each pin individually fades in over this
+      var pinStagger = 0.07;     // gap between consecutive pin starts
       for (var i = 0; i < pins.length; i++){
-        var lp = seg(sp, 0.76 + i * 0.07, 0.86 + i * 0.07);
+        var raw = seg(sp, pinStart + i * pinStagger, pinStart + i * pinStagger + pinSpan);
+        var lp = easeOutCubic(raw);
         var pin = pins[i];
         var mk = pin.querySelector('.marker');
         mk.style.opacity = lp.toFixed(3);
-        mk.style.transform = 'translateY(' + ((1 - lp) * -10).toFixed(2) + 'px)';
+        // easeOutBack on the drop gives a soft overshoot-settle landing
+        mk.style.transform = 'translateY(' + ((1 - easeOutBack(raw)) * -10).toFixed(2) + 'px)';
         pin.querySelector('.lbl-group').style.opacity = lp.toFixed(3);
-        if (lp > 0.96) pin.classList.add('placed'); else pin.classList.remove('placed');
+        if (raw > 0.95) pin.classList.add('placed'); else pin.classList.remove('placed');
       }
     }
     function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(draw); } }

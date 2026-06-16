@@ -22,9 +22,9 @@ var I18N = {
     en: "Perfection <em>is our craft.</em>"
   },
   "hero.sub": {
-    fr: "Communication visuelle par le textile de haute qualité. Drapeaux, écussons et broderie d’exception — signés à Alger depuis près de quarante ans.",
+    fr: "Communication visuelle par le textile de haute qualité. Drapeaux, écussons et broderie d’exception — signés en Algérie depuis près de quarante ans.",
     ar: "تواصل بصري عبر النسيج الفاخر. أعلام وشارات وتطريز استثنائي — يُصنع في الجزائر منذ ما يقارب أربعين عامًا.",
-    en: "Visual communication through high-quality textile. Flags, crests and exceptional embroidery — crafted in Algiers for nearly forty years."
+    en: "Visual communication through high-quality textile. Flags, crests and exceptional embroidery — crafted in Algeria for nearly forty years."
   },
   "hero.scroll": { fr: "Suivez le fil", ar: "تتبّع الخيط", en: "Follow the thread" },
 
@@ -42,7 +42,7 @@ var I18N = {
   "her.v4": { fr: "Prestige",   ar: "رِفعة",   en: "Prestige" },
   "her.s1n": { fr: "1986", ar: "1986", en: "1986" },
   "her.s1l": { fr: "L’année fondatrice", ar: "عام التأسيس", en: "The founding year" },
-  "her.s2n": { fr: "≈ 40", ar: "≈ 40", en: "≈ 40" },
+  "her.s2n": { fr: "40", ar: "40", en: "40" },
   "her.s2l": { fr: "Années de savoir-faire", ar: "عامًا من الخبرة", en: "Years of savoir-faire" },
   "her.s3n": { fr: "3", ar: "3", en: "3" },
   "her.s3l": { fr: "Maisons — Alger, Djelfa & Boumerdès", ar: "ثلاث دور — الجزائر، الجلفة وبومرداس", en: "Showrooms — Algiers, Djelfa & Boumerdès" },
@@ -60,7 +60,7 @@ var I18N = {
   // ---- metiers ----
   "me.num":   { fr: "III — Les Métiers", ar: "٣ — المهن", en: "III — The Crafts" },
   "me.title": { fr: "Cinq métiers, une exigence.", ar: "خمسُ مهنٍ،<br>معيارٌ واحد.", en: "Five crafts, one standard." },
-  "me.sub":   { fr: "Faites glisser pour explorer.", ar: "اسحب للاستكشاف.", en: "Drag to explore." },
+  "me.sub":   { fr: "Faites défiler pour découvrir chaque métier.", ar: "تابع التمرير لاكتشاف كل مهنة.", en: "Scroll to discover each craft." },
   "me.1n": { fr: "Drapeaux", ar: "الأعلام", en: "Flags" },
   "me.1d": { fr: "Drapeaux nationaux, internationaux, de table et de mât, sur supports haute résistance.", ar: "أعلام وطنية ودولية، مكتبية وعلى السواري، على دعائم عالية المتانة.", en: "National, international, table and mast flags on high-resistance supports." },
   "me.2n": { fr: "Écussons", ar: "الشارات", en: "Crests" },

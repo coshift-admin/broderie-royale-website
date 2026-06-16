@@ -58,38 +58,47 @@
     }
   }
 
-  /* ---------- METIERS — horizontal pinned scroll ---------- */
-  const pin = document.getElementById("metiers-pin");
-  const trackEl = document.getElementById("metiersTrack");
-  let metierST = null;
+  /* ---------- METIERS — sticky card stack reveal ----------
+     Each .metier-stack-card is position:sticky/top:0/height:100vh in
+     CSS, so they naturally stack as the visitor scrolls. The CSS does
+     the heavy lifting; we just add a per-card scale-down + dim that
+     tracks the next card's approach, giving the outgoing card a sense
+     of being covered. Cheap because each ScrollTrigger is scrubbed on
+     its own next-card element — no global rAF, GSAP throttles for us. */
+  const metiersStack = document.getElementById("metiersStack");
+  const metierTriggers = [];
   function buildMetiers() {
-    if (!pin || !trackEl) return;
-    const head = pin.querySelector(".metiers-head");
-    if (metierST) { metierST.kill(); metierST = null; gsap.set(trackEl, { x: 0 }); }
-    if (head) head.style.opacity = 1;
-    const distance = trackEl.scrollWidth - window.innerWidth;
-    if (distance <= 0) return;
-    const rtl = document.documentElement.dir === "rtl";
-    const target = rtl ? distance : -distance;
-    // Cards complete their travel at MOVE of the pinned scroll; the remaining
-    // tail is a "settle" zone where they sit still before the pin releases —
-    // this removes the jump when handing off to the flag section.
-    const MOVE = 0.85;
-    metierST = ScrollTrigger.create({
-      trigger: pin, start: "top top",
-      end: () => "+=" + Math.round(distance / MOVE),
-      pin: true, scrub: true, anticipatePin: 1, invalidateOnRefresh: true,
-      onUpdate: (self) => {
-        const t = self.progress < MOVE ? self.progress / MOVE : 1;
-        gsap.set(trackEl, { x: Math.round(target * t) });
-        if (head) head.style.opacity = self.progress < 0.05 ? (1 - self.progress / 0.05) : 0;
-      }
+    if (!metiersStack) return;
+    // Tear down any previous build (Arabic font load, SPA nav, resize)
+    metierTriggers.forEach(t => t.kill());
+    metierTriggers.length = 0;
+    const cards = Array.from(metiersStack.querySelectorAll(".metier-stack-card"));
+    if (!cards.length || reduced) return;
+    cards.forEach((card, i) => {
+      const inner = card.querySelector(".metier-stack-inner");
+      if (!inner) return;
+      // Last card has nothing covering it — leave it untouched.
+      if (i === cards.length - 1) return;
+      const next = cards[i + 1];
+      const st = ScrollTrigger.create({
+        trigger: next,
+        start: "top bottom",   // next card's top crosses viewport bottom
+        end: "top top",        // next card's top reaches viewport top
+        scrub: true,
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          // self.progress 0 -> next card just entering; 1 -> next pinned
+          const p = self.progress;
+          inner.style.transform = "scale(" + (1 - p * 0.06).toFixed(4) + ")";
+          inner.style.opacity = (1 - p * 0.35).toFixed(3);
+        },
+      });
+      metierTriggers.push(st);
     });
   }
-  // build after images settle
+  // build after images settle so sticky math has real layout numbers
   window.addEventListener("load", () => { buildMetiers(); ScrollTrigger.refresh(); });
   buildMetiers();
-  // rebuild once webfonts are ready (Arabic Mashq/Amiri reflow shifts pin math)
   if (document.fonts && document.fonts.ready) {
     document.fonts.ready.then(() => { buildMetiers(); ScrollTrigger.refresh(); });
   }

@@ -24,7 +24,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       </div>
       <div class="hero-eyebrow" data-i18n="hero.eyebrow">MAISON DU DRAPEAU · DEPUIS 1986</div>
       <h1 class="hero-title" data-i18n="hero.title" data-i18n-html>La perfection <em>c’est notre métier.</em></h1>
-      <p class="hero-sub" data-i18n="hero.sub">Communication visuelle par le textile de haute qualité. Drapeaux, écussons et broderie d’exception — signés à Alger depuis près de quarante ans.</p>
+      <p class="hero-sub" data-i18n="hero.sub">Communication visuelle par le textile de haute qualité. Drapeaux, écussons et broderie d’exception — signés en Algérie depuis près de quarante ans.</p>
     </div>
     <div class="scroll-hint">
       <span data-i18n="hero.scroll">Suivez le fil</span>
@@ -53,7 +53,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <div class="stat-lab" data-i18n="her.s1l">L’année fondatrice</div>
         </div>
         <div class="stat">
-          <div class="stat-num" data-i18n="her.s2n">≈ 40</div>
+          <div class="stat-num" data-i18n="her.s2n">40</div>
           <div class="stat-lab" data-i18n="her.s2l">Années de savoir-faire</div>
         </div>
         <div class="stat">
@@ -80,58 +80,69 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     </div>
   </section>
 
-  <!-- ============== III · METIERS (horizontal) ============== -->
+  <!-- ============== III · METIERS (vertical card stack) ==============
+       Each card is position:sticky/top:0/height:100vh. As the visitor
+       scrolls, the next card slides UP and stacks over the previous
+       one. scenes.js attaches a subtle scale-down + dim to the outgoing
+       card so the new one feels like it's covering it (depth). -->
   <section id="metiers-pin" data-thread-node>
-    <div class="metiers-head">
-      <span class="chap-num" data-i18n="me.num">III — Les Métiers</span>
-      <hr class="gold-rule" />
-      <h2 class="chap-title" data-i18n="me.title">Six métiers, une exigence.</h2>
+    <div class="metiers-stack-head">
+      <span class="chap-num reveal" data-i18n="me.num">III — Les Métiers</span>
+      <hr class="gold-rule reveal d1" />
+      <h2 class="chap-title reveal d1" data-i18n="me.title">Cinq métiers, une exigence.</h2>
+      <p class="lead reveal d2 measure" data-i18n="me.sub">Faites défiler pour découvrir chaque métier.</p>
     </div>
-    <div class="metiers-track" id="metiersTrack">
-      <article class="metier-card">
-        <img src="/assets/photo-flag-international.webp" alt="" width="1144" height="767" loading="lazy" decoding="async" />
-        <div class="metier-body">
-          <span class="metier-idx">01</span>
-          <h3 class="metier-name" data-i18n="me.1n">Drapeaux</h3>
-          <p class="metier-desc" data-i18n="me.1d">Drapeaux nationaux, internationaux, de table et de mât, sur supports haute résistance.</p>
+    <div class="metiers-stack" id="metiersStack">
+      <article class="metier-stack-card" data-card="1">
+        <div class="metier-stack-inner">
+          <img src="/assets/photo-flag-international.webp" alt="" width="1144" height="767" loading="lazy" decoding="async" />
+          <div class="metier-stack-body">
+            <span class="metier-stack-idx">01</span>
+            <h3 class="metier-stack-name" data-i18n="me.1n">Drapeaux</h3>
+            <p class="metier-stack-desc" data-i18n="me.1d">Drapeaux nationaux, internationaux, de table et de mât, sur supports haute résistance.</p>
+          </div>
         </div>
       </article>
-      <article class="metier-card">
-        <img src="/assets/texture-embroidery-patch.webp" alt="" width="960" height="540" loading="lazy" decoding="async" />
-        <div class="metier-body">
-          <span class="metier-idx">02</span>
-          <h3 class="metier-name" data-i18n="me.2n">Écussons</h3>
-          <p class="metier-desc" data-i18n="me.2d">Patches et insignes brodés, fil d’or sur tissu, pour corps et clubs.</p>
+      <article class="metier-stack-card" data-card="2">
+        <div class="metier-stack-inner">
+          <img src="/assets/texture-embroidery-patch.webp" alt="" width="960" height="540" loading="lazy" decoding="async" />
+          <div class="metier-stack-body">
+            <span class="metier-stack-idx">02</span>
+            <h3 class="metier-stack-name" data-i18n="me.2n">Écussons</h3>
+            <p class="metier-stack-desc" data-i18n="me.2d">Patches et insignes brodés, fil d’or sur tissu, pour corps et clubs.</p>
+          </div>
         </div>
       </article>
-      <article class="metier-card">
-        <img src="/assets/photo-pennant.webp" alt="" width="1071" height="827" loading="lazy" decoding="async" />
-        <div class="metier-body">
-          <span class="metier-idx">03</span>
-          <h3 class="metier-name" data-i18n="me.3n">Fanions</h3>
-          <p class="metier-desc" data-i18n="me.3d">Fanions cérémoniels et décoratifs, frange dorée, finition main.</p>
+      <article class="metier-stack-card" data-card="3">
+        <div class="metier-stack-inner">
+          <img src="/assets/photo-pennant.webp" alt="" width="1071" height="827" loading="lazy" decoding="async" />
+          <div class="metier-stack-body">
+            <span class="metier-stack-idx">03</span>
+            <h3 class="metier-stack-name" data-i18n="me.3n">Fanions</h3>
+            <p class="metier-stack-desc" data-i18n="me.3d">Fanions cérémoniels et décoratifs, frange dorée, finition main.</p>
+          </div>
         </div>
       </article>
-      <article class="metier-card">
-        <img src="/assets/metier-broderie.webp" alt="" width="720" height="894" loading="lazy" decoding="async" />
-        <div class="metier-body">
-          <span class="metier-idx">04</span>
-          <h3 class="metier-name" data-i18n="me.4n">Broderie</h3>
-          <p class="metier-desc" data-i18n="me.4d">Personnalisation premium : polos, t-shirts, casquettes et vêtements de travail.</p>
+      <article class="metier-stack-card" data-card="4">
+        <div class="metier-stack-inner">
+          <img src="/assets/metier-broderie.webp" alt="" width="720" height="894" loading="lazy" decoding="async" />
+          <div class="metier-stack-body">
+            <span class="metier-stack-idx">04</span>
+            <h3 class="metier-stack-name" data-i18n="me.4n">Broderie</h3>
+            <p class="metier-stack-desc" data-i18n="me.4d">Personnalisation premium : polos, t-shirts, casquettes et vêtements de travail.</p>
+          </div>
         </div>
       </article>
-      <article class="metier-card">
-        <img src="/assets/metier-polyester.webp" alt="" width="1200" height="896" loading="lazy" decoding="async" />
-        <div class="metier-body">
-          <span class="metier-idx">05</span>
-          <h3 class="metier-name" data-i18n="me.5n">Impression polyester</h3>
-          <p class="metier-desc" data-i18n="me.5d">Impression numérique sur tissu polyester, couleurs éclatantes et tenue durable.</p>
+      <article class="metier-stack-card" data-card="5">
+        <div class="metier-stack-inner">
+          <img src="/assets/metier-polyester.webp" alt="" width="1200" height="896" loading="lazy" decoding="async" />
+          <div class="metier-stack-body">
+            <span class="metier-stack-idx">05</span>
+            <h3 class="metier-stack-name" data-i18n="me.5n">Impression polyester</h3>
+            <p class="metier-stack-desc" data-i18n="me.5d">Impression numérique sur tissu polyester, couleurs éclatantes et tenue durable.</p>
+          </div>
         </div>
       </article>
-    </div>
-    <div class="metiers-hint">
-      <span data-i18n="me.sub">Faites glisser pour explorer.</span>
-      <span class="arrow"></span>
     </div>
   </section>
 
@@ -500,7 +511,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 
   {/* ============== Métier video lightbox ==============
-       Click any .metier-card in section III to open a YouTube video
+       Click any .metier-stack-inner in section III to open a YouTube video
        inside this modal. iframe src is set on open and cleared on
        close so playback stops cleanly and we don't keep a hidden
        YouTube tab loaded. CSP allows www.youtube-nocookie.com via
@@ -538,7 +549,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       iframe.src = '';
       document.body.style.overflow = '';
     }
-    document.querySelectorAll('.metier-card').forEach(function (card) {
+    /* Click target is the inner card rectangle, not the whole 100vh sticky
+       section — otherwise the entire viewport-sized .metier-stack-card
+       would act as a hot zone when the card is pinned at top. */
+    document.querySelectorAll('.metier-stack-inner').forEach(function (card) {
       if (card.dataset.videoBound) return;
       card.dataset.videoBound = '1';
       card.style.cursor = 'pointer';
