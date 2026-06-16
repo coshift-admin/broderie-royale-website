@@ -388,6 +388,28 @@ html[lang="ar"] .metier-stack-name { font-family: var(--font-arabic); }
   .metier-stack-card { position: relative; height: auto; padding: 40px clamp(16px, 4vw, 60px); }
 }
 
+/* ----- Mobile (≤720px) ----- 16:10 landscape leaves huge empty space
+   above and below the card on a tall phone. Switch to a portrait card
+   that fills the viewport properly, tighten head + card padding, and
+   give the body text a bit more breathing room. */
+@media (max-width: 720px) {
+  .metiers-stack-head {
+    padding: clamp(50px, 7vh, 80px) clamp(16px, 5vw, 30px) clamp(14px, 2vh, 20px);
+  }
+  .metiers-stack-head .chap-title { font-size: clamp(1.6rem, 7vw, 2.4rem); }
+  .metier-stack-card {
+    padding: clamp(18px, 3.5vh, 36px) clamp(14px, 4vw, 22px);
+  }
+  .metier-stack-inner {
+    aspect-ratio: 3 / 4;
+    width: 100%;
+  }
+  .metier-stack-body { padding: clamp(20px, 4vw, 30px); }
+  .metier-stack-name { font-size: clamp(1.55rem, 6.5vw, 2.1rem); margin: 6px 0 10px; }
+  .metier-stack-desc { font-size: clamp(0.95rem, 3.6vw, 1.05rem); line-height: 1.5; }
+  .metier-stack-idx { font-size: clamp(12px, 3vw, 14px); }
+}
+
 /* ===== Arabic typography normalization — only Mashq (display) + Amiri (text) ===== */
 html[lang="ar"] .flag-quote { font-family: var(--font-arabic); }
 html[lang="ar"] .serve-cell .st,

@@ -177,6 +177,22 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
     padding: 0 12px;
   }
   .map-label { transform: translateX(0); }
+  .map-label-name { font-size: clamp(20px, 5.4vw, 28px); }
+  .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
+}
+
+/* ----- Phone (≤560px) ----- compress everything further: shorter
+   section, smaller head, tighter sticky padding, shorter map. */
+@media (max-width: 560px) {
+  .map-section { min-height: 220vh; }       /* was 300vh */
+  .map-sticky { padding: clamp(20px, 3vh, 36px) 16px; gap: 14px; }
+  .map-section .map-head { padding: 0 4px; }
+  .map-section h2 { font-size: clamp(1.4rem, 6vw, 1.9rem); margin: 8px 0 8px; }
+  .map-section .map-sub { font-size: clamp(0.9rem, 3.6vw, 1rem); }
+  .map-wrap { height: 52vh; }                /* was 76vh — too tall on phones */
+  .map-labels { gap: 14px; }
+  .map-label { gap: 8px; }
+  .map-label-name { font-size: clamp(18px, 5.2vw, 24px); }
 }
 
 .alg-map .m-wash { opacity: 0; }
