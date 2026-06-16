@@ -199,9 +199,26 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-section .map-sub { font-size: clamp(0.85rem, 3.4vw, 0.95rem); line-height: 1.4; }
   .map-stage { display: block; }
   .map-labels { display: none; }
-  /* Map uses full viewport width — no horizontal sticky padding. */
-  .map-wrap { width: 100%; max-width: 100%; height: auto; padding: 0; margin: 0; }
-  .alg-map { width: 100%; height: auto; display: block; max-width: none; }
+  /* Map uses full viewport width — no horizontal sticky padding.
+     IMPORTANT: iOS Safari ignores the SVG viewBox for height auto-sizing
+     and defaults to 150px tall (long-standing bug), so we set the
+     wrap's aspect-ratio to match the viewBox (1000:997 ≈ 1:1) and let
+     the SVG fill it. Without this the Algeria outline renders squashed
+     into a 300×150 rectangle on iPhone Safari. */
+  .map-wrap {
+    width: 100%;
+    max-width: 100%;
+    aspect-ratio: 1000 / 997;
+    height: auto;
+    padding: 0;
+    margin: 0;
+  }
+  .alg-map {
+    width: 100%;
+    height: 100%;
+    display: block;
+    max-width: none;
+  }
 }
 
 .alg-map .m-wash { opacity: 0; }
