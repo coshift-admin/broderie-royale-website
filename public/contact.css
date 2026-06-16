@@ -43,7 +43,10 @@ html[lang="ar"] .contact-card h2 { font-family: var(--font-arabic); }
 .contact-form label { font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); }
 html[lang="ar"] .contact-form label { letter-spacing: .02em; font-size: 15px; }
 .contact-form .req { color: var(--royal-red); }
-.contact-form .optional { color: var(--fg2); font-size: 11px; font-style: italic; margin-inline-start: 4px; font-weight: 400; letter-spacing: 0; }
+/* Shared between contact and devis forms — same visual treatment. */
+.contact-form .optional,
+.devis-form .optional,
+.field .optional { color: var(--fg2); font-size: 11px; font-style: italic; margin-inline-start: 4px; font-weight: 400; letter-spacing: 0; }
 .contact-form input, .contact-form textarea {
   font-family: var(--font-body); font-size: 15px; color: var(--ink); background: var(--ivory);
   border: 1px solid var(--ivory-line); border-radius: var(--r-sm); padding: 13px 14px; outline: none;
@@ -122,10 +125,10 @@ html[lang="ar"] .map-section h2 { font-family: var(--font-arabic); }
   position: absolute;
   left: clamp(8px, 2vw, 28px);
   top: 50%;
-  transform: translateY(-50%);
+  transform: translateY(-50%);   /* vertically centered on the map */
   display: flex;
   flex-direction: column;
-  gap: clamp(14px, 2vh, 26px);
+  gap: clamp(22px, 3.4vh, 42px);  /* spread further apart now that labels are bigger */
   z-index: 4;
   pointer-events: none;
 }
@@ -133,7 +136,7 @@ html[lang="ar"] .map-labels { left: auto; right: clamp(8px, 2vw, 28px); }
 .map-label {
   display: flex;
   align-items: baseline;
-  gap: clamp(10px, 1.5vw, 18px);
+  gap: clamp(12px, 1.6vw, 20px);
   color: var(--ivory);
   opacity: 0;
   transform: translateX(-16px);
@@ -143,16 +146,16 @@ html[lang="ar"] .map-labels { left: auto; right: clamp(8px, 2vw, 28px); }
 .map-label-num {
   font-family: var(--font-display);
   font-style: italic;
-  font-size: clamp(13px, 1.2vw, 15px);
+  font-size: clamp(15px, 1.4vw, 18px);
   letter-spacing: 0.18em;
   color: var(--gold-bright);
-  min-width: 28px;
+  min-width: 32px;
 }
 .map-label-name {
   font-family: var(--font-display);
   font-weight: 700;
-  font-size: clamp(20px, 2.2vw, 30px);
-  letter-spacing: 0.01em;
+  font-size: clamp(30px, 3.4vw, 48px);
+  letter-spacing: 0.005em;
   line-height: 1;
 }
 html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }

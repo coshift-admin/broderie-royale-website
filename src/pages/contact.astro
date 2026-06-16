@@ -107,7 +107,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                   <input name="phone" type="tel" inputmode="tel" autocomplete="tel" />
                 </div>
                 <div class="field">
-                  <label><span data-i18n="dv.email">Email</span> <span class="req">*</span></label>
+                  <label><span data-i18n="dv.email">Email</span> <span class="optional" data-i18n="ct.optional">(optionnel)</span></label>
+                  {/* Email no longer required on the devis form either —
+                      client asked for the same low-friction policy as
+                      the contact form. Format check still runs if a
+                      value is entered (see valid(3) below). */}
                   <input name="email" type="email" autocomplete="email" />
                 </div>
               </div>
@@ -411,7 +415,8 @@ function lookupI18n(key) {
     if(n===2){ var q=form.qty.value.trim(); form.qty.classList.toggle('invalid',!q); var ok=!!q; document.getElementById('err2').classList.toggle('show',!ok); return ok; }
     if(n===3){
       var ok=true; var err3 = document.getElementById('err3'); var msg = '';
-      ['name','phone','email'].forEach(function(f){ var bad=!form[f].value.trim(); form[f].classList.toggle('invalid',bad); if(bad){ ok=false; msg = lookupI18n('dv.required'); } });
+      // name and phone are required; email is optional (validated if filled).
+      ['name','phone'].forEach(function(f){ var bad=!form[f].value.trim(); form[f].classList.toggle('invalid',bad); if(bad){ ok=false; msg = lookupI18n('dv.required'); } });
       var ph = normPhone(form.phone.value);
       if (ph && !PHONE_RE.test(ph)) { form.phone.classList.add('invalid'); ok=false; msg = lookupI18n('form.invalid_phone'); }
       var em = form.email.value.trim();
