@@ -592,6 +592,12 @@ function lookupI18n(key) {
         rafId = requestAnimationFrame(tick);
       }
     }
+    // Phone test: viewBox attribute changes force an SVG reflow each
+    // frame which jitters on lower-power mobile GPUs. Skip the zoom on
+    // narrow viewports — map stays at its full extent throughout, but
+    // borders/pins still animate. Smoother feel for the price of one
+    // dropped effect.
+    var smallScreen = matchMedia('(max-width: 720px)').matches;
     function drawWithSp(sp){
       // Border draw — finishes earlier so the eye doesn't sit on a
       // completed map waiting for pins. Previously ran 0 -> 0.42.
@@ -600,10 +606,12 @@ function lookupI18n(key) {
       for (var k = 0; k < borders.length; k++) borders[k].style.strokeDashoffset = dOff;
       var washIn = seg(p, 0.50, 1);
       wash.style.opacity = washIn.toFixed(3);
-      // Zoom and vanish compressed and shifted earlier so the camera
-      // settles before the pins arrive (no more "drawn map sits idle"
-      // gap that used to span ~32% of the scroll).
-      setVB(easeIO(seg(sp, 0.30, 0.55)));
+      if (!smallScreen) {
+        // Zoom and vanish compressed and shifted earlier so the camera
+        // settles before the pins arrive (no more "drawn map sits idle"
+        // gap that used to span ~32% of the scroll).
+        setVB(easeIO(seg(sp, 0.30, 0.55)));
+      }
       var mAmt = seg(sp, 0.36, 0.60);
       vanish.style.opacity = mAmt.toFixed(3);
       // Pins start right as the zoom settles, then run staggered to the
