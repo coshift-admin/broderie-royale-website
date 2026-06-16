@@ -107,9 +107,68 @@ html[lang="ar"] .svc-cell .sc-name { font-family: var(--font-arabic); }
 .map-section h2 { font-family: var(--font-display); font-weight: 700; color: var(--ivory); font-size: clamp(1.8rem,4vw,3rem); margin: 12px 0 14px; }
 html[lang="ar"] .map-section h2 { font-family: var(--font-arabic); }
 .map-section .map-sub { color: var(--fg-on-dark-2); font-size: clamp(1rem,1.4vw,1.2rem); line-height: 1.6; }
-.map-wrap { width: 100%; max-width: 1120px; height: 76vh; margin: 0 auto; }
+.map-wrap { width: 100%; max-width: 1120px; height: 76vh; margin: 0 auto; position: relative; }
 .alg-map { width: 100%; height: 100%; display: block; overflow: visible; }
 .alg-map .vanish { opacity: 0; }
+
+/* ============================================================
+   MAP LABELS — vertical list on the left of the map. Each .map-label
+   starts hidden; the inline script in contact.astro lerps opacity +
+   translate-x in lockstep with its corresponding pin landing on the
+   map. RTL flips the list to the right side. Below 900px the list
+   stacks below the map so it doesn't crowd the SVG.
+   ============================================================ */
+.map-labels {
+  position: absolute;
+  left: clamp(8px, 2vw, 28px);
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(14px, 2vh, 26px);
+  z-index: 4;
+  pointer-events: none;
+}
+html[lang="ar"] .map-labels { left: auto; right: clamp(8px, 2vw, 28px); }
+.map-label {
+  display: flex;
+  align-items: baseline;
+  gap: clamp(10px, 1.5vw, 18px);
+  color: var(--ivory);
+  opacity: 0;
+  transform: translateX(-16px);
+  transition: none;       /* JS sets opacity + transform per scroll frame */
+  will-change: opacity, transform;
+}
+.map-label-num {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(13px, 1.2vw, 15px);
+  letter-spacing: 0.18em;
+  color: var(--gold-bright);
+  min-width: 28px;
+}
+.map-label-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(20px, 2.2vw, 30px);
+  letter-spacing: 0.01em;
+  line-height: 1;
+}
+html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
+@media (max-width: 900px) {
+  .map-labels {
+    position: static;
+    transform: none;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(16px, 3vw, 32px);
+    padding: 0 12px;
+    margin-bottom: 18px;
+  }
+  .map-label { transform: translateX(0); }
+}
 
 .alg-map .m-wash { opacity: 0; }
 .alg-map .m-border { stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 5px color-mix(in srgb, var(--gold) 55%, transparent)); }

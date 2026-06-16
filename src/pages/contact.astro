@@ -249,6 +249,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="map-sub" data-i18n="ct.map_sub">Trois ateliers, une même exigence — au cœur de l’Algérie.</p>
     </div>
     <div class="map-wrap">
+      {/* City labels as an out-of-SVG vertical list. Reveal order
+          MUST match the pin landing order in the script below
+          (Alger -> Aïn Ouessara -> Boumerdès), so the i-th label
+          fades in with the i-th pin. Map stays centered; the list
+          sits to its left on desktop (and on the right under RTL). */}
+      <div class="map-labels" id="mapLabels" aria-hidden="true">
+        {/* Order mirrors the map-title sentence and the pins array
+            below: Alger -> Boumerdès -> Aïn Ouessara. */}
+        <div class="map-label" data-pin="1">
+          <span class="map-label-num">01</span>
+          <span class="map-label-name">Alger</span>
+        </div>
+        <div class="map-label" data-pin="3">
+          <span class="map-label-num">02</span>
+          <span class="map-label-name">Boumerdès</span>
+        </div>
+        <div class="map-label" data-pin="2">
+          <span class="map-label-num">03</span>
+          <span class="map-label-name">Aïn Ouessara</span>
+        </div>
+      </div>
       <svg class="alg-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 997" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Carte de l'Algérie — Alger, Boumerdès et Aïn Ouessara">
       <defs><radialGradient id="mhalo" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#A98847" stop-opacity="0.22"/><stop offset="100%" stop-color="#A98847" stop-opacity="0"/>
@@ -257,38 +278,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <path class="m-border" pathLength="1" vector-effect="non-scaling-stroke" d="M 719.2 70.2 L 728.6 70.8 L 736.3 72.3 L 742.2 74.5 L 746.4 77.6 L 751.4 79.6 L 757.1 80.8 L 763.4 80.9 L 770.5 80.1 L 775.4 81.2 L 777.8 84.1 L 778 88.9 L 775.9 95.6 L 774.8 103.6 L 774.5 113.1 L 775.2 123.9 L 776.9 136.2 L 777.5 148 L 777.1 159.3 L 775.7 170.2 L 773.2 180.7 L 769.8 190.3 L 765.4 199.1 L 760 207 L 753.5 214 L 749 221.6 L 746.2 229.8 L 745.3 238.7 L 746.2 248.1 L 749 257 L 753.7 265.4 L 760.4 273.3 L 768.9 280.7 L 775.3 286.9 L 779.5 292.1 L 781.7 296.2 L 781.8 299.2 L 783.5 302.7 L 786.7 306.7 L 791.6 311.1 L 798 316.1 L 803.9 325.3 L 809.3 338.7 L 814.2 356.3 L 818.7 378.1 L 822.8 397.1 L 826.7 413.3 L 830.4 426.7 L 833.7 437.3 L 836.4 446.6 L 838.4 454.6 L 839.6 461.4 L 840.2 467 L 840.2 473.5 L 839.5 481.1 L 838.3 489.8 L 836.5 499.4 L 835.3 508 L 834.7 515.5 L 834.8 521.9 L 835.6 527.3 L 835.8 532.9 L 835.5 538.8 L 834.7 545 L 833.4 551.4 L 832.7 558 L 832.5 564.9 L 832.8 572 L 833.7 579.3 L 833.4 586 L 831.7 592.1 L 828.9 597.5 L 824.8 602.4 L 823.2 608.1 L 824.2 614.8 L 827.8 622.3 L 833.9 630.7 L 838.6 638.2 L 841.9 644.9 L 843.7 650.7 L 844.1 655.6 L 845.3 660.9 L 847.4 666.5 L 850.3 672.5 L 854 678.9 L 857.9 683.2 L 862.2 685.3 L 866.8 685.4 L 871.6 683.3 L 877.3 683 L 883.9 684.6 L 891.2 688.1 L 899.4 693.4 L 906.7 699.1 L 913.1 705.3 L 918.6 712 L 923.2 719.1 L 926.6 724.4 L 928.9 728 L 930 729.8 L 930 729.8 L 921.1 735.1 L 903.3 745.9 L 876.6 762 L 841 783.4 L 806.7 804.9 L 773.9 826.6 L 742.4 848.3 L 712.3 870.1 L 686.1 887.7 L 663.7 901.1 L 645.2 910.2 L 630.5 915.1 L 616.6 919.1 L 603.5 922.1 L 591.2 924.1 L 579.7 925.2" fill="none" stroke="#A98847" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
       <path class="m-border" pathLength="1" vector-effect="non-scaling-stroke" d="M 719.2 70.2 L 708.1 70.3 L 697.3 71.6 L 686.9 74.2 L 676.8 78.1 L 667 83.2 L 658.3 86.6 L 650.8 88.2 L 644.4 88 L 639.2 86.1 L 630.9 84.9 L 619.7 84.5 L 605.5 84.8 L 588.3 85.8 L 571 87.2 L 553.6 88.9 L 536.1 90.9 L 518.5 93.2 L 502.8 95.9 L 489 99 L 477.1 102.5 L 467 106.5 L 457.9 110.8 L 449.6 115.4 L 442.2 120.3 L 435.6 125.6 L 427.9 130.2 L 419 134 L 408.9 137 L 397.7 139.2 L 386.8 142.6 L 376.1 147.2 L 365.8 153 L 355.8 160 L 349.3 167.2 L 346.3 174.8 L 346.7 182.6 L 350.7 190.7 L 353.7 198.7 L 356 206.6 L 357.5 214.3 L 358.1 222 L 359.4 231 L 361.5 241.4 L 364.4 253.2 L 368 266.3 L 371.4 276.8 L 374.5 284.7 L 377.5 290 L 380.2 292.6 L 381.8 295.7 L 382.2 299.5 L 381.5 303.7 L 379.6 308.5 L 374.7 312.6 L 367 316 L 356.3 318.8 L 342.7 320.8 L 331.3 323.5 L 322.2 326.8 L 315.2 330.7 L 310.5 335.3 L 305.5 338.9 L 300.1 341.7 L 294.5 343.7 L 288.4 344.7 L 283.8 347.8 L 280.6 352.8 L 278.8 359.8 L 278.3 368.8 L 274.9 376.8 L 268.6 383.7 L 259.4 389.5 L 247.3 394.3 L 237.1 399.4 L 229.1 404.8 L 223.1 410.5 L 219.1 416.5 L 214 421.9 L 207.7 426.5 L 200.4 430.4 L 191.9 433.6 L 182.9 436.5 L 173.4 439 L 163.5 441.2 L 153.1 443 L 141.2 446.6 L 127.6 451.9 L 112.4 458.9 L 95.6 467.7 L 83 477.8 L 74.7 489.2 L 70.6 501.9 L 70.6 515.9 L 70.7 526.6 L 70.8 533.9 L 70.8 538 L 70.8 538.8 L 70.7 540 L 70.6 541.5 L 70.5 543.4 L 70.3 545.7 L 79.9 554.4 L 99.4 569.5 L 128.6 591.1 L 167.7 619.2 L 205.8 646.4 L 242.9 672.8 L 279 698.5 L 314 723.3 L 349.1 748 L 384.2 772.6 L 419.2 797.1 L 454.3 821.5 L 481.2 841.1 L 500 855.9 L 510.6 865.9 L 513.1 871.1 L 516.5 875.8 L 521 880 L 526.5 883.7 L 533 886.8 L 539 889.6 L 544.7 892.1 L 549.9 894.3 L 554.7 896.1 L 558.3 899.2 L 560.8 903.6 L 562.1 909.3 L 562.2 916.3 L 565.2 921.3 L 571 924.2 L 579.7 925.2" fill="none" stroke="#A98847" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"/>
       <rect class="vanish" x="-120" y="225" width="1240" height="800" fill="url(#vanishGrad)"/>
+      {/* City labels are now in the HTML list above (.map-labels) so
+          they can't collide with one another or with neighbouring pins.
+          The SVG keeps only the markers themselves. */}
       <g class="pin pin1" transform="translate(564.6, 91.1)">
         <g class="marker"><g transform="scale(2.1)">
           <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
           <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
         </g></g>
-        <g class="lbl-group" transform="translate(0, -80)">
-          <text class="lbl" text-anchor="middle" y="0">Alger</text>
-          <line class="lbl-rule" x1="-66" y1="13" x2="66" y2="13"/>
-        </g>
       </g>
       <g class="pin pin2" transform="translate(545, 208)">
         <g class="marker"><g transform="scale(2.1)">
           <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
           <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
         </g></g>
-        <g class="lbl-group" transform="translate(0, -80)">
-          <text class="lbl" text-anchor="middle" y="0">Aïn Ouessara</text>
-          <line class="lbl-rule" x1="-66" y1="13" x2="66" y2="13"/>
-        </g>
       </g>
-      {/* Boumerdès — coastal, ~50 km east of Alger. Pin sits just to the
-          east of the Alger marker; label drops below to avoid colliding
-          with the Alger label which already occupies the -80 slot. */}
       <g class="pin pin3" transform="translate(605, 93)">
         <g class="marker"><g transform="scale(2.1)">
           <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
           <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
         </g></g>
-        <g class="lbl-group" transform="translate(36, 16)">
-          <text class="lbl" text-anchor="start" y="0">Boumerdès</text>
-          <line class="lbl-rule" x1="0" y1="13" x2="132" y2="13"/>
-        </g>
       </g>
     </svg>
     </div>
@@ -519,11 +528,19 @@ function lookupI18n(key) {
     var borders = map.querySelectorAll('.m-border');
     var wash = map.querySelector('.m-wash');
     var vanish = map.querySelector('.vanish');
+    // Reveal order matches the map title sentence: Alger -> Boumerdès
+    // -> Aïn Ouessara. Pin DOM order in the SVG stayed numeric
+    // (pin1/2/3); only the staggered reveal sequence is reordered.
     var pins = [
       map.querySelector('.pin1'),
-      map.querySelector('.pin2'),
-      map.querySelector('.pin3')
+      map.querySelector('.pin3'),
+      map.querySelector('.pin2')
     ].filter(Boolean);
+    // The i-th label in #mapLabels matches the i-th pin above —
+    // both are now in [Alger, Boumerdès, Aïn Ouessara] order.
+    var labelEls = Array.prototype.slice.call(
+      document.querySelectorAll('#mapLabels .map-label')
+    );
     var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
     var FULL = [0, 0, 1000, 997];
     var ZOOM = [70, -50, 860, 320];
@@ -588,7 +605,11 @@ function lookupI18n(key) {
         var mk = pin.querySelector('.marker');
         mk.style.opacity = lp.toFixed(3);
         mk.style.transform = 'translateY(' + ((1 - easeOutBack(raw)) * -10).toFixed(2) + 'px)';
-        pin.querySelector('.lbl-group').style.opacity = lp.toFixed(3);
+        // Mirror the same reveal on the corresponding HTML label.
+        if (labelEls[i]) {
+          labelEls[i].style.opacity = lp.toFixed(3);
+          labelEls[i].style.transform = 'translateX(' + ((1 - lp) * -16).toFixed(2) + 'px)';
+        }
         if (raw > 0.95) pin.classList.add('placed'); else pin.classList.remove('placed');
       }
     }
@@ -601,9 +622,9 @@ function lookupI18n(key) {
       pins.forEach(function(pin){
         pin.querySelector('.marker').style.opacity = 1;
         pin.querySelector('.marker').style.transform = 'none';
-        pin.querySelector('.lbl-group').style.opacity = 1;
         pin.classList.add('placed');
       });
+      labelEls.forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
     } else if (!map.dataset.bound) {
       // Idempotency: data-astro-rerun makes this IIFE execute on every
       // ClientRouter navigation, so guard against double-bound listeners

@@ -300,16 +300,19 @@ html[lang="ar"] .stat-lab { letter-spacing: 0.02em; font-size: 15px; }
 .atelier-media::after { content:""; position:absolute; inset:0; background: linear-gradient(180deg, transparent 55%, rgba(0,0,0,.5)); pointer-events:none; }
 
 /* ============================================================
-   METIERS — vertical card stack (GSAP-pinned)
-   The section is pinned by ScrollTrigger; inside, all cards are
-   absolutely-positioned at top:0/left:0/100%/100%. JS scrubs each
-   card's yPercent from 100 (below viewport) to 0 (covering the
-   previous), with the previous card scaling/dimming as it's covered.
-   Pin removes the dependency on position:sticky (which was failing
-   under Lenis smooth-scroll on some browsers).
+   METIERS — vertical card stack (CSS sticky, GSAP enhancement)
+   Each card is position:sticky/top:0/height:100vh. Cards share the
+   same parent .metiers-stack — when a later card's natural position
+   reaches the viewport top, both it AND the previous cards are stuck
+   at top:0. Higher data-card z-index puts the newer card visually on
+   top of the previous, giving the stacking effect.
+   GSAP layers a per-card scale-down + dim on the OUTGOING card so the
+   newer one feels like it's covering it (depth cue). If GSAP fails to
+   run for any reason, the CSS stack still works on its own — only the
+   polish is lost.
    ============================================================ */
 #metiers-pin { background: var(--ink); position: relative; }
-.metiers-stack-head { position: relative; z-index: 4; padding: clamp(70px, 10vh, 120px) clamp(20px, 6vw, 120px) clamp(20px, 3vh, 40px); max-width: 720px; }
+.metiers-stack-head { position: relative; z-index: 10; padding: clamp(70px, 10vh, 120px) clamp(20px, 6vw, 120px) clamp(20px, 3vh, 40px); max-width: 720px; }
 .metiers-stack-head .chap-title { color: var(--ivory); font-size: clamp(2rem, 4.6vw, 3.8rem); }
 .metiers-stack-head .lead { color: var(--fg-on-dark-2); margin-top: 14px; }
 html[lang="ar"] .metiers-stack-head { margin-inline-start: auto; text-align: right; }
@@ -317,20 +320,20 @@ html[lang="ar"] .metiers-stack-head .gold-rule { margin-inline-start: auto; }
 
 .metiers-stack {
   position: relative;
-  width: 100%;
-  height: 100vh;   /* one viewport; GSAP pin extends scroll distance */
-  overflow: hidden;
+  /* Children give this its height: 5 cards × 100vh = 500vh total. The
+     sticky math depends on this parent being TALLER than each child so
+     each sticky child has scroll room. */
 }
 .metier-stack-card {
-  position: absolute;
-  inset: 0;
+  position: sticky;
+  top: 0;
+  height: 100vh;
   display: grid;
   place-items: center;
   padding: clamp(40px, 6vh, 90px) clamp(20px, 6vw, 120px);
   background: var(--ink);
-  will-change: transform;
-  /* Each card gets a higher z-index than the one before so the next-up
-     card lands ON TOP of the previous as it slides into view. */
+  /* z-index per data-card so the next-up card lands ON TOP of the
+     previous when both are stuck at top:0. */
 }
 .metier-stack-card[data-card="1"] { z-index: 1; }
 .metier-stack-card[data-card="2"] { z-index: 2; }
@@ -382,8 +385,7 @@ html[lang="ar"] .metiers-stack-head .gold-rule { margin-inline-start: auto; }
 }
 html[lang="ar"] .metier-stack-name { font-family: var(--font-arabic); }
 @media (prefers-reduced-motion: reduce) {
-  .metiers-stack { height: auto; overflow: visible; }
-  .metier-stack-card { position: relative; inset: auto; padding: 40px clamp(16px, 4vw, 60px); }
+  .metier-stack-card { position: relative; height: auto; padding: 40px clamp(16px, 4vw, 60px); }
 }
 
 /* ===== Arabic typography normalization — only Mashq (display) + Amiri (text) ===== */
