@@ -182,26 +182,26 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
 }
 
 /* ----- Phone (≤560px) — DEAD-SIMPLE STATIC MAP -----
-   No sticky, no scroll-driven animation, no city-label sidebar
-   (cities are already named in the title sentence above). The
-   SVG sizes itself from its intrinsic viewBox aspect; the wrap
-   shrinks to fit. */
+   No sticky, no scroll-driven animation, no city-label sidebar.
+   Sticky padding is horizontal-zero so the map uses the FULL
+   viewport width (head text keeps its own inner padding). */
 @media (max-width: 560px) {
   .map-section { min-height: auto; }
   .map-sticky {
     position: static;
     min-height: 0;
-    display: block;            /* drop the flex column on phone */
-    padding: clamp(14px, 2vh, 24px) 16px clamp(20px, 3vh, 36px);
+    display: block;
+    padding: clamp(14px, 2vh, 24px) 0 clamp(16px, 2.5vh, 28px);
   }
-  .map-section .map-head { padding: 0 4px; margin-bottom: clamp(14px, 2vh, 22px); }
+  .map-section .map-head { padding: 0 16px; margin-bottom: clamp(14px, 2vh, 22px); text-align: center; max-width: 60ch; margin-inline: auto; }
   .map-section .eyebrow { font-size: 11px; letter-spacing: 0.2em; }
   .map-section h2 { font-size: clamp(1.3rem, 5.4vw, 1.7rem); margin: 6px 0 6px; }
   .map-section .map-sub { font-size: clamp(0.85rem, 3.4vw, 0.95rem); line-height: 1.4; }
-  .map-stage { display: block; }     /* drop flex on phone too */
-  .map-labels { display: none; }      /* cities already mentioned in the title */
-  .map-wrap { width: 100%; max-width: 100%; height: auto; }
-  .alg-map { width: 100%; height: auto; display: block; }
+  .map-stage { display: block; }
+  .map-labels { display: none; }
+  /* Map uses full viewport width — no horizontal sticky padding. */
+  .map-wrap { width: 100%; max-width: 100%; height: auto; padding: 0; margin: 0; }
+  .alg-map { width: 100%; height: auto; display: block; max-width: none; }
 }
 
 .alg-map .m-wash { opacity: 0; }
