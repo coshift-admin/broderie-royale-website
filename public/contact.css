@@ -181,25 +181,40 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
 }
 
-/* ----- Phone (≤560px) ----- The sticky child MUST fit inside the
-   viewport for the pin to do its job — otherwise the lower portion
-   (the map SVG) sits below the fold and the visitor scrolls past it
-   while only the head is visible. Budget per element below assumes
-   a 844px viewport; if the head/labels/map sum exceeds that, the
-   pin appears broken even though it's working. */
+/* ----- Phone (≤560px) -----
+   Sticky child must fit AND fill the viewport so there's no blank
+   dead zone at the bottom while the pin holds. We use flex: 1 on
+   the stage and wrap so they absorb whatever vertical space is left
+   after head + padding instead of leaving a 200px gap below the map. */
 @media (max-width: 560px) {
   .map-section { min-height: 280vh; }
-  /* Compact padding so the sticky child has more room for content. */
   .map-sticky { padding: clamp(14px, 2vh, 24px) 16px; gap: 10px; }
-  .map-section .map-head { padding: 0 4px; }
+  .map-section .map-head { padding: 0 4px; flex: 0 0 auto; }
   .map-section .eyebrow { font-size: 11px; letter-spacing: 0.2em; }
   .map-section h2 { font-size: clamp(1.3rem, 5.4vw, 1.7rem); margin: 6px 0 6px; }
   .map-section .map-sub { font-size: clamp(0.85rem, 3.4vw, 0.95rem); line-height: 1.4; }
-  .map-wrap { height: 44vh; }                /* tightened from 52vh */
-  .map-labels { gap: 12px; }
+  /* Stage absorbs remaining sticky height; wrap absorbs remaining
+     stage height. min-height:0 lets flex children actually shrink
+     below their content size if the math demands it. */
+  .map-stage {
+    flex: 1;
+    width: 100%;
+    min-height: 0;
+    flex-direction: column;
+    justify-content: center;
+    gap: clamp(8px, 1.5vh, 16px);
+  }
+  .map-labels { flex: 0 0 auto; gap: 12px; }
   .map-label { gap: 8px; }
   .map-label-name { font-size: clamp(17px, 4.8vw, 22px); }
   .map-label-num { font-size: 11px; min-width: 20px; }
+  .map-wrap {
+    flex: 1;
+    min-height: 0;
+    width: 100%;
+    max-width: 100%;
+    height: auto;          /* overrides 52vh/76vh — flex grows it */
+  }
 }
 
 .alg-map .m-wash { opacity: 0; }
