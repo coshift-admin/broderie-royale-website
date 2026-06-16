@@ -181,12 +181,11 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
 }
 
-/* ----- Phone (≤560px) — STATIC MAP -----
-   Scroll-driven map animation didn't behave well with touch + Lenis
-   smooth-scroll, so on phone we drop the sticky pin entirely and just
-   show the completed map as a normal block. The JS detects the same
-   breakpoint via matchMedia and short-circuits to the final-state
-   render — no rAF tick, no listeners. */
+/* ----- Phone (≤560px) — STATIC MAP, NO LABELS -----
+   Drop the sticky-pin + scroll animation on phone and hide the city
+   labels (the cities are already listed in the title / map-sub line).
+   The map renders in its final state as a normal block; the SVG sized
+   to a 1:1 wrap shows the entire Algeria outline. */
 @media (max-width: 560px) {
   .map-section { min-height: auto; }
   .map-sticky {
@@ -204,10 +203,9 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
     flex-direction: column;
     gap: clamp(10px, 1.5vh, 18px);
   }
-  .map-labels { gap: 12px; }
-  .map-label { gap: 8px; }
-  .map-label-name { font-size: clamp(17px, 4.8vw, 22px); }
-  .map-label-num { font-size: 11px; min-width: 20px; }
+  /* Cities are already named in the map-title and map-sub copy above —
+     showing them again as a label list is redundant on a small screen. */
+  .map-labels { display: none; }
   .map-wrap {
     width: 100%;
     max-width: 100%;
