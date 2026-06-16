@@ -640,10 +640,16 @@ function lookupI18n(key) {
       }
     }
     function onScroll(){ if (!rafId) rafId = requestAnimationFrame(tick); }
-    if (reduce) {
+    /* Render the map in its final visible state — used for both
+       prefers-reduced-motion AND mobile. The scroll-driven version
+       didn't behave well on touch + Lenis combos, so on phone we
+       just show the completed map at the natural section height. */
+    function renderStatic() {
       for (var k = 0; k < borders.length; k++) borders[k].style.strokeDashoffset = 0;
       wash.style.opacity = 1;
-      setVB(1);
+      // Don't call setVB on mobile (skipped zoom), but reset to FULL
+      // on desktop reduced-motion path.
+      if (!smallScreen) setVB(1);
       vanish.style.opacity = 1;
       pins.forEach(function(pin){
         pin.querySelector('.marker').style.opacity = 1;
@@ -651,6 +657,11 @@ function lookupI18n(key) {
         pin.classList.add('placed');
       });
       labelEls.forEach(function(el){ el.style.opacity = 1; el.style.transform = 'none'; });
+    }
+    if (reduce || smallScreen) {
+      // Mobile: no scroll-driven animation, no sticky pin, no rAF tick.
+      // Just paint the final state once.
+      renderStatic();
     } else if (!map.dataset.bound) {
       // Idempotency: data-astro-rerun makes this IIFE execute on every
       // ClientRouter navigation, so guard against double-bound listeners

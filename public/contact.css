@@ -181,56 +181,38 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
 }
 
-/* ----- Phone (≤560px) -----
-   Sticky child must fit AND fill the viewport so there's no blank
-   dead zone at the bottom while the pin holds. We use flex: 1 on
-   the stage and wrap so they absorb whatever vertical space is left
-   after head + padding instead of leaving a 200px gap below the map. */
+/* ----- Phone (≤560px) — STATIC MAP -----
+   Scroll-driven map animation didn't behave well with touch + Lenis
+   smooth-scroll, so on phone we drop the sticky pin entirely and just
+   show the completed map as a normal block. The JS detects the same
+   breakpoint via matchMedia and short-circuits to the final-state
+   render — no rAF tick, no listeners. */
 @media (max-width: 560px) {
-  .map-section { min-height: 280vh; }
-  .map-sticky { padding: clamp(14px, 2vh, 24px) 16px; gap: 10px; }
-  .map-section .map-head { padding: 0 4px; flex: 0 0 auto; }
+  .map-section { min-height: auto; }
+  .map-sticky {
+    position: static;
+    min-height: 0;
+    padding: clamp(14px, 2vh, 24px) 16px clamp(20px, 3vh, 36px);
+    gap: 10px;
+  }
+  .map-section .map-head { padding: 0 4px; }
   .map-section .eyebrow { font-size: 11px; letter-spacing: 0.2em; }
   .map-section h2 { font-size: clamp(1.3rem, 5.4vw, 1.7rem); margin: 6px 0 6px; }
   .map-section .map-sub { font-size: clamp(0.85rem, 3.4vw, 0.95rem); line-height: 1.4; }
-  /* Stage absorbs remaining sticky height; wrap absorbs remaining
-     stage height. min-height:0 lets flex children actually shrink
-     below their content size if the math demands it. */
   .map-stage {
-    flex: 1;
     width: 100%;
-    min-height: 0;
     flex-direction: column;
-    justify-content: center;
-    gap: clamp(8px, 1.5vh, 16px);
+    gap: clamp(10px, 1.5vh, 18px);
   }
-  .map-labels { flex: 0 0 auto; gap: 12px; }
+  .map-labels { gap: 12px; }
   .map-label { gap: 8px; }
   .map-label-name { font-size: clamp(17px, 4.8vw, 22px); }
   .map-label-num { font-size: 11px; min-width: 20px; }
   .map-wrap {
-    flex: 1;
-    min-height: 0;
     width: 100%;
     max-width: 100%;
-    height: auto;          /* overrides 52vh/76vh — flex grows it */
-    overflow: hidden;      /* trim SVG overflow when scaled to fill */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  /* viewBox is ~1:1 but the wrap on a tall phone is much taller than
-     wide. preserveAspectRatio="xMidYMin meet" left ~300px of empty SVG
-     canvas below the drawn map. Scale by height instead — width
-     overflows by ~150px each side and gets clipped by the wrap's
-     overflow:hidden. The wrap's flex justify-content:center keeps the
-     overflowing SVG centered horizontally. All three pins sit in the
-     central x range so they stay fully visible. */
-  .alg-map {
-    height: 100%;
-    width: auto;
-    flex: 0 0 auto;
-    max-width: none;
+    aspect-ratio: 1 / 1;    /* square map — matches the SVG's ~1:1 viewBox */
+    height: auto;
   }
 }
 
