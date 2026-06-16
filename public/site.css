@@ -459,6 +459,19 @@ html[lang="ar"] .fb-contact a { direction: ltr; unicode-bidi: isolate; }
 .fb-contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; margin-top: 28px; font-size: 14px; color: color-mix(in srgb, var(--ivory) 88%, transparent); }
 .fb-contact a { color: var(--ivory); }
 .fb-legal { margin-top: 30px; font-size: 12px; letter-spacing: 0.1em; color: color-mix(in srgb, var(--ivory) 60%, transparent); }
+/* ============================================================
+   MÉTIER VIDEO LIGHTBOX
+   Click on a métier card opens this modal with a YouTube iframe.
+   .open is added/removed via inline script in index.astro.
+   ============================================================ */
+.metier-video { position: fixed; inset: 0; z-index: 2000; background: color-mix(in srgb, var(--ink) 92%, transparent); backdrop-filter: blur(6px); opacity: 0; pointer-events: none; transition: opacity .35s var(--ease); display: grid; place-items: center; padding: 6vh 4vw; }
+.metier-video.open { opacity: 1; pointer-events: auto; }
+.metier-video-frame { width: min(96vw, 1200px); aspect-ratio: 16 / 9; border-radius: var(--r-md); overflow: hidden; box-shadow: var(--shadow-lg), 0 0 0 1px color-mix(in srgb, var(--gold) 28%, transparent); background: #000; }
+.metier-video-frame iframe { width: 100%; height: 100%; border: 0; display: block; }
+.metier-video-close { position: fixed; top: 22px; right: 22px; width: 46px; height: 46px; display: inline-flex; align-items: center; justify-content: center; background: transparent; color: var(--ivory); border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent); border-radius: 50%; font-size: 26px; line-height: 1; cursor: pointer; transition: background .25s var(--ease), border-color .25s var(--ease); }
+.metier-video-close:hover { background: color-mix(in srgb, var(--gold) 12%, transparent); border-color: var(--gold); }
+html[lang="ar"] .metier-video-close { right: auto; left: 22px; }
+
 .fb-credit { margin-top: 26px; display: flex; flex-direction: column; align-items: center; gap: 11px; }
 .fb-credit::before { content: ""; width: 42px; height: 1px; background: color-mix(in srgb, var(--gold-bright) 55%, transparent); }
 .fc-row { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; }

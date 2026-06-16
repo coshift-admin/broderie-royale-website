@@ -120,6 +120,8 @@ var I18N = {
   "ms.alger.t": { fr: "Alger", ar: "الجزائر", en: "Algiers" },
   "ms.djelfa.l": { fr: "Showroom", ar: "صالة العرض", en: "Showroom" },
   "ms.djelfa.t": { fr: "Djelfa", ar: "الجلفة", en: "Djelfa" },
+  "ms.boumerdes.l": { fr: "Showroom", ar: "صالة العرض", en: "Showroom" },
+  "ms.boumerdes.t": { fr: "Boumerdès", ar: "بومرداس", en: "Boumerdès" },
 
   "fb.tag": { fr: "Maison du Drapeau · depuis 1986", ar: "دار العَلَم · منذ 1986", en: "House of the Flag · since 1986" },
   "fb.legal": { fr: "© Broderie Royale Algérie — Tous droits réservés.", ar: "© الطرز الملكي الجزائري — جميع الحقوق محفوظة.", en: "© Broderie Royale Algérie — All rights reserved." },
@@ -208,6 +210,8 @@ var I18N = {
   "ct.message":  { fr: "Votre message", ar: "رسالتكم", en: "Your message" },
   "ct.send":     { fr: "Envoyer le message", ar: "إرسال الرسالة", en: "Send message" },
   "ct.required": { fr: "Merci de remplir les champs requis.", ar: "يرجى ملء الحقول المطلوبة.", en: "Please fill the required fields." },
+  "form.invalid_phone": { fr: "Numéro de téléphone invalide. Format attendu : 0X XX XX XX XX ou +213.", ar: "رقم الهاتف غير صالح. الصيغة المتوقّعة: 0X XX XX XX XX أو +213.", en: "Invalid phone number. Expected format: 0X XX XX XX XX or +213." },
+  "form.invalid_email": { fr: "Adresse email invalide.", ar: "البريد الإلكتروني غير صالح.", en: "Invalid email address." },
   "ct.sent_h":   { fr: "Message envoyé.", ar: "تم إرسال الرسالة.", en: "Message sent." },
   "ct.sent_p":   { fr: "Merci de nous avoir écrit. Notre équipe vous répondra très prochainement.", ar: "شكرًا لمراسلتكم. سيردّ عليكم فريقنا قريبًا جدًا.", en: "Thank you for writing. Our team will get back to you very soon." },
   "ct.coords":   { fr: "Nos coordonnées", ar: "بيانات التواصل", en: "Our details" },

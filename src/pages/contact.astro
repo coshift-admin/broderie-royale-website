@@ -75,7 +75,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 </div>
                 <div class="field">
                   <label data-i18n="dv.deadline">Échéance souhaitée</label>
-                  <input name="deadline" type="text" />
+                  {/* type="date" so the visitor picks a calendar date instead of
+                      typing free-text. min is set to today's date by the inline
+                      script at the bottom of this file so past dates can't be
+                      submitted. The native picker is locale-aware: French/Arabic
+                      visitors see the date order they expect. */}
+                  <input name="deadline" type="date" />
                 </div>
               </div>
               <div class="form-error" id="err2" data-i18n="dv.required">Merci de compléter cette étape.</div>
@@ -307,6 +312,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   else setMode('devis', false);
 })();
 
+/* ---- Form validation regexes — shared by devis + contact ----
+   PHONE_RE accepts Algerian formats: +213 followed by 9 digits, or a
+   leading 0 followed by 9 digits. Spaces, dots and dashes between
+   groups are stripped before the test. EMAIL_RE is a standard RFC-5322
+   simplification that catches the common typos without rejecting valid
+   addresses (a.b@c.d). */
+var PHONE_RE = /^(?:\+213|0)\d{9}$/;
+var EMAIL_RE = /^[^@\s]+@[^@\s]+\.[^@\s]+$/;
+function normPhone(s) { return (s || '').replace(/[\s\-.()]/g, ''); }
+function lookupI18n(key) {
+  var lang = (document.documentElement.getAttribute('lang') || 'fr').toLowerCase();
+  if (lang === 'ar') lang = 'ar';
+  else if (lang === 'en') lang = 'en';
+  else lang = 'fr';
+  var entry = (window.I18N || {})[key];
+  if (!entry) return key;
+  return entry[lang] || entry.fr || key;
+}
+
 /* ---- Devis: 3-step quote flow ---- */
 (function(){
   var form=document.getElementById('devisForm'); if(!form) return;
@@ -314,6 +338,17 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   var pips=Array.prototype.slice.call(document.querySelectorAll('#stepsRail .step-pip'));
   var sent=document.getElementById('devisSent');
   var cur=1;
+
+  // Deadline picker: forbid past dates by setting min=today (YYYY-MM-DD).
+  // Done in JS rather than at build time so the value stays correct
+  // whichever day the page is visited.
+  (function () {
+    var d = form.querySelector('input[name="deadline"]');
+    if (!d) return;
+    var t = new Date();
+    var pad = function (n) { return (n < 10 ? '0' : '') + n; };
+    d.min = t.getFullYear() + '-' + pad(t.getMonth() + 1) + '-' + pad(t.getDate());
+  })();
   // Mount file-picker. file-picker.js is loaded at the end of <body>, so
   // when this inline script runs during body parse, window.BR_FilePicker
   // is undefined. Defer the mount until DOMContentLoaded (which fires
@@ -349,9 +384,16 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   function valid(n){
     if(n===1){ var ok=!!document.getElementById('productVal').value; document.getElementById('err1').classList.toggle('show',!ok); return ok; }
     if(n===2){ var q=form.qty.value.trim(); form.qty.classList.toggle('invalid',!q); var ok=!!q; document.getElementById('err2').classList.toggle('show',!ok); return ok; }
-    if(n===3){ var ok=true; ['name','phone','email'].forEach(function(f){ var bad=!form[f].value.trim(); form[f].classList.toggle('invalid',bad); if(bad)ok=false; });
-      var em=form.email.value.trim(); if(em&&!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){form.email.classList.add('invalid');ok=false;}
-      document.getElementById('err3').classList.toggle('show',!ok); return ok; }
+    if(n===3){
+      var ok=true; var err3 = document.getElementById('err3'); var msg = '';
+      ['name','phone','email'].forEach(function(f){ var bad=!form[f].value.trim(); form[f].classList.toggle('invalid',bad); if(bad){ ok=false; msg = lookupI18n('dv.required'); } });
+      var ph = normPhone(form.phone.value);
+      if (ph && !PHONE_RE.test(ph)) { form.phone.classList.add('invalid'); ok=false; msg = lookupI18n('form.invalid_phone'); }
+      var em = form.email.value.trim();
+      if (em && !EMAIL_RE.test(em)) { form.email.classList.add('invalid'); ok=false; msg = lookupI18n('form.invalid_email'); }
+      err3.textContent = msg || err3.textContent;
+      err3.classList.toggle('show', !ok); return ok;
+    }
     return true;
   }
   form.addEventListener('click',function(e){
@@ -421,11 +463,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   form.addEventListener('submit', async function(e){
     e.preventDefault();
     var fields = form.querySelectorAll('[required]');
-    var ok = true;
-    fields.forEach(function(f){ var bad = !f.value.trim(); f.classList.toggle('invalid', bad); if(bad) ok=false; });
+    var ok = true; var msg = '';
+    fields.forEach(function(f){ var bad = !f.value.trim(); f.classList.toggle('invalid', bad); if(bad){ ok=false; msg = lookupI18n('ct.required'); } });
+    var ph = normPhone(form.cPhone.value);
+    if (ph && !PHONE_RE.test(ph)) { form.cPhone.classList.add('invalid'); ok=false; msg = lookupI18n('form.invalid_phone'); }
     var em = form.cEmail.value.trim();
-    if (em && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)) { form.cEmail.classList.add('invalid'); ok=false; }
-    if (!ok) { err.classList.add('show'); return; }
+    if (em && !EMAIL_RE.test(em)) { form.cEmail.classList.add('invalid'); ok=false; msg = lookupI18n('form.invalid_email'); }
+    if (!ok) { err.textContent = msg || err.textContent; err.classList.add('show'); return; }
     err.classList.remove('show');
     if (!window.BR_API) {
       err.textContent = 'Service indisponible.'; err.classList.add('show'); return;
