@@ -209,7 +209,14 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
       <button class="lang-btn" data-lang="ar">ع</button>
     </div>
     <a class="cart-icon" href="/panier" aria-label="Panier">
-      <svg viewBox="0 0 24 24"><path d="M6 7h12l-1 13H7L6 7z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg>
+      {/* Shopping-cart (chariot) icon: handle on the left, basket body,
+          two wheels. Client previously found the prior icon too close to
+          a trash-bin silhouette. */}
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 4h2.2l1.3 2h13.2l-2 8.5H7.5L5.5 4z" stroke-linejoin="round"/>
+        <circle cx="9" cy="19" r="1.5"/>
+        <circle cx="17" cy="19" r="1.5"/>
+      </svg>
       <span class="cart-count">0</span>
     </a>
     {/* Hamburger — visible only below 900px (see site.css .nav-toggle). */}

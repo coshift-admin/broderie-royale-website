@@ -197,6 +197,14 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </div>
 
         <div class="info-block">
+          <div class="ib-eyebrow" data-i18n="ct.boumerdes">Showroom Boumerdès</div>
+          <h3 data-i18n="ct.boumerdes">Showroom Boumerdès</h3>
+          <div class="addr">[Adresse à compléter]<br>35000, Boumerdès</div>
+          <div class="ph-label" data-i18n="ct.phones">Téléphones</div>
+          <ul class="ph-list"><li><a href="tel:+213000000000">+213 — à compléter</a></li></ul>
+        </div>
+
+        <div class="info-block">
           <div class="ib-eyebrow" data-i18n="ct.services">Services dédiés</div>
           <div class="services-grid">
             <div class="svc-cell">
@@ -228,7 +236,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <p class="map-sub" data-i18n="ct.map_sub">Deux ateliers, une même exigence — au cœur de l’Algérie.</p>
     </div>
     <div class="map-wrap">
-      <svg class="alg-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 997" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Carte de l'Algérie — Alger et Aïn Ouessara">
+      <svg class="alg-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 997" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Carte de l'Algérie — Alger, Boumerdès et Aïn Ouessara">
       <defs><radialGradient id="mhalo" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#A98847" stop-opacity="0.22"/><stop offset="100%" stop-color="#A98847" stop-opacity="0"/>
       </radialGradient><linearGradient id="vanishGrad" gradientUnits="userSpaceOnUse" x1="0" y1="225" x2="0" y2="360"><stop offset="0" stop-color="#1A1A1A" stop-opacity="0"/><stop offset="1" stop-color="#1A1A1A" stop-opacity="1"/></linearGradient><linearGradient id="pinGold" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E0C079"/><stop offset="0.45" stop-color="#A98847"/><stop offset="1" stop-color="#7C6230"/></linearGradient></defs>
@@ -254,6 +262,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <g class="lbl-group" transform="translate(0, -80)">
           <text class="lbl" text-anchor="middle" y="0">Aïn Ouessara</text>
           <line class="lbl-rule" x1="-66" y1="13" x2="66" y2="13"/>
+        </g>
+      </g>
+      {/* Boumerdès — coastal, ~50 km east of Alger. Pin sits just to the
+          east of the Alger marker; label drops below to avoid colliding
+          with the Alger label which already occupies the -80 slot. */}
+      <g class="pin pin3" transform="translate(605, 93)">
+        <g class="marker"><g transform="scale(2.1)">
+          <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
+          <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
+        </g></g>
+        <g class="lbl-group" transform="translate(36, 16)">
+          <text class="lbl" text-anchor="start" y="0">Boumerdès</text>
+          <line class="lbl-rule" x1="0" y1="13" x2="132" y2="13"/>
         </g>
       </g>
     </svg>

@@ -17,9 +17,9 @@ var I18N = {
   // ---- hero ----
   "hero.eyebrow": { fr: "MAISON DU DRAPEAU · DEPUIS 1986", ar: "دار العَلَم · منذ 1986", en: "HOUSE OF THE FLAG · SINCE 1986" },
   "hero.title": {
-    fr: "Nous brodons l’âme <em>d’une Nation.</em>",
-    ar: "نُطرّز <em>روح الأمّة.</em>",
-    en: "We embroider the soul <em>of a Nation.</em>"
+    fr: "La perfection <em>c’est notre métier.</em>",
+    ar: "الإتقان <em>هو حرفتنا.</em>",
+    en: "Perfection <em>is our craft.</em>"
   },
   "hero.sub": {
     fr: "Communication visuelle par le textile de haute qualité. Drapeaux, écussons et broderie d’exception — signés à Alger depuis près de quarante ans.",
@@ -44,8 +44,8 @@ var I18N = {
   "her.s1l": { fr: "L’année fondatrice", ar: "عام التأسيس", en: "The founding year" },
   "her.s2n": { fr: "≈ 40", ar: "≈ 40", en: "≈ 40" },
   "her.s2l": { fr: "Années de savoir-faire", ar: "عامًا من الخبرة", en: "Years of savoir-faire" },
-  "her.s3n": { fr: "2", ar: "2", en: "2" },
-  "her.s3l": { fr: "Maisons — Alger & Djelfa", ar: "داران — الجزائر والجلفة", en: "Showrooms — Algiers & Djelfa" },
+  "her.s3n": { fr: "3", ar: "3", en: "3" },
+  "her.s3l": { fr: "Maisons — Alger, Djelfa & Boumerdès", ar: "ثلاث دور — الجزائر، الجلفة وبومرداس", en: "Showrooms — Algiers, Djelfa & Boumerdès" },
 
   // ---- atelier ----
   "at.num":   { fr: "II — Le Geste", ar: "٢ — الحرفة", en: "II — The Craft" },
@@ -59,7 +59,7 @@ var I18N = {
 
   // ---- metiers ----
   "me.num":   { fr: "III — Les Métiers", ar: "٣ — المهن", en: "III — The Crafts" },
-  "me.title": { fr: "Six métiers, une exigence.", ar: "ستّ مهنٍ،<br>معيارٌ واحد.", en: "Six crafts, one standard." },
+  "me.title": { fr: "Cinq métiers, une exigence.", ar: "خمسُ مهنٍ،<br>معيارٌ واحد.", en: "Five crafts, one standard." },
   "me.sub":   { fr: "Faites glisser pour explorer.", ar: "اسحب للاستكشاف.", en: "Drag to explore." },
   "me.1n": { fr: "Drapeaux", ar: "الأعلام", en: "Flags" },
   "me.1d": { fr: "Drapeaux nationaux, internationaux, de table et de mât, sur supports haute résistance.", ar: "أعلام وطنية ودولية، مكتبية وعلى السواري، على دعائم عالية المتانة.", en: "National, international, table and mast flags on high-resistance supports." },
@@ -71,8 +71,6 @@ var I18N = {
   "me.4d": { fr: "Personnalisation premium : polos, t-shirts, casquettes et vêtements de travail.", ar: "تخصيصٌ فاخر: قمصان بولو، تيشيرتات، قبعات وملابس العمل.", en: "Premium personalisation: polos, t-shirts, caps and workwear." },
   "me.5n": { fr: "Impression polyester", ar: "طباعة البوليستر", en: "Polyester printing" },
   "me.5d": { fr: "Impression numérique sur tissu polyester, couleurs éclatantes et tenue durable.", ar: "طباعة رقمية على نسيج البوليستر، ألوانٌ زاهية وثباتٌ دائم.", en: "Digital printing on polyester fabric, vivid colours and lasting hold." },
-  "me.6n": { fr: "Impression coton", ar: "طباعة القطن", en: "Cotton printing" },
-  "me.6d": { fr: "Impression numérique sur tissu coton, douceur et précision du détail.", ar: "طباعة رقمية على نسيج القطن، نعومةٌ ودقّةٌ في التفاصيل.", en: "Digital printing on cotton fabric, softness and fine detail." },
 
   // ---- flag ----
   "fl.num":   { fr: "V — Le Drapeau", ar: "٥ — العَلَم", en: "V — The Flag" },
@@ -215,15 +213,16 @@ var I18N = {
   "ct.coords":   { fr: "Nos coordonnées", ar: "بيانات التواصل", en: "Our details" },
   "ct.alger":    { fr: "Showroom Alger", ar: "صالة العرض — الجزائر", en: "Showroom Algiers" },
   "ct.djelfa":   { fr: "Showroom Djelfa", ar: "صالة العرض — الجلفة", en: "Showroom Djelfa" },
+  "ct.boumerdes":{ fr: "Showroom Boumerdès", ar: "صالة العرض — بومرداس", en: "Showroom Boumerdès" },
   "ct.phones":   { fr: "Téléphones", ar: "الهواتف", en: "Telephones" },
   "ct.messaging":{ fr: "Mobile · Viber · WeChat · WhatsApp", ar: "موبايل · فايبر · وي‌شات · واتساب", en: "Mobile · Viber · WeChat · WhatsApp" },
   "ct.svc_print":{ fr: "Service print & drapeaux", ar: "خدمة الطباعة والأعلام", en: "Print & flags service" },
   "ct.svc_brod": { fr: "Service broderie", ar: "خدمة التطريز", en: "Embroidery service" },
   "ct.svc_bill": { fr: "Service facturation", ar: "خدمة الفوترة", en: "Billing service" },
   "ct.services": { fr: "Services dédiés", ar: "خدمات مخصّصة", en: "Dedicated services" },
-  "ct.map_eyebrow": { fr: "DEUX MAISONS", ar: "داران", en: "TWO HOUSES" },
-  "ct.map_title":{ fr: "Alger & Aïn Ouessara.", ar: "الجزائر وعين وسارة.", en: "Algiers & Aïn Ouessara." },
-  "ct.map_sub":  { fr: "Deux ateliers, une même exigence — au cœur de l’Algérie.", ar: "مشغلان، معيارٌ واحد — في قلب الجزائر.", en: "Two ateliers, one standard — at the heart of Algeria." },
+  "ct.map_eyebrow": { fr: "TROIS MAISONS", ar: "ثلاث دور", en: "THREE HOUSES" },
+  "ct.map_title":{ fr: "Alger, Boumerdès & Aïn Ouessara.", ar: "الجزائر، بومرداس وعين وسارة.", en: "Algiers, Boumerdès & Aïn Ouessara." },
+  "ct.map_sub":  { fr: "Trois ateliers, une même exigence — au cœur de l’Algérie.", ar: "ثلاثة مشاغل، معيارٌ واحد — في قلب الجزائر.", en: "Three ateliers, one standard — at the heart of Algeria." },
 
   // ============ NAV (added) ============
   "nav.galerie": { fr: "Galerie", ar: "المعرض", en: "Gallery" },

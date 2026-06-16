@@ -500,11 +500,39 @@ html[lang="ar"] .fc-label { letter-spacing: 0.05em; font-size: 13px; }
 .center { text-align: center; }
 .mt-s { margin-top: 16px; } .mt-m { margin-top: 32px; } .mt-l { margin-top: 56px; }
 
-/* ===== TONAL PATTERNS (Fil royal) ===== */
-.footer-banner { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'52'%20height%3D'52'%20viewBox%3D'0%200%2060%2060'%3E%3Cg%20fill%3D'none'%20stroke%3D'rgba(74%2C14%2C14%2C0.23)'%20stroke-width%3D'1.1'%3E%3Cpath%20d%3D'M0%2018%20Q%2015%207.2%2030%2018%20T%2060%2018'%2F%3E%3Cpath%20d%3D'M0%2042%20Q%2015%2031.2%2030%2042%20T%2060%2042'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); background-repeat: repeat; }
-.chapter--ivory { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'52'%20height%3D'52'%20viewBox%3D'0%200%2060%2060'%3E%3Cg%20fill%3D'none'%20stroke%3D'rgba(154%2C138%2C102%2C0.11)'%20stroke-width%3D'1.1'%3E%3Cpath%20d%3D'M0%2018%20Q%2015%207.2%2030%2018%20T%2060%2018'%2F%3E%3Cpath%20d%3D'M0%2042%20Q%2015%2031.2%2030%2042%20T%2060%2042'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); background-repeat: repeat; }
-body.shop { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'52'%20height%3D'52'%20viewBox%3D'0%200%2060%2060'%3E%3Cg%20fill%3D'none'%20stroke%3D'rgba(154%2C138%2C102%2C0.11)'%20stroke-width%3D'1.1'%3E%3Cpath%20d%3D'M0%2018%20Q%2015%207.2%2030%2018%20T%2060%2018'%2F%3E%3Cpath%20d%3D'M0%2042%20Q%2015%2031.2%2030%2042%20T%2060%2042'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); background-repeat: repeat; }
-#prestige, #catalogue { background-image: url("data:image/svg+xml,%3Csvg%20xmlns%3D'http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg'%20width%3D'52'%20height%3D'52'%20viewBox%3D'0%200%2060%2060'%3E%3Cg%20fill%3D'none'%20stroke%3D'rgba(201%2C164%2C90%2C0.05)'%20stroke-width%3D'1.1'%3E%3Cpath%20d%3D'M0%2018%20Q%2015%207.2%2030%2018%20T%2060%2018'%2F%3E%3Cpath%20d%3D'M0%2042%20Q%2015%2031.2%2030%2042%20T%2060%2042'%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E"); background-repeat: repeat; }
+/* ===== TONAL PATTERNS (Fil royal) — damask broderie pattern shared by
+   every band of the site. The asset is a dark damask; on each section
+   we overlay a translucent base-colour veil so only a faint texture
+   peeks through and the brand colour wins. Tune the veil alpha per
+   section to dial visibility: lower alpha = more pattern. */
+.footer-banner {
+  background-image:
+    linear-gradient(rgba(131, 27, 26, 0.86), rgba(131, 27, 26, 0.86)),
+    url("/assets/pattern-broderie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 720px auto;
+}
+.chapter--ivory {
+  background-image:
+    linear-gradient(rgba(245, 242, 235, 0.94), rgba(245, 242, 235, 0.94)),
+    url("/assets/pattern-broderie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 720px auto;
+}
+body.shop {
+  background-image:
+    linear-gradient(rgba(245, 242, 235, 0.94), rgba(245, 242, 235, 0.94)),
+    url("/assets/pattern-broderie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 720px auto;
+}
+#prestige, #catalogue {
+  background-image:
+    linear-gradient(rgba(26, 26, 26, 0.82), rgba(26, 26, 26, 0.82)),
+    url("/assets/pattern-broderie.webp");
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 720px auto;
+}
 .fb-mark { display: block; width: clamp(280px, 40vw, 380px); margin: 18px auto 0; }
 
 /* ===== PARTNERS BAND (homepage) ===== */
