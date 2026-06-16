@@ -580,24 +580,28 @@ function lookupI18n(key) {
       var scrolled = -section.getBoundingClientRect().top;
       targetSp = total > 0 ? c01(scrolled / total) : 0;
     }
-    function tick() {
-      rafId = null;
-      readTarget();
-      if (displaySp < 0) displaySp = targetSp;
-      var delta = targetSp - displaySp;
-      displaySp += delta * 0.18;
-      if (Math.abs(delta) < 0.0008) displaySp = targetSp;
-      drawWithSp(displaySp);
-      if (Math.abs(targetSp - displaySp) > 0.0002) {
-        rafId = requestAnimationFrame(tick);
-      }
-    }
     // Phone test: viewBox attribute changes force an SVG reflow each
     // frame which jitters on lower-power mobile GPUs. Skip the zoom on
     // narrow viewports — map stays at its full extent throughout, but
     // borders/pins still animate. Smoother feel for the price of one
     // dropped effect.
     var smallScreen = matchMedia('(max-width: 720px)').matches;
+    // Faster lerp on phones so the animation tracks momentum-scroll
+    // closely — otherwise the user blasts past the section and the
+    // pins haven't caught up by the time they're already gone.
+    var LERP = smallScreen ? 0.30 : 0.18;
+    function tick() {
+      rafId = null;
+      readTarget();
+      if (displaySp < 0) displaySp = targetSp;
+      var delta = targetSp - displaySp;
+      displaySp += delta * LERP;
+      if (Math.abs(delta) < 0.0008) displaySp = targetSp;
+      drawWithSp(displaySp);
+      if (Math.abs(targetSp - displaySp) > 0.0002) {
+        rafId = requestAnimationFrame(tick);
+      }
+    }
     function drawWithSp(sp){
       // Border draw — finishes earlier so the eye doesn't sit on a
       // completed map waiting for pins. Previously ran 0 -> 0.42.

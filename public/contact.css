@@ -181,10 +181,12 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
 }
 
-/* ----- Phone (≤560px) ----- compress everything further: shorter
-   section, smaller head, tighter sticky padding, shorter map. */
+/* ----- Phone (≤560px) ----- keep the long scroll so the sticky pin
+   has room to play out the borders + pin landings. Shorter than that
+   and momentum touch-scrolling blew past the whole map before the
+   animation finished. */
 @media (max-width: 560px) {
-  .map-section { min-height: 220vh; }       /* was 300vh */
+  .map-section { min-height: 280vh; }
   .map-sticky { padding: clamp(20px, 3vh, 36px) 16px; gap: 14px; }
   .map-section .map-head { padding: 0 4px; }
   .map-section h2 { font-size: clamp(1.4rem, 6vw, 1.9rem); margin: 8px 0 8px; }
