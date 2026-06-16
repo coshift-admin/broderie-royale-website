@@ -210,6 +210,7 @@ var I18N = {
   "ct.message":  { fr: "Votre message", ar: "رسالتكم", en: "Your message" },
   "ct.send":     { fr: "Envoyer le message", ar: "إرسال الرسالة", en: "Send message" },
   "ct.required": { fr: "Merci de remplir les champs requis.", ar: "يرجى ملء الحقول المطلوبة.", en: "Please fill the required fields." },
+  "ct.optional": { fr: "(optionnel)", ar: "(اختياري)", en: "(optional)" },
   "form.invalid_phone": { fr: "Numéro de téléphone invalide. Format attendu : 0X XX XX XX XX ou +213.", ar: "رقم الهاتف غير صالح. الصيغة المتوقّعة: 0X XX XX XX XX أو +213.", en: "Invalid phone number. Expected format: 0X XX XX XX XX or +213." },
   "form.invalid_email": { fr: "Adresse email invalide.", ar: "البريد الإلكتروني غير صالح.", en: "Invalid email address." },
   "ct.sent_h":   { fr: "Message envoyé.", ar: "تم إرسال الرسالة.", en: "Message sent." },

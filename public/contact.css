@@ -43,6 +43,7 @@ html[lang="ar"] .contact-card h2 { font-family: var(--font-arabic); }
 .contact-form label { font-size: 12.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--fg2); }
 html[lang="ar"] .contact-form label { letter-spacing: .02em; font-size: 15px; }
 .contact-form .req { color: var(--royal-red); }
+.contact-form .optional { color: var(--fg2); font-size: 11px; font-style: italic; margin-inline-start: 4px; font-weight: 400; letter-spacing: 0; }
 .contact-form input, .contact-form textarea {
   font-family: var(--font-body); font-size: 15px; color: var(--ink); background: var(--ivory);
   border: 1px solid var(--ivory-line); border-radius: var(--r-sm); padding: 13px 14px; outline: none;

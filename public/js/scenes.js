@@ -58,43 +58,64 @@
     }
   }
 
-  /* ---------- METIERS — sticky card stack reveal ----------
-     Each .metier-stack-card is position:sticky/top:0/height:100vh in
-     CSS, so they naturally stack as the visitor scrolls. The CSS does
-     the heavy lifting; we just add a per-card scale-down + dim that
-     tracks the next card's approach, giving the outgoing card a sense
-     of being covered. Cheap because each ScrollTrigger is scrubbed on
-     its own next-card element — no global rAF, GSAP throttles for us. */
+  /* ---------- METIERS — GSAP-pinned card stack reveal ----------
+     The .metiers-stack wrapper is 100vh tall; ScrollTrigger pins it
+     and extends the scroll distance to (N - 1) extra viewports of
+     scroll. All cards are absolutely-positioned at inset:0 — initial
+     state: card 1 visible (yPercent:0), cards 2..N below the viewport
+     (yPercent:100). The timeline scrubs each card up to yPercent:0
+     in order, while the previous card scales/dims slightly as it gets
+     covered. Pin guarantees scroll distance regardless of Lenis or
+     ancestor styling that broke the pure-sticky version. */
   const metiersStack = document.getElementById("metiersStack");
-  const metierTriggers = [];
+  let metierTl = null;
   function buildMetiers() {
     if (!metiersStack) return;
-    // Tear down any previous build (Arabic font load, SPA nav, resize)
-    metierTriggers.forEach(t => t.kill());
-    metierTriggers.length = 0;
+    if (metierTl) {
+      if (metierTl.scrollTrigger) metierTl.scrollTrigger.kill();
+      metierTl.kill();
+      metierTl = null;
+    }
     const cards = Array.from(metiersStack.querySelectorAll(".metier-stack-card"));
-    if (!cards.length || reduced) return;
+    if (!cards.length) return;
+    // Reduced motion path: no animation, all cards naturally stacked.
+    if (reduced) {
+      cards.forEach((c) => gsap.set(c, { yPercent: 0, clearProps: "transform" }));
+      return;
+    }
+    // Initial state — only card 1 is in the viewport
     cards.forEach((card, i) => {
+      gsap.set(card, { yPercent: i === 0 ? 0 : 100 });
       const inner = card.querySelector(".metier-stack-inner");
-      if (!inner) return;
-      // Last card has nothing covering it — leave it untouched.
-      if (i === cards.length - 1) return;
-      const next = cards[i + 1];
-      const st = ScrollTrigger.create({
-        trigger: next,
-        start: "top bottom",   // next card's top crosses viewport bottom
-        end: "top top",        // next card's top reaches viewport top
-        scrub: true,
-        invalidateOnRefresh: true,
-        onUpdate: (self) => {
-          // self.progress 0 -> next card just entering; 1 -> next pinned
-          const p = self.progress;
-          inner.style.transform = "scale(" + (1 - p * 0.06).toFixed(4) + ")";
-          inner.style.opacity = (1 - p * 0.35).toFixed(3);
-        },
-      });
-      metierTriggers.push(st);
+      if (inner) gsap.set(inner, { scale: 1, opacity: 1 });
     });
+    const steps = cards.length - 1;
+    metierTl = gsap.timeline({
+      scrollTrigger: {
+        trigger: metiersStack,
+        start: "top top",
+        end: () => "+=" + (steps * window.innerHeight),
+        pin: true,
+        scrub: 1,
+        anticipatePin: 1,
+        invalidateOnRefresh: true,
+      },
+    });
+    for (let i = 1; i < cards.length; i++) {
+      const card = cards[i];
+      const prevInner = cards[i - 1].querySelector(".metier-stack-inner");
+      const at = i - 1;
+      // Card slides up from below to cover the previous
+      metierTl.to(card, { yPercent: 0, duration: 1, ease: "power2.inOut" }, at);
+      // Previous card sinks slightly while being covered — depth cue
+      if (prevInner) {
+        metierTl.to(
+          prevInner,
+          { scale: 0.94, opacity: 0.55, duration: 1, ease: "power2.inOut" },
+          at
+        );
+      }
+    }
   }
   // build after images settle so sticky math has real layout numbers
   window.addEventListener("load", () => { buildMetiers(); ScrollTrigger.refresh(); });

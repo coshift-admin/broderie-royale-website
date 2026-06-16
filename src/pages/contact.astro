@@ -160,8 +160,11 @@ import BaseLayout from '../layouts/BaseLayout.astro';
             <input name="cPhone" type="tel" inputmode="tel" autocomplete="tel" required />
           </div>
           <div class="field">
-            <label><span data-i18n="ct.email">Email</span> <span class="req">*</span></label>
-            <input name="cEmail" type="email" autocomplete="email" required />
+            <label><span data-i18n="ct.email">Email</span> <span class="optional" data-i18n="ct.optional">(optionnel)</span></label>
+            {/* email no longer required — client wants to lower the friction
+                on the contact form. Validation still runs if a value is
+                entered (see EMAIL_RE in the submit handler). */}
+            <input name="cEmail" type="email" autocomplete="email" />
           </div>
           <div class="field">
             <label><span data-i18n="ct.message">Votre message</span> <span class="req">*</span></label>
@@ -241,9 +244,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <section class="map-section">
     <div class="map-sticky">
     <div class="map-head">
-      <div class="eyebrow" data-i18n="ct.map_eyebrow">DEUX MAISONS</div>
-      <h2 data-i18n="ct.map_title">Alger & Aïn Ouessara.</h2>
-      <p class="map-sub" data-i18n="ct.map_sub">Deux ateliers, une même exigence — au cœur de l’Algérie.</p>
+      <div class="eyebrow" data-i18n="ct.map_eyebrow">TROIS MAISONS</div>
+      <h2 data-i18n="ct.map_title">Alger, Boumerdès & Aïn Ouessara.</h2>
+      <p class="map-sub" data-i18n="ct.map_sub">Trois ateliers, une même exigence — au cœur de l’Algérie.</p>
     </div>
     <div class="map-wrap">
       <svg class="alg-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 997" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Carte de l'Algérie — Alger, Boumerdès et Aïn Ouessara">
@@ -293,10 +296,15 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   </section>
 </main>
 
-<script is:inline>
-/* ---- mode toggle: Devis (default) ⇄ Nous écrire ---- */
+<script is:inline data-astro-rerun>
+/* ---- mode toggle: Devis (default) ⇄ Nous écrire ----
+   data-astro-rerun so this re-binds after every ClientRouter navigation.
+   Without it, landing on /contact via the in-page nav left the toggle
+   click listener un-attached and the "Nous écrire" tab silently failed.
+   Guarded so repeat executions don't stack handlers. */
 (function(){
   var toggle = document.getElementById('contactToggle');
+  if (!toggle) return;
   var modes = Array.prototype.slice.call(document.querySelectorAll('.cmode'));
   function setMode(m, push){
     if (m !== 'devis' && m !== 'message') m = 'devis';
@@ -309,9 +317,12 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     toggle.querySelectorAll('.ctab').forEach(function(b){ b.classList.toggle('active', b.dataset.mode === m); });
     if (push) { try { history.replaceState(null, '', '#' + m); } catch(e){} }
   }
-  toggle.addEventListener('click', function(e){
-    var b = e.target.closest('.ctab'); if (!b) return; setMode(b.dataset.mode, true);
-  });
+  if (!toggle.dataset.bound) {
+    toggle.dataset.bound = '1';
+    toggle.addEventListener('click', function(e){
+      var b = e.target.closest('.ctab'); if (!b) return; setMode(b.dataset.mode, true);
+    });
+  }
   var h = (location.hash || '').replace('#','').toLowerCase();
   if (h === 'message' || h === 'ecrire' || h === 'nous-ecrire') setMode('message', false);
   else setMode('devis', false);
@@ -527,13 +538,36 @@ function lookupI18n(key) {
     function easeOutBack(t){ var c = 1.40158; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); }
     function easeOutCubic(t){ return 1 - Math.pow(1 - t, 3); }
     function setVB(t){ var v=[]; for (var j=0;j<4;j++) v.push(lerp(FULL[j], ZOOM[j], t).toFixed(2)); map.setAttribute('viewBox', v.join(' ')); }
-    var ticking = false;
-    function draw(){
-      ticking = false;
+    /* Smoothed scroll-driven update.
+       The visual progress (displaySp) lerps toward the scroll-derived
+       target (targetSp) every animation frame, so when the visitor
+       throws the scroll wheel and the position jumps from 0.1 to 0.6
+       in a single event, the map animates the in-between frames
+       instead of snapping. Continues ticking until display has caught
+       up, then idles. Earlier rAF-on-scroll setup snapped to the
+       latest scroll position each frame, which is why fast scrolls
+       skipped the animation. */
+    var displaySp = -1;
+    var targetSp = 0;
+    var rafId = null;
+    function readTarget() {
       var total = section.offsetHeight - window.innerHeight;
       var scrolled = -section.getBoundingClientRect().top;
-      var sp = total > 0 ? c01(scrolled / total) : 0;
-
+      targetSp = total > 0 ? c01(scrolled / total) : 0;
+    }
+    function tick() {
+      rafId = null;
+      readTarget();
+      if (displaySp < 0) displaySp = targetSp;
+      var delta = targetSp - displaySp;
+      displaySp += delta * 0.18;
+      if (Math.abs(delta) < 0.0008) displaySp = targetSp;
+      drawWithSp(displaySp);
+      if (Math.abs(targetSp - displaySp) > 0.0002) {
+        rafId = requestAnimationFrame(tick);
+      }
+    }
+    function drawWithSp(sp){
       // Border draw — apply easing so the dash retreats with a soft curve
       // instead of a constant rate.
       var p = seg(sp, 0, 0.42);
@@ -541,34 +575,24 @@ function lookupI18n(key) {
       for (var k = 0; k < borders.length; k++) borders[k].style.strokeDashoffset = dOff;
       var washIn = seg(p, 0.55, 1);
       wash.style.opacity = washIn.toFixed(3);
-
-      // viewBox zoom — keep the cubic ease but widen the segment slightly so
-      // the camera move is less abrupt.
       setVB(easeIO(seg(sp, 0.42, 0.76)));
-
       var mAmt = seg(sp, 0.50, 0.86);
       vanish.style.opacity = mAmt.toFixed(3);
-
-      // Pin landings — three pins, staggered tighter so they fit before the
-      // scroll ends. Each one's reveal is eased twice: opacity rises with a
-      // gentle out-cubic, and the drop transform uses easeOutBack for a
-      // subtle settle. Linear interpolation here used to feel snappy.
       var pinStart = 0.74;
-      var pinSpan = 0.11;        // each pin individually fades in over this
-      var pinStagger = 0.07;     // gap between consecutive pin starts
+      var pinSpan = 0.11;
+      var pinStagger = 0.07;
       for (var i = 0; i < pins.length; i++){
         var raw = seg(sp, pinStart + i * pinStagger, pinStart + i * pinStagger + pinSpan);
         var lp = easeOutCubic(raw);
         var pin = pins[i];
         var mk = pin.querySelector('.marker');
         mk.style.opacity = lp.toFixed(3);
-        // easeOutBack on the drop gives a soft overshoot-settle landing
         mk.style.transform = 'translateY(' + ((1 - easeOutBack(raw)) * -10).toFixed(2) + 'px)';
         pin.querySelector('.lbl-group').style.opacity = lp.toFixed(3);
         if (raw > 0.95) pin.classList.add('placed'); else pin.classList.remove('placed');
       }
     }
-    function onScroll(){ if (!ticking){ ticking = true; requestAnimationFrame(draw); } }
+    function onScroll(){ if (!rafId) rafId = requestAnimationFrame(tick); }
     if (reduce) {
       for (var k = 0; k < borders.length; k++) borders[k].style.strokeDashoffset = 0;
       wash.style.opacity = 1;
@@ -580,10 +604,17 @@ function lookupI18n(key) {
         pin.querySelector('.lbl-group').style.opacity = 1;
         pin.classList.add('placed');
       });
-    } else {
+    } else if (!map.dataset.bound) {
+      // Idempotency: data-astro-rerun makes this IIFE execute on every
+      // ClientRouter navigation, so guard against double-bound listeners
+      // (otherwise the animation would tick multiple times per frame).
+      map.dataset.bound = '1';
       window.addEventListener('scroll', onScroll, { passive: true });
       window.addEventListener('resize', onScroll);
-      draw();
+      onScroll();
+    } else {
+      // Re-render once on rerun so display catches the current scroll.
+      onScroll();
     }
   }
 })();
