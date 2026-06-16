@@ -104,35 +104,40 @@ html[lang="ar"] .svc-cell .sc-name { font-family: var(--font-arabic); }
    ALGERIA MAP — gold thread draw + dropping pins
    ============================================================ */
 .map-section { background: var(--ink); color: var(--ivory); padding: 0; position: relative; overflow: clip; min-height: 300vh; }
-.map-sticky { position: sticky; top: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: clamp(14px, 2vw, 28px); padding: clamp(40px, 6vh, 70px) clamp(20px, 6vw, 120px) clamp(40px, 6vh, 60px); }
+.map-sticky { position: sticky; top: 0; min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: clamp(8px, 1.2vw, 16px); padding: clamp(16px, 2.5vh, 32px) clamp(20px, 6vw, 120px) clamp(20px, 3vh, 40px); }
 .map-section .map-head { text-align: center; max-width: 60ch; margin: 0 auto; }
 .map-section .eyebrow { color: var(--gold); }
 .map-section h2 { font-family: var(--font-display); font-weight: 700; color: var(--ivory); font-size: clamp(1.8rem,4vw,3rem); margin: 12px 0 14px; }
 html[lang="ar"] .map-section h2 { font-family: var(--font-arabic); }
 .map-section .map-sub { color: var(--fg-on-dark-2); font-size: clamp(1rem,1.4vw,1.2rem); line-height: 1.6; }
-.map-wrap { width: 100%; max-width: 1120px; height: 76vh; margin: 0 auto; position: relative; }
+/* Two-column stage: labels in their own column on the left, the map
+   SVG centered in the available remaining width. The pair is centered
+   together inside the sticky so the visual stays balanced. */
+.map-stage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(20px, 3vw, 60px);
+}
+.map-wrap { flex: 0 1 1120px; min-width: 0; width: 100%; max-width: 1120px; height: 76vh; position: relative; }
+html[lang="ar"] .map-stage { flex-direction: row-reverse; }
 .alg-map { width: 100%; height: 100%; display: block; overflow: visible; }
 .alg-map .vanish { opacity: 0; }
 
 /* ============================================================
-   MAP LABELS — vertical list on the left of the map. Each .map-label
-   starts hidden; the inline script in contact.astro lerps opacity +
-   translate-x in lockstep with its corresponding pin landing on the
-   map. RTL flips the list to the right side. Below 900px the list
-   stacks below the map so it doesn't crowd the SVG.
+   MAP LABELS — vertical list, sibling of the map wrap on the left.
+   Each .map-label starts hidden; the inline script in contact.astro
+   lerps opacity + translate-x in lockstep with its corresponding pin
+   landing on the map. Below 900px the list stacks above the map.
    ============================================================ */
 .map-labels {
-  position: absolute;
-  left: clamp(8px, 2vw, 28px);
-  top: 50%;
-  transform: translateY(-50%);   /* vertically centered on the map */
+  flex: 0 0 auto;
   display: flex;
   flex-direction: column;
-  gap: clamp(22px, 3.4vh, 42px);  /* spread further apart now that labels are bigger */
-  z-index: 4;
+  gap: clamp(22px, 3.4vh, 42px);
   pointer-events: none;
 }
-html[lang="ar"] .map-labels { left: auto; right: clamp(8px, 2vw, 28px); }
 .map-label {
   display: flex;
   align-items: baseline;
@@ -160,15 +165,16 @@ html[lang="ar"] .map-labels { left: auto; right: clamp(8px, 2vw, 28px); }
 }
 html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
 @media (max-width: 900px) {
+  /* Stack the stage vertically on narrow screens: labels above the map
+     as a horizontal row so they don't compete for width. */
+  .map-stage { flex-direction: column; gap: clamp(14px, 3vw, 24px); }
+  html[lang="ar"] .map-stage { flex-direction: column; }
   .map-labels {
-    position: static;
-    transform: none;
     flex-direction: row;
     flex-wrap: wrap;
     justify-content: center;
     gap: clamp(16px, 3vw, 32px);
     padding: 0 12px;
-    margin-bottom: 18px;
   }
   .map-label { transform: translateX(0); }
 }

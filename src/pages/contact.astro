@@ -252,12 +252,13 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 data-i18n="ct.map_title">Alger, Boumerdès & Aïn Ouessara.</h2>
       <p class="map-sub" data-i18n="ct.map_sub">Trois ateliers, une même exigence — au cœur de l’Algérie.</p>
     </div>
-    <div class="map-wrap">
-      {/* City labels as an out-of-SVG vertical list. Reveal order
-          MUST match the pin landing order in the script below
-          (Alger -> Aïn Ouessara -> Boumerdès), so the i-th label
-          fades in with the i-th pin. Map stays centered; the list
-          sits to its left on desktop (and on the right under RTL). */}
+    {/* Two-column stage: city labels on the left, the SVG map on the
+        right. .map-stage is a flex container that centers the pair as
+        a group; the labels keep their own width and the map fills the
+        rest up to its max-width. Avoids the previous absolute-overlay
+        positioning that was clipping the leftmost edge of the Algeria
+        outline. */}
+    <div class="map-stage">
       <div class="map-labels" id="mapLabels" aria-hidden="true">
         {/* Order mirrors the map-title sentence and the pins array
             below: Alger -> Boumerdès -> Aïn Ouessara. */}
@@ -274,6 +275,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           <span class="map-label-name">Aïn Ouessara</span>
         </div>
       </div>
+      <div class="map-wrap">
       <svg class="alg-map" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1000 997" preserveAspectRatio="xMidYMin meet" role="img" aria-label="Carte de l'Algérie — Alger, Boumerdès et Aïn Ouessara">
       <defs><radialGradient id="mhalo" cx="50%" cy="50%" r="50%">
         <stop offset="0%" stop-color="#A98847" stop-opacity="0.22"/><stop offset="100%" stop-color="#A98847" stop-opacity="0"/>
@@ -304,8 +306,9 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         </g></g>
       </g>
     </svg>
-    </div>
-    </div>
+      </div>{/* map-wrap */}
+    </div>{/* map-stage */}
+    </div>{/* map-sticky */}
   </section>
 </main>
 
