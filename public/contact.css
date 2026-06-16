@@ -181,20 +181,25 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
 }
 
-/* ----- Phone (≤560px) ----- keep the long scroll so the sticky pin
-   has room to play out the borders + pin landings. Shorter than that
-   and momentum touch-scrolling blew past the whole map before the
-   animation finished. */
+/* ----- Phone (≤560px) ----- The sticky child MUST fit inside the
+   viewport for the pin to do its job — otherwise the lower portion
+   (the map SVG) sits below the fold and the visitor scrolls past it
+   while only the head is visible. Budget per element below assumes
+   a 844px viewport; if the head/labels/map sum exceeds that, the
+   pin appears broken even though it's working. */
 @media (max-width: 560px) {
   .map-section { min-height: 280vh; }
-  .map-sticky { padding: clamp(20px, 3vh, 36px) 16px; gap: 14px; }
+  /* Compact padding so the sticky child has more room for content. */
+  .map-sticky { padding: clamp(14px, 2vh, 24px) 16px; gap: 10px; }
   .map-section .map-head { padding: 0 4px; }
-  .map-section h2 { font-size: clamp(1.4rem, 6vw, 1.9rem); margin: 8px 0 8px; }
-  .map-section .map-sub { font-size: clamp(0.9rem, 3.6vw, 1rem); }
-  .map-wrap { height: 52vh; }                /* was 76vh — too tall on phones */
-  .map-labels { gap: 14px; }
+  .map-section .eyebrow { font-size: 11px; letter-spacing: 0.2em; }
+  .map-section h2 { font-size: clamp(1.3rem, 5.4vw, 1.7rem); margin: 6px 0 6px; }
+  .map-section .map-sub { font-size: clamp(0.85rem, 3.4vw, 0.95rem); line-height: 1.4; }
+  .map-wrap { height: 44vh; }                /* tightened from 52vh */
+  .map-labels { gap: 12px; }
   .map-label { gap: 8px; }
-  .map-label-name { font-size: clamp(18px, 5.2vw, 24px); }
+  .map-label-name { font-size: clamp(17px, 4.8vw, 22px); }
+  .map-label-num { font-size: 11px; min-width: 20px; }
 }
 
 .alg-map .m-wash { opacity: 0; }
