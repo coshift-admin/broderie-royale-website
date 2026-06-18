@@ -233,7 +233,15 @@ html[lang="ar"] .gold-rule { background: linear-gradient(270deg, var(--gold), tr
 /* ============================================================
    HERO / OPENING
    ============================================================ */
-#hero { height: 100vh; min-height: 680px; display: grid; place-items: center; position: relative; background: var(--ink); padding: 0; }
+/* Top + bottom padding reserve clearance for two fixed-ish elements:
+   - the nav (≈86 px tall initially, 58 px when .scrolled) — without
+     the top padding, zooming in or shrinking the viewport made the
+     crest disappear behind the nav.
+   - the .scroll-hint (.dot + label, ≈70 px) — without the bottom
+     padding, the centered subtitle was sliding into the scroll-hint
+     zone on short viewports.
+   Content stays centered within the remaining space. */
+#hero { height: 100vh; min-height: 680px; display: grid; place-items: center; position: relative; background: var(--ink); padding: clamp(96px, 13vh, 130px) 0 clamp(80px, 10vh, 110px); }
 .hero-bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
 .hero-bg .slot, .hero-bg img, .hero-bg video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: .34; }
 .hero-bg::after { content: ""; position: absolute; inset: 0; background:
