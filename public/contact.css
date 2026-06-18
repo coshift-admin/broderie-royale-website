@@ -224,6 +224,13 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
 .alg-map .m-wash { opacity: 0; }
 .alg-map .m-border { stroke-dasharray: 1; stroke-dashoffset: 1; filter: drop-shadow(0 0 5px color-mix(in srgb, var(--gold) 55%, transparent)); }
 .alg-map .marker { opacity: 0; transform: translateY(-10px); transform-box: fill-box; transform-origin: center bottom; filter: drop-shadow(0 5px 8px rgba(0,0,0,.5)); will-change: transform, opacity; }
+/* Each pin wraps in an <a> that opens Google Maps in a new tab.
+   .marker's transform is being driven inline by scroll JS, so the
+   hover-grow lives on the <a> wrapper (CSS:hover beats inline only
+   when the rule and the inline aren't fighting for the same prop). */
+.alg-map a { cursor: pointer; transform-box: fill-box; transform-origin: center bottom; transition: transform .25s var(--ease), filter .25s var(--ease); }
+.alg-map a:focus { outline: none; }
+.alg-map a:hover, .alg-map a:focus-visible { transform: scale(1.12); filter: drop-shadow(0 0 4px color-mix(in srgb, var(--gold-bright) 80%, transparent)); }
 .alg-map .halo { opacity: 0; }
 .alg-map .lbl-group { opacity: 0; }
 .alg-map .lbl { font-family: var(--font-display); font-weight: 700; font-size: 34px; letter-spacing: 1.5px; fill: var(--ivory); }

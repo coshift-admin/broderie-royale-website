@@ -286,25 +286,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <rect class="vanish" x="-120" y="225" width="1240" height="800" fill="url(#vanishGrad)"/>
       {/* City labels are now in the HTML list above (.map-labels) so
           they can't collide with one another or with neighbouring pins.
-          The SVG keeps only the markers themselves. */}
-      <g class="pin pin1" transform="translate(564.6, 91.1)">
-        <g class="marker"><g transform="scale(2.1)">
-          <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
-          <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
-        </g></g>
-      </g>
-      <g class="pin pin2" transform="translate(545, 208)">
-        <g class="marker"><g transform="scale(2.1)">
-          <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
-          <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
-        </g></g>
-      </g>
-      <g class="pin pin3" transform="translate(605, 93)">
-        <g class="marker"><g transform="scale(2.1)">
-          <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
-          <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
-        </g></g>
-      </g>
+          The SVG keeps only the markers themselves.
+          Each pin wraps in an SVG <a> so taps/clicks open the city's
+          Google Maps location in a new tab. */}
+      <a href="https://maps.app.goo.gl/EKkB3dbv3PJ3M6Qj9" target="_blank" rel="noopener" aria-label="Showroom Alger sur Google Maps">
+        <g class="pin pin1" transform="translate(564.6, 91.1)">
+          <g class="marker"><g transform="scale(2.1)">
+            <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
+            <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
+          </g></g>
+        </g>
+      </a>
+      <a href="https://maps.app.goo.gl/QHXYtMKMFVCyR2wM9" target="_blank" rel="noopener" aria-label="Showroom Aïn Ouessara sur Google Maps">
+        <g class="pin pin2" transform="translate(545, 208)">
+          <g class="marker"><g transform="scale(2.1)">
+            <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
+            <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
+          </g></g>
+        </g>
+      </a>
+      <a href="https://maps.app.goo.gl/vJdMHQz1GMpnGtEz8" target="_blank" rel="noopener" aria-label="Showroom Boumerdès sur Google Maps">
+        <g class="pin pin3" transform="translate(605, 93)">
+          <g class="marker"><g transform="scale(2.1)">
+            <path d="M 0 0 C -6 -10.5, -8 -14, -8 -19 C -8 -25, -3.6 -29, 0 -29 C 3.6 -29, 8 -25, 8 -19 C 8 -14, 6 -10.5, 0 0 Z" fill="#831B1A" stroke="#5E1313" stroke-width="1" vector-effect="non-scaling-stroke"/>
+            <circle cx="0" cy="-19.5" r="3.1" fill="#F5F2EB"/>
+          </g></g>
+        </g>
+      </a>
     </svg>
       </div>{/* map-wrap */}
     </div>{/* map-stage */}
