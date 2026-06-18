@@ -607,30 +607,36 @@ html[lang="ar"] .fc-label { letter-spacing: 0.05em; font-size: 13px; }
 .mt-s { margin-top: 16px; } .mt-m { margin-top: 32px; } .mt-l { margin-top: 56px; }
 
 /* ===== TONAL PATTERNS (Fil royal) — damask broderie ===========
-   Each brand surface gets its own tonal damask variant already
-   pre-tinted to match the underlying brand colour, so we can tile
-   the WebP directly with no translucent veil on top.
-   Three variants live in /assets/:
-     - pattern-damask-ivory.webp   subtle damask on cream
-     - pattern-damask-ink.webp     subtle damask on near-black
-     - pattern-damask-red.webp     subtle damask on royal red
-   Tile size 540px tracks the original damask repeat at half-density
-   so the motif reads as texture, not wallpaper. */
+   Each brand surface tiles its tonal damask variant under a near-
+   opaque colour veil so the pattern reads as a faint texture rather
+   than wallpaper. Veil alpha controls visibility:
+     0.78 = clearly visible damask
+     0.85 = subtle texture (current default)
+     0.92 = barely-there, almost imperceptible
+   Drop the alpha to push the pattern forward, raise it to fade it
+   further into the brand colour.
+   --------------------------------------------------------------- */
 .footer-banner {
-  background-image: url("/assets/pattern-damask-red.webp");
-  background-repeat: repeat;
-  background-size: 540px auto;
+  background-image:
+    linear-gradient(rgba(131, 27, 26, 0.85), rgba(131, 27, 26, 0.85)),
+    url("/assets/pattern-damask-red.webp");
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 540px auto;
 }
 .chapter--ivory,
 body.shop {
-  background-image: url("/assets/pattern-damask-ivory.webp");
-  background-repeat: repeat;
-  background-size: 540px auto;
+  background-image:
+    linear-gradient(rgba(245, 242, 235, 0.88), rgba(245, 242, 235, 0.88)),
+    url("/assets/pattern-damask-ivory.webp");
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 540px auto;
 }
 #prestige, #catalogue {
-  background-image: url("/assets/pattern-damask-ink.webp");
-  background-repeat: repeat;
-  background-size: 540px auto;
+  background-image:
+    linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)),
+    url("/assets/pattern-damask-ink.webp");
+  background-repeat: no-repeat, repeat;
+  background-size: auto, 540px auto;
 }
 .fb-mark { display: block; width: clamp(280px, 40vw, 380px); margin: 18px auto 0; }
 

@@ -74,7 +74,8 @@ html[dir="rtl"] .stitch::after { left: auto; right: 0; background: linear-gradie
 #prestige, #catalogue {
   background-image:
     repeating-linear-gradient(45deg, rgba(201,164,90,.02) 0 1px, transparent 1px 3px),
+    linear-gradient(rgba(26, 26, 26, 0.85), rgba(26, 26, 26, 0.85)),
     url("/assets/pattern-damask-ink.webp");
-  background-repeat: repeat, repeat;
-  background-size: auto, 540px auto;
+  background-repeat: repeat, no-repeat, repeat;
+  background-size: auto, auto, 540px auto;
 }
