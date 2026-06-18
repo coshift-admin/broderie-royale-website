@@ -247,6 +247,16 @@ html[lang="ar"] .gold-rule { background: linear-gradient(270deg, var(--gold), tr
 .hero-crest-wrap { position: relative; width: clamp(120px, 16vw, 190px); aspect-ratio: 1; margin: 26px auto 4px; }
 .hero-crest { width: 100%; filter: drop-shadow(0 8px 30px rgba(0,0,0,.6)); }
 .hero-crown { position: absolute; top: 0; left: 0; width: 100%; filter: drop-shadow(0 6px 18px rgba(0,0,0,.55)); }
+.hero-wordmark {
+  display: block;
+  width: clamp(220px, 30vw, 380px);
+  height: auto;
+  margin: 14px auto 18px;
+  filter: drop-shadow(0 4px 14px rgba(0, 0, 0, 0.55));
+}
+@media (max-width: 560px) {
+  .hero-wordmark { width: clamp(200px, 70vw, 300px); margin: 10px auto 14px; }
+}
 .hero-eyebrow { font-size: var(--t-micro); letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
 html[lang="ar"] .hero-eyebrow { letter-spacing: 0.1em; font-size: 15px; }
 .hero-title {

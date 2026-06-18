@@ -22,6 +22,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <img class="hero-crest" id="heroCrestBase" src="/assets/hero-crest-base.png" alt="Broderie Royale Algérie" fetchpriority="high" />
         <img class="hero-crown" id="heroCrown" src="/assets/hero-crown.png" alt="" />
       </div>
+      {/* Brand wordmark sits between the crest and the "MAISON DU DRAPEAU"
+          eyebrow — same light variant the nav uses, so the lockup reads
+          as a single piece in the hero. */}
+      <img class="hero-wordmark" src="/assets/nav-wordmark-light.png" alt="Broderie Royale Algérie — Maison du Drapeau" />
       <div class="hero-eyebrow" data-i18n="hero.eyebrow">MAISON DU DRAPEAU · DEPUIS 1986</div>
       <h1 class="hero-title" data-i18n="hero.title" data-i18n-html>La perfection <em>c’est notre métier.</em></h1>
       <p class="hero-sub" data-i18n="hero.sub">Communication visuelle par le textile de haute qualité. Drapeaux, écussons et broderie d’exception — signés en Algérie depuis près de quarante ans.</p>
