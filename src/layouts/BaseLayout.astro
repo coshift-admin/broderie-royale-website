@@ -327,6 +327,10 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
     <script is:inline src="/js/api.js"></script>
     <script is:inline src="/js/file-picker.js"></script>
     <script is:inline src="/js/i18n.js" data-astro-rerun></script>
+    {/* Fuse.js (basic build, ~6 KB gzipped) powers the boutique's
+        fuzzy product search. Loaded ahead of shop.js because the
+        renderer references window.Fuse synchronously. */}
+    <script is:inline src="/js/vendor/fuse.min.js"></script>
     <script is:inline src="/js/shop-data.js" data-astro-rerun></script>
     <script is:inline src="/js/shop.js" data-astro-rerun></script>
   </>

@@ -63,7 +63,19 @@ function getProduct(id) {
   }
 
   function adaptCategory(c) {
-    return { id: c.id, name: c.name, nameKey: null };
+    /* parent_id lets the boutique build a category TREE instead of a
+       flat chip list. complete_name keeps the full breadcrumb (e.g.
+       "Drapeaux / National") when we want to show it. product_count
+       is the descendant-recursive count from the API so chips can
+       display the right number even at branch nodes. */
+    return {
+      id: c.id,
+      name: c.name,
+      complete_name: c.complete_name || c.name,
+      parent_id: c.parent_id || null,
+      product_count: c.product_count || 0,
+      nameKey: null,
+    };
   }
 
   async function loadCore() {

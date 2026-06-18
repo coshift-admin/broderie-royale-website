@@ -17,6 +17,19 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 
 <main>
   <div class="shop-body">
+    <div class="shop-tools">
+      {/* Fuzzy search — typing 2+ characters triggers Fuse.js scoring
+          across product name, description and category. Empty query
+          returns to the category browse view. */}
+      <div class="shop-search">
+        <svg class="shop-search-icon" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input id="shopSearch" type="search" autocomplete="off" data-i18n-ph="bo.search_ph" placeholder="Rechercher un produit, une catégorie…" aria-label="Rechercher dans la boutique" />
+        <button type="button" id="shopSearchClear" class="shop-search-clear" aria-label="Effacer">&times;</button>
+      </div>
+      {/* Breadcrumb of the current category path; clicking any segment
+          jumps back to that level. */}
+      <nav class="cat-breadcrumb" id="catBreadcrumb" aria-label="Fil d'Ariane des catégories"></nav>
+    </div>
     <div class="cat-filters" id="catFilters"></div>
     {/* Replaced by shop.js once BR_DATA_READY resolves. */}
     <div class="br-loading" data-loading-slot>

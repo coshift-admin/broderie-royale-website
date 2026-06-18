@@ -136,6 +136,9 @@ var I18N = {
   "bo.title":   { fr: "La Boutique Royale.", ar: "المتجر الملكي.", en: "The Royal Boutique." },
   "bo.sub":     { fr: "Drapeaux, écussons et broderie d’exception, livrés chez vous. Paiement à la livraison, partout en Algérie.", ar: "أعلام وشارات وتطريز استثنائي، يصلكم إلى باب منزلكم. الدفع عند الاستلام، في كامل الجزائر.", en: "Exceptional flags, crests and embroidery, delivered to you. Cash on delivery, everywhere in Algeria." },
   "bo.all":     { fr: "Tout", ar: "الكل", en: "All" },
+  "bo.all_categories": { fr: "Toutes les catégories", ar: "كل الفئات", en: "All categories" },
+  "bo.search_ph":      { fr: "Rechercher un produit, une catégorie…", ar: "ابحث عن منتج أو فئة…", en: "Search a product or category…" },
+  "bo.no_results":     { fr: "Aucun résultat ne correspond à votre recherche.", ar: "لا توجد نتائج تطابق بحثكم.", en: "No results match your search." },
   "bo.count":   { fr: "produits", ar: "منتجات", en: "products" },
   "bo.empty":   { fr: "Aucun produit dans cette catégorie.", ar: "لا توجد منتجات في هذه الفئة.", en: "No products in this category." },
 

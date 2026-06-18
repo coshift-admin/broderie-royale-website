@@ -31,11 +31,51 @@ body.shop main { padding-top: 0; }
 
 /* ---- filters ---- */
 .shop-body { max-width: 1240px; margin: 0 auto; padding: clamp(28px, 4vw, 48px) clamp(20px, 6vw, 120px) 90px; }
+
+/* ===== Search + breadcrumb tools row ============================== */
+.shop-tools { display: flex; flex-direction: column; gap: 14px; margin-bottom: 24px; }
+.shop-search { position: relative; max-width: 540px; }
+.shop-search-icon {
+  position: absolute; left: 16px; top: 50%; transform: translateY(-50%);
+  width: 18px; height: 18px; color: var(--fg2); pointer-events: none;
+}
+html[lang="ar"] .shop-search-icon { left: auto; right: 16px; }
+#shopSearch {
+  width: 100%; padding: 14px 44px 14px 46px;
+  font-family: var(--font-body); font-size: 15px;
+  background: var(--bg-elevated); color: var(--ink);
+  border: 1px solid var(--ivory-line); border-radius: var(--r-pill);
+  transition: border-color .25s var(--ease), box-shadow .25s var(--ease);
+}
+html[lang="ar"] #shopSearch { padding: 14px 46px 14px 44px; text-align: right; }
+#shopSearch:focus { outline: none; border-color: var(--gold); box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 18%, transparent); }
+#shopSearch::placeholder { color: var(--fg2); }
+.shop-search-clear {
+  position: absolute; right: 12px; top: 50%; transform: translateY(-50%);
+  display: none;
+  width: 28px; height: 28px; border-radius: 50%;
+  background: transparent; color: var(--fg2);
+  border: 0; cursor: pointer; font-size: 22px; line-height: 1;
+  transition: color .2s var(--ease), background .2s var(--ease);
+}
+.shop-search-clear.show { display: inline-flex; align-items: center; justify-content: center; }
+.shop-search-clear:hover { color: var(--ink); background: color-mix(in srgb, var(--ink) 6%, transparent); }
+html[lang="ar"] .shop-search-clear { right: auto; left: 12px; }
+
+.cat-breadcrumb { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; min-height: 22px; font-size: 12.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--fg2); }
+.cat-breadcrumb .crumb { color: var(--fg2); text-decoration: none; padding: 4px 4px; border-radius: 4px; transition: color .2s var(--ease); }
+.cat-breadcrumb .crumb:hover { color: var(--ink); }
+.cat-breadcrumb .crumb.active { color: var(--ink); font-weight: 600; }
+.cat-breadcrumb .crumb-sep { color: color-mix(in srgb, var(--fg2) 50%, transparent); font-weight: 400; }
+html[lang="ar"] .cat-breadcrumb { letter-spacing: 0.02em; font-size: 14px; }
+
 .cat-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 36px; }
-.filter-chip { font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg2); background: var(--bg-elevated); border: 1px solid var(--ivory-line); padding: 11px 20px; border-radius: var(--r-pill); cursor: pointer; transition: all .28s var(--ease); font-family: var(--font-body); }
+.filter-chip { font-size: 12.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--fg2); background: var(--bg-elevated); border: 1px solid var(--ivory-line); padding: 11px 20px; border-radius: var(--r-pill); cursor: pointer; transition: all .28s var(--ease); font-family: var(--font-body); display: inline-flex; align-items: center; gap: 8px; }
 html[lang="ar"] .filter-chip { letter-spacing: 0.02em; font-size: 15px; }
 .filter-chip:hover { border-color: var(--gold); color: var(--ink); }
 .filter-chip.active { background: var(--ink); color: var(--ivory); border-color: var(--ink); }
+.filter-chip .chip-arrow { color: var(--gold); font-weight: 700; font-size: 1.1em; line-height: 0.7; opacity: 0.85; }
+.filter-chip:hover .chip-arrow { opacity: 1; }
 
 /* ---- product grid ---- */
 .product-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(16px, 2vw, 28px); }

@@ -47,36 +47,161 @@
   }
 
   /* ============================================================
-     BOUTIQUE
+     BOUTIQUE — hierarchical categories + fuzzy product search
+     - CATEGORIES has parent_id, so we build a tree once and let the
+       visitor drill down by clicking a top-level chip → it's replaced
+       by its children, and so on.
+     - A breadcrumb above the chips tracks the current path; clicking
+       any segment jumps back to that level.
+     - The search box (Fuse.js) overrides the category view — typing
+       returns ranked fuzzy matches across name + description + cat.
+     - URL state: ?cat=<id> remembers the drill-down level, ?q=<text>
+       the search query (so links are shareable + back-button works).
      ============================================================ */
   function renderBoutique(){
     const grid = document.getElementById("productGrid");
     const filters = document.getElementById("catFilters");
+    const breadcrumb = document.getElementById("catBreadcrumb");
+    const searchInput = document.getElementById("shopSearch");
+    const searchClear = document.getElementById("shopSearchClear");
     if (!grid) return;
-    let active = qs("cat") || "all";
 
-    // filters
-    filters.innerHTML = "";
-    const mk = (id, label) => {
-      const b = el("button", "filter-chip" + (active === id ? " active" : ""), label);
-      b.addEventListener("click", () => { active = id; draw(); filters.querySelectorAll(".filter-chip").forEach(x => x.classList.remove("active")); b.classList.add("active"); });
-      return b;
-    };
-    filters.appendChild(mk("all", t("bo.all")));
-    // Categories come from /api/v1/categories now — name is already in the
-    // user's current language (the API was called with ?lang=).
-    CATEGORIES.forEach(c => filters.appendChild(mk(c.id, c.name)));
+    /* Build category tree from the flat CATEGORIES list. */
+    const byId = new Map();
+    const children = new Map();
+    CATEGORIES.forEach(c => { byId.set(c.id, c); children.set(c.id, []); });
+    CATEGORIES.forEach(c => {
+      if (c.parent_id != null && children.has(c.parent_id)) {
+        children.get(c.parent_id).push(c);
+      }
+    });
+    const tops = CATEGORIES.filter(c => c.parent_id == null);
 
-    function draw(){
-      // active can be: "all", a number (category_id from chip click), or a
-      // string slug (from URL like /boutique?cat=drapeaux on index page).
-      // Match either category_id or case-insensitive name.
-      const aLower = String(active || "").toLowerCase();
-      const list = active === "all" ? PRODUCTS : PRODUCTS.filter(p =>
-        p.cat_id === active || String(p.cat || "").toLowerCase() === aLower
-      );
+    /* Fuse.js index — built once, reused across keystrokes. Threshold
+       0.4 = lenient (catches typos and partial words); ignoreLocation
+       so a match in the middle of a long name still ranks high. */
+    const fuse = (typeof Fuse !== "undefined") ? new Fuse(PRODUCTS, {
+      keys: [
+        { name: "name.fr", weight: 2 },
+        { name: "name.ar", weight: 2 },
+        { name: "name.en", weight: 2 },
+        { name: "desc.fr", weight: 1 },
+        { name: "desc.ar", weight: 1 },
+        { name: "desc.en", weight: 1 },
+        { name: "cat",     weight: 0.7 },
+      ],
+      threshold: 0.4,
+      ignoreLocation: true,
+      minMatchCharLength: 2,
+    }) : null;
+
+    /* State + URL bootstrap. The legacy ?cat=drapeaux from the
+       homepage hero is supported by matching the slug to a top-level
+       category name (case-insensitive). */
+    let currentCatId = null;
+    let searchQuery = "";
+    const urlCat = qs("cat");
+    if (urlCat) {
+      if (/^\d+$/.test(urlCat)) currentCatId = parseInt(urlCat, 10);
+      else {
+        const match = CATEGORIES.find(c => c.name.toLowerCase().includes(urlCat.toLowerCase()));
+        if (match) currentCatId = match.id;
+      }
+    }
+    const urlQ = qs("q");
+    if (urlQ) {
+      searchQuery = urlQ;
+      if (searchInput) searchInput.value = urlQ;
+    }
+
+    /* Helpers ---------------------------------------------------- */
+    function getPath(catId) {
+      const path = [];
+      let c = byId.get(catId);
+      while (c) {
+        path.unshift(c);
+        c = c.parent_id != null ? byId.get(c.parent_id) : null;
+      }
+      return path;
+    }
+    function descendantIds(catId) {
+      const result = new Set([catId]);
+      const stack = [catId];
+      while (stack.length) {
+        const id = stack.pop();
+        (children.get(id) || []).forEach(ch => {
+          result.add(ch.id);
+          stack.push(ch.id);
+        });
+      }
+      return result;
+    }
+    function categoriesAtLevel(parentId) {
+      return parentId == null ? tops : (children.get(parentId) || []);
+    }
+    function productsInCat(catId) {
+      if (catId == null) return PRODUCTS;
+      const desc = descendantIds(catId);
+      return PRODUCTS.filter(p => desc.has(p.cat_id));
+    }
+
+    /* URL state sync without reloading. */
+    function syncURL() {
+      try {
+        const u = new URL(location.href);
+        if (currentCatId == null) u.searchParams.delete("cat"); else u.searchParams.set("cat", currentCatId);
+        if (!searchQuery) u.searchParams.delete("q"); else u.searchParams.set("q", searchQuery);
+        history.replaceState(null, "", u.toString());
+      } catch (e) {}
+    }
+
+    /* Renderers -------------------------------------------------- */
+    function renderBreadcrumb() {
+      if (!breadcrumb) return;
+      breadcrumb.innerHTML = "";
+      const all = el("a", "crumb" + (currentCatId == null ? " active" : ""), t("bo.all_categories"));
+      all.href = "#"; all.addEventListener("click", e => { e.preventDefault(); navigate(null); });
+      breadcrumb.appendChild(all);
+      const path = currentCatId ? getPath(currentCatId) : [];
+      path.forEach((c, i) => {
+        breadcrumb.appendChild(el("span", "crumb-sep", "›"));
+        const a = el("a", "crumb" + (i === path.length - 1 ? " active" : ""), esc(c.name));
+        a.href = "#";
+        a.addEventListener("click", e => { e.preventDefault(); navigate(c.id); });
+        breadcrumb.appendChild(a);
+      });
+      breadcrumb.classList.toggle("has-path", path.length > 0);
+    }
+    function renderFilters() {
+      filters.innerHTML = "";
+      const subs = categoriesAtLevel(currentCatId);
+      if (!subs.length || searchQuery) { filters.style.display = "none"; return; }
+      filters.style.display = "";
+      subs.forEach(c => {
+        const childCount = (children.get(c.id) || []).length;
+        const labelExtra = childCount ? ' <span class="chip-arrow" aria-hidden="true">›</span>' : '';
+        const chip = el("button", "filter-chip", esc(c.name) + labelExtra);
+        chip.addEventListener("click", () => navigate(c.id));
+        filters.appendChild(chip);
+      });
+    }
+    function renderProducts() {
+      let list;
+      if (searchQuery && searchQuery.length >= 2 && fuse) {
+        list = fuse.search(searchQuery).map(r => r.item);
+        if (currentCatId != null) {
+          const desc = descendantIds(currentCatId);
+          list = list.filter(p => desc.has(p.cat_id));
+        }
+      } else {
+        list = productsInCat(currentCatId);
+      }
       grid.innerHTML = "";
-      if (!list.length){ grid.appendChild(el("p", "shop-empty", t("bo.empty"))); return; }
+      if (!list.length) {
+        const key = searchQuery ? "bo.no_results" : "bo.empty";
+        grid.appendChild(el("p", "shop-empty", t(key)));
+        return;
+      }
       list.forEach(p => {
         const card = el("article", "product-card");
         card.innerHTML =
@@ -99,7 +224,43 @@
         grid.appendChild(card);
       });
     }
-    draw();
+    function navigate(catId) {
+      currentCatId = catId;
+      syncURL();
+      renderBreadcrumb();
+      renderFilters();
+      renderProducts();
+    }
+    function onSearchInput(q) {
+      searchQuery = (q || "").trim();
+      syncURL();
+      if (searchClear) searchClear.classList.toggle("show", !!searchQuery);
+      // Hide category filters while searching; show breadcrumb context.
+      renderFilters();
+      renderProducts();
+    }
+
+    /* Debounced search wiring */
+    if (searchInput) {
+      let stmr;
+      searchInput.addEventListener("input", e => {
+        clearTimeout(stmr);
+        const v = e.target.value;
+        stmr = setTimeout(() => onSearchInput(v), 160);
+      });
+    }
+    if (searchClear) {
+      searchClear.addEventListener("click", () => {
+        if (searchInput) searchInput.value = "";
+        onSearchInput("");
+        if (searchInput) searchInput.focus();
+      });
+      searchClear.classList.toggle("show", !!searchQuery);
+    }
+
+    renderBreadcrumb();
+    renderFilters();
+    renderProducts();
   }
 
   function bumpBadge(){
