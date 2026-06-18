@@ -15,7 +15,6 @@ var I18N = {
   "ov.line": { fr: "MAISON DU DRAPEAU · DEPUIS 1986", ar: "دار العَلَم · منذ 1986", en: "HOUSE OF THE FLAG · SINCE 1986" },
 
   // ---- hero ----
-  "hero.eyebrow": { fr: "MAISON DU DRAPEAU · DEPUIS 1986", ar: "دار العَلَم · منذ 1986", en: "HOUSE OF THE FLAG · SINCE 1986" },
   "hero.title": {
     fr: "La perfection <em>c’est notre métier.</em>",
     ar: "الإتقان <em>هو حرفتنا.</em>",

@@ -265,8 +265,6 @@ html[lang="ar"] .gold-rule { background: linear-gradient(270deg, var(--gold), tr
 @media (max-width: 560px) {
   .hero-wordmark { width: clamp(200px, 70vw, 300px); margin: 10px auto 14px; }
 }
-.hero-eyebrow { font-size: var(--t-micro); letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
-html[lang="ar"] .hero-eyebrow { letter-spacing: 0.1em; font-size: 15px; }
 .hero-title {
   font-family: var(--font-display); font-weight: 700; color: var(--ivory);
   font-size: clamp(2.6rem, 7vw, 6rem); line-height: 1.02; letter-spacing: -0.02em;
