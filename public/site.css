@@ -606,38 +606,31 @@ html[lang="ar"] .fc-label { letter-spacing: 0.05em; font-size: 13px; }
 .center { text-align: center; }
 .mt-s { margin-top: 16px; } .mt-m { margin-top: 32px; } .mt-l { margin-top: 56px; }
 
-/* ===== TONAL PATTERNS (Fil royal) — damask broderie pattern shared by
-   every band of the site. The asset is a dark damask; on each section
-   we overlay a translucent base-colour veil so only a faint texture
-   peeks through and the brand colour wins. Tune the veil alpha per
-   section to dial visibility: lower alpha = more pattern. */
+/* ===== TONAL PATTERNS (Fil royal) — damask broderie ===========
+   Each brand surface gets its own tonal damask variant already
+   pre-tinted to match the underlying brand colour, so we can tile
+   the WebP directly with no translucent veil on top.
+   Three variants live in /assets/:
+     - pattern-damask-ivory.webp   subtle damask on cream
+     - pattern-damask-ink.webp     subtle damask on near-black
+     - pattern-damask-red.webp     subtle damask on royal red
+   Tile size 540px tracks the original damask repeat at half-density
+   so the motif reads as texture, not wallpaper. */
 .footer-banner {
-  background-image:
-    linear-gradient(rgba(131, 27, 26, 0.86), rgba(131, 27, 26, 0.86)),
-    url("/assets/pattern-broderie.webp");
-  background-repeat: no-repeat, repeat;
-  background-size: auto, 720px auto;
+  background-image: url("/assets/pattern-damask-red.webp");
+  background-repeat: repeat;
+  background-size: 540px auto;
 }
-.chapter--ivory {
-  background-image:
-    linear-gradient(rgba(245, 242, 235, 0.94), rgba(245, 242, 235, 0.94)),
-    url("/assets/pattern-broderie.webp");
-  background-repeat: no-repeat, repeat;
-  background-size: auto, 720px auto;
-}
+.chapter--ivory,
 body.shop {
-  background-image:
-    linear-gradient(rgba(245, 242, 235, 0.94), rgba(245, 242, 235, 0.94)),
-    url("/assets/pattern-broderie.webp");
-  background-repeat: no-repeat, repeat;
-  background-size: auto, 720px auto;
+  background-image: url("/assets/pattern-damask-ivory.webp");
+  background-repeat: repeat;
+  background-size: 540px auto;
 }
 #prestige, #catalogue {
-  background-image:
-    linear-gradient(rgba(26, 26, 26, 0.82), rgba(26, 26, 26, 0.82)),
-    url("/assets/pattern-broderie.webp");
-  background-repeat: no-repeat, repeat;
-  background-size: auto, 720px auto;
+  background-image: url("/assets/pattern-damask-ink.webp");
+  background-repeat: repeat;
+  background-size: 540px auto;
 }
 .fb-mark { display: block; width: clamp(280px, 40vw, 380px); margin: 18px auto 0; }
 
