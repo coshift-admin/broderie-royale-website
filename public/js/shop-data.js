@@ -88,7 +88,7 @@ function getProduct(id) {
     try {
       var [catRes, prodRes] = await Promise.all([
         window.BR_API.getCategories({ lang: lang }),
-        window.BR_API.getProducts({ lang: lang, limit: 500 }),
+        window.BR_API.getProducts({ lang: lang, limit: 5000 }),
       ]);
       CATEGORIES = (catRes.categories || []).map(adaptCategory);
       PRODUCTS = (prodRes.products || []).map(function (p) { return adaptProduct(p, lang); });
