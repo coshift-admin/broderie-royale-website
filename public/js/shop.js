@@ -4,7 +4,7 @@
    ============================================================ */
 (function () {
   "use strict";
-  const CART_KEY = "br_cart", ORDER_KEY = "br_last_order";
+  const CART_KEY = "br_cart_v2", ORDER_KEY = "br_last_order";  // v2: cart now stores template ids (was variant ids) — drop stale carts
   const lang = () => document.documentElement.getAttribute("lang") || "fr";
   const t = (k) => { const e = (window.I18N || {})[k]; return e ? (e[lang()] || e.fr) : k; };
   const pname = (p) => p.name[lang()] || p.name.fr;
@@ -100,6 +100,8 @@
        category name (case-insensitive). */
     let currentCatId = null;
     let searchQuery = "";
+    let currentPage = 1;                 // 1-based; reset on cat/search change
+    const PAGE_SIZE = 20;                // products per page (Google-style pager)
     const urlCat = qs("cat");
     if (urlCat) {
       if (/^\d+$/.test(urlCat)) currentCatId = parseInt(urlCat, 10);
@@ -200,10 +202,21 @@
       if (!list.length) {
         const key = searchQuery ? "bo.no_results" : "bo.empty";
         grid.appendChild(el("p", "shop-empty", t(key)));
+        renderPager(0, 0);
         return;
       }
-      list.forEach(p => {
+      // Only build the DOM for the current page. Rendering every product at
+      // once (231 templates — or the old 3282 variants) is what blew up
+      // memory and made the page janky. Clamp the page, slice 20, render.
+      const totalPages = Math.ceil(list.length / PAGE_SIZE);
+      if (currentPage > totalPages) currentPage = totalPages;
+      if (currentPage < 1) currentPage = 1;
+      const start = (currentPage - 1) * PAGE_SIZE;
+      const pageItems = list.slice(start, start + PAGE_SIZE);
+      pageItems.forEach(p => {
         const card = el("article", "product-card");
+        // Cart stores the template id (p.id); checkout maps it to a real
+        // variant (order_id) so the Odoo order line stays valid.
         card.innerHTML =
           '<a class="pc-media" href="/produit?id=' + encodeURIComponent(p.id) + '"><img src="' + esc(p.img) + '" alt="" loading="lazy" /></a>' +
           '<div class="pc-body">' +
@@ -223,9 +236,56 @@
         });
         grid.appendChild(card);
       });
+      renderPager(currentPage, totalPages);
+    }
+
+    /* Google-style numeric pager, created lazily right after #productGrid so
+       we don't have to touch boutique.astro. */
+    function pagerEl() {
+      let pg = document.getElementById("shopPager");
+      if (!pg) {
+        pg = el("nav", "shop-pager");
+        pg.id = "shopPager";
+        pg.setAttribute("aria-label", "Pagination");
+        grid.after(pg);
+      }
+      return pg;
+    }
+    function gotoPage(p) {
+      currentPage = p;
+      renderProducts();
+      const anchor = document.querySelector(".shop-tools") || grid;
+      if (anchor && anchor.scrollIntoView) anchor.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+    function renderPager(page, totalPages) {
+      const pg = pagerEl();
+      pg.innerHTML = "";
+      if (totalPages <= 1) { pg.style.display = "none"; return; }
+      pg.style.display = "";
+      const mkBtn = (label, target, o) => {
+        o = o || {};
+        const b = el("button", "pager-btn" + (o.active ? " active" : "") + (o.disabled ? " disabled" : ""), label);
+        b.type = "button";
+        if (o.disabled) b.disabled = true;
+        else b.addEventListener("click", () => gotoPage(target));
+        return b;
+      };
+      pg.appendChild(mkBtn("‹", page - 1, { disabled: page <= 1 }));   // ‹
+      // Show 1 … a window around current … N.
+      const win = 2, items = [];
+      for (let i = 1; i <= totalPages; i++) {
+        if (i === 1 || i === totalPages || (i >= page - win && i <= page + win)) items.push(i);
+        else if (items[items.length - 1] !== "…") items.push("…");
+      }
+      items.forEach(n => {
+        if (n === "…") pg.appendChild(el("span", "pager-gap", "…"));
+        else pg.appendChild(mkBtn(String(n), n, { active: n === page }));
+      });
+      pg.appendChild(mkBtn("›", page + 1, { disabled: page >= totalPages }));  // ›
     }
     function navigate(catId) {
       currentCatId = catId;
+      currentPage = 1;
       syncURL();
       renderBreadcrumb();
       renderFilters();
@@ -233,6 +293,7 @@
     }
     function onSearchInput(q) {
       searchQuery = (q || "").trim();
+      currentPage = 1;
       syncURL();
       if (searchClear) searchClear.classList.toggle("show", !!searchQuery);
       // Hide category filters while searching; show breadcrumb context.
@@ -567,7 +628,12 @@
             wilaya_id: wilayaId,
             pickup_point_id: deliveryState.pickupPointId || undefined,
           },
-          items: readCart().map(it => ({ product_id: parseInt(it.id, 10), quantity: it.qty })),
+          items: readCart().map(it => {
+            // Cart holds template ids; the order line needs the representative
+            // variant (product.product) that grouping picked as order_id.
+            const gp = getProduct(it.id);
+            return { product_id: (gp && gp.order_id != null) ? gp.order_id : parseInt(it.id, 10), quantity: it.qty };
+          }),
         };
 
         const btn = form.querySelector('button[type="submit"]');

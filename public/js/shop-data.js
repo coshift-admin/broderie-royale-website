@@ -32,6 +32,8 @@ function formatPrice(n, lang) {
 function getProduct(id) {
   // IDs may arrive as strings from URL params or localStorage.
   var n = typeof id === "number" ? id : parseInt(id, 10);
+  // Boutique products are grouped by template — cards, URLs, the cart and
+  // getProduct ALL use the template id, so a plain id match is unambiguous.
   return PRODUCTS.find(function (p) { return p.id === n; });
 }
 
@@ -42,24 +44,65 @@ function getProduct(id) {
   // objects, options array, etc.). For v1 the API returns one language at
   // a time, so we wrap each translatable field in a {fr,ar,en} object
   // keyed by the lang at fetch time.
-  function adaptProduct(p, lang) {
-    var name = { fr: p.name, ar: p.name, en: p.name };
-    var desc = { fr: p.short_description || p.description || "", ar: p.short_description || p.description || "", en: p.short_description || p.description || "" };
-    if (lang && lang !== "fr") {
-      name[lang] = p.name;
-      desc[lang] = p.short_description || p.description || "";
-    }
-    return {
-      id: p.id,
-      cat: p.category_name || "",
-      cat_id: p.category_id,
-      price: p.price,
-      img: p.image_url,
-      in_stock: p.in_stock,
-      name: name,
-      desc: desc,
-      options: [],
-    };
+  // Wrap a translatable string in the {fr,ar,en} shell shop.js expects.
+  function i18nShell(value, lang) {
+    var o = { fr: value, ar: value, en: value };
+    if (lang && lang !== "fr") o[lang] = value;
+    return o;
+  }
+
+  // The API returns one row per VARIANT (product.product): "DRAPEAU PAYS"
+  // comes back ~197 times (one per country), all sharing the same template
+  // id, name and image. The storefront shows ONE card per PRODUCT
+  // (product.template), so we collapse variants by tmpl_id here.
+  //
+  //   id       -> product.template id — used EVERYWHERE (cards, URLs, cart,
+  //               getProduct). Unambiguous because we never mix variant ids in.
+  //   order_id -> a real product.product id; checkout sends THIS as the order
+  //               line (Odoo order lines need a variant, never a template).
+  // The representative (order_id + its price) prefers an in-stock variant so
+  // the price shown matches the variant we actually order.
+  function groupByTemplate(apiProducts, lang) {
+    var groups = new Map();
+    (apiProducts || []).forEach(function (p) {
+      // Fall back to the variant id if the API ever omits tmpl_id.
+      var key = (p.tmpl_id != null) ? p.tmpl_id : p.id;
+      var g = groups.get(key);
+      if (!g) {
+        groups.set(key, {
+          id: key,
+          order_id: p.id,
+          cat: p.category_name || "",
+          cat_id: p.category_id,
+          price: p.price,
+          img: p.image_url,
+          in_stock: !!p.in_stock,
+          _name: p.name,
+          _desc: p.short_description || p.description || "",
+        });
+      } else if (p.in_stock && !g.in_stock) {
+        // Upgrade the representative to an in-stock variant when we find one.
+        g.in_stock = true;
+        g.order_id = p.id;
+        g.price = p.price;
+      }
+    });
+    var out = [];
+    groups.forEach(function (g) {
+      out.push({
+        id: g.id,
+        order_id: g.order_id,
+        cat: g.cat,
+        cat_id: g.cat_id,
+        price: g.price,
+        img: g.img,
+        in_stock: g.in_stock,
+        name: i18nShell(g._name, lang),
+        desc: i18nShell(g._desc, lang),
+        options: [],
+      });
+    });
+    return out;
   }
 
   function adaptCategory(c) {
@@ -91,7 +134,7 @@ function getProduct(id) {
         window.BR_API.getProducts({ lang: lang, limit: 5000 }),
       ]);
       CATEGORIES = (catRes.categories || []).map(adaptCategory);
-      PRODUCTS = (prodRes.products || []).map(function (p) { return adaptProduct(p, lang); });
+      PRODUCTS = groupByTemplate(prodRes.products || [], lang);
       window.CATEGORIES = CATEGORIES;
       window.PRODUCTS = PRODUCTS;
       window.__brDataLoadedLang = lang;
