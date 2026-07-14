@@ -897,6 +897,12 @@ html[lang="ar"] .partners-note { font-size: 15px; }
 .gal-item.gal-portrait  { aspect-ratio: 2 / 3; grid-column: span 1; }
 .gal-item.gal-landscape { aspect-ratio: 4 / 3; grid-column: span 2; }
 .gal-item img, .gal-item image-slot { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s var(--ease); }
+/* Slot placeholder inside a gal-item — used when we don't yet have a
+   correctly-oriented source photo for that slot. Fills the tile with
+   the standard gold-striped placeholder + a pill labeling the target
+   aspect ratio, so the client knows exactly which shape to upload. */
+.gal-item .slot { width: 100%; height: 100%; position: absolute; inset: 0; }
+.gal-item .slot .slot-label { font-family: var(--font-display); }
 @media (max-width: 900px){
   /* Below 900px the double-width landscape is too wide to sit
      comfortably next to a single-column portrait — collapse to a
