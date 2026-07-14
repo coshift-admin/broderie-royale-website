@@ -40,22 +40,22 @@ html[lang="ar"] .ar-only { display: block; }
   position: fixed; inset: 0; z-index: 200;
   background: var(--ink);
   display: grid; place-items: center;
-  transition: opacity 1s var(--ease), visibility 1s var(--ease);
+  transition: opacity 0.4s var(--ease), visibility 0.4s var(--ease);
 }
 #overture.done { opacity: 0; visibility: hidden; pointer-events: none; }
 .overture-crest {
   width: 190px; opacity: 0;
-  animation: overtureIn 2.2s var(--ease) forwards;
+  animation: overtureIn 0.9s var(--ease) forwards;
 }
 @keyframes overtureIn {
-  0% { opacity: 0; transform: scale(.7) translateY(8px); filter: blur(6px); }
-  40% { opacity: 1; filter: blur(0); }
+  0%   { opacity: 0; transform: scale(.82) translateY(6px); filter: blur(4px); }
+  55%  { opacity: 1; filter: blur(0); }
   100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 .overture-line {
   position: absolute; bottom: 18%; left: 50%; transform: translateX(-50%);
   font-size: var(--t-body); letter-spacing: 0.4em; text-transform: uppercase;
-  color: var(--ivory); opacity: 0; animation: fadeUp 1.4s 1s var(--ease) forwards;
+  color: var(--ivory); opacity: 0; animation: fadeUp 0.55s 0.3s var(--ease) forwards;
   text-align: center; max-width: min(90vw, 720px); line-height: 1.7;
 }
 html[lang="ar"] .overture-line { letter-spacing: 0.12em; }
@@ -209,7 +209,13 @@ main { position: relative; z-index: 2; }
 #partners { contain-intrinsic-size: auto 700px;  }
 #testimonials { contain-intrinsic-size: auto 900px; }
 #faq      { contain-intrinsic-size: auto 800px;  }
-#catalogue { contain-intrinsic-size: auto 650px; }
+#catalogue { contain-intrinsic-size: auto 320px; }
+/* Section VII is now a compact transition — title, one-liner and CTA only.
+   Cards moved out (duplicated Section III) and showroom addresses moved to
+   the /contact page. Halve the top/bottom padding so it doesn't read as an
+   empty stretch of ink. */
+#catalogue.chapter { padding-block: clamp(56px, 8vh, 96px); }
+#catalogue .btn-royal { margin-top: 28px; }
 
 .wrap { max-width: 1240px; margin: 0 auto; position: relative; }
 .measure { max-width: 60ch; }
@@ -291,13 +297,70 @@ html[lang="ar"] .scroll-hint span { letter-spacing: 0.08em; font-size: 14px; }
    ============================================================ */
 .heritage-grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: clamp(40px, 6vw, 90px); align-items: center; }
 @media (max-width: 860px){ .heritage-grid { grid-template-columns: 1fr; } }
-.values-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 34px; }
+.values-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 34px; }
 .value-chip {
+  position: relative;
+  display: inline-flex; align-items: center;
   font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--gold-deep);
   border: 1px solid var(--ivory-line); padding: 10px 18px; border-radius: var(--r-pill);
   background: var(--bg-elevated);
+  cursor: help;
+  transition: color .35s var(--ease), border-color .35s var(--ease), box-shadow .45s var(--ease), transform .35s var(--ease);
+}
+.value-chip:hover,
+.value-chip:focus-visible {
+  color: var(--royal-red);
+  border-color: color-mix(in srgb, var(--gold) 65%, transparent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--gold) 12%, transparent);
+  transform: translateY(-1px);
+  outline: none;
+}
+.vc-name { display: inline-block; }
+/* Tooltip: absolutely-positioned card above the chip. Gold hairline top
+   border and a small notch beneath so it feels attached. Uses opacity +
+   translateY + visibility (with a slight delay on the way out so a fast
+   mouse-out still lets you glance at the copy). */
+.vc-tip {
+  position: absolute;
+  left: 50%;
+  bottom: calc(100% + 14px);
+  transform: translate(-50%, 6px);
+  min-width: 240px; max-width: 320px;
+  padding: 12px 16px;
+  background: var(--ink);
+  color: var(--ivory);
+  font-family: var(--font-body); font-size: 13px; font-weight: 400;
+  letter-spacing: 0.01em; text-transform: none; line-height: 1.55;
+  border-radius: var(--r-md);
+  border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+  box-shadow: 0 10px 30px -12px rgba(0,0,0,0.35), 0 0 0 1px color-mix(in srgb, var(--gold) 8%, transparent);
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .32s var(--ease), transform .32s var(--ease), visibility .32s;
+  z-index: 5;
+}
+.vc-tip::before {
+  content: ""; position: absolute; left: 50%; top: 100%;
+  transform: translateX(-50%);
+  border: 6px solid transparent;
+  border-top-color: color-mix(in srgb, var(--gold) 40%, transparent);
+}
+.vc-tip::after {
+  content: ""; position: absolute; left: 50%; top: 100%;
+  transform: translate(-50%, -1px);
+  border: 5px solid transparent;
+  border-top-color: var(--ink);
+}
+.value-chip:hover .vc-tip,
+.value-chip:focus-visible .vc-tip {
+  opacity: 1; visibility: visible; transform: translate(-50%, 0);
 }
 html[lang="ar"] .value-chip { letter-spacing: 0.03em; font-size: 15px; }
+html[lang="ar"] .vc-tip { font-family: var(--font-arabic); font-size: 15px; letter-spacing: 0; line-height: 1.7; }
+@media (max-width: 560px) {
+  /* On mobile the tooltip would overflow the viewport if narrower chips
+     shift toward the edge; clamp it to the row and let it wrap freely. */
+  .vc-tip { min-width: min(78vw, 260px); max-width: 88vw; }
+}
 .stat-stack { display: grid; gap: 26px; }
 .stat { border-inline-start: 2px solid var(--gold); padding-inline-start: 22px; }
 .stat-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 4vw, 3.4rem); color: var(--royal-red); line-height: 1; }
@@ -552,6 +615,65 @@ html[lang="ar"] .maison .ml { letter-spacing: 0.04em; font-size: 14px; }
 /* keep phone/email numerals in logical LTR order under RTL */
 html[lang="ar"] .maison .md a,
 html[lang="ar"] .fb-contact a { direction: ltr; unicode-bidi: isolate; }
+/* Footer contact icons (client asked to replace plain-text links with
+   clickable icons that match the brand's ivory/gold identity).
+   - White stroke by default, gold on hover with subtle lift
+   - Native tooltip pill built from data-tooltip so screen readers still
+     get aria-label and sighted users get the friendly label
+   - Separator (.fb-sep) marks the divide between direct-contact icons
+     and social platforms — same visual weight as the hairline dividers
+     used elsewhere. */
+.fb-contact svg {
+  width: 20px; height: 20px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linecap: round; stroke-linejoin: round;
+  display: block;
+}
+.fb-contact a {
+  position: relative;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 40px; height: 40px;
+  border-radius: 50%;
+  color: var(--ivory);
+  border: 1px solid color-mix(in srgb, var(--ivory) 26%, transparent);
+  background: transparent;
+  text-decoration: none;
+  transition: color .35s var(--ease), border-color .35s var(--ease),
+              background .35s var(--ease), transform .35s var(--ease);
+}
+.fb-contact a:hover,
+.fb-contact a:focus-visible {
+  color: var(--gold-bright);
+  border-color: color-mix(in srgb, var(--gold) 70%, transparent);
+  background: color-mix(in srgb, var(--gold) 10%, transparent);
+  transform: translateY(-2px);
+  outline: none;
+}
+.fb-contact a[data-tooltip]::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translate(-50%, 4px);
+  padding: 6px 10px;
+  background: rgba(0, 0, 0, 0.72);
+  color: var(--ivory);
+  font-family: var(--font-body); font-size: 11px; letter-spacing: 0.08em;
+  text-transform: uppercase; white-space: nowrap;
+  border-radius: var(--r-sm, 4px);
+  border: 1px solid color-mix(in srgb, var(--gold) 35%, transparent);
+  opacity: 0; pointer-events: none;
+  transition: opacity .3s var(--ease), transform .3s var(--ease);
+}
+.fb-contact a:hover::after,
+.fb-contact a:focus-visible::after { opacity: 1; transform: translate(-50%, 0); }
+.fb-sep {
+  display: inline-block;
+  width: 1px; height: 22px;
+  background: color-mix(in srgb, var(--ivory) 22%, transparent);
+  margin: 0 6px;
+}
 
 /* Footer banner — the brand's signature red strip */
 .footer-banner { background: var(--royal-red); color: var(--ivory); padding: clamp(48px, 7vw, 90px) clamp(20px, 6vw, 120px); text-align: center; position: relative; }
@@ -560,8 +682,7 @@ html[lang="ar"] .fb-contact a { direction: ltr; unicode-bidi: isolate; }
 .fb-name { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.16em; font-size: clamp(1.1rem, 2vw, 1.5rem); text-transform: uppercase; }
 .fb-ar { font-family: var(--font-arabic); font-size: 1.6rem; margin: 6px 0; color: var(--ivory); }
 .fb-tag { font-family: var(--font-display); font-style: italic; color: var(--gold-bright); margin-top: 6px; }
-.fb-contact { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px 28px; margin-top: 28px; font-size: 14px; color: color-mix(in srgb, var(--ivory) 88%, transparent); }
-.fb-contact a { color: var(--ivory); }
+.fb-contact { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 14px; margin-top: 28px; font-size: 14px; color: color-mix(in srgb, var(--ivory) 88%, transparent); }
 .fb-legal { margin-top: 30px; font-size: 12px; letter-spacing: 0.1em; color: color-mix(in srgb, var(--ivory) 60%, transparent); }
 /* ============================================================
    MÉTIER VIDEO LIGHTBOX
@@ -608,6 +729,11 @@ html[lang="ar"] .fc-label { letter-spacing: 0.05em; font-size: 13px; }
    ============================================================ */
 .hero-crest, .hero-crown { height: auto; }
 .partner-grid { min-height: 200px; }
+.partner-marquee { min-height: 170px; }
+/* Compact the Partners chapter so the marquee doesn't sit inside a huge
+   near-empty band — matches the client's request to keep this section
+   balanced and visually tight. */
+#partners.chapter { padding-block: clamp(56px, 8vh, 96px); }
 .testimonial-grid { min-height: 280px; }
 .prestige-list { min-height: 220px; }
 .faq-list, #faqList { min-height: 280px; }
@@ -660,27 +786,51 @@ body.shop {
 .partners { background: var(--ivory); position: relative; }
 .partners .wrap { text-align: center; }
 .partners .lead { margin: 0 auto; max-width: 60ch; }
-/* Fixed-width flex tiles — every partner tile is exactly the same size,
-   regardless of how many sit in its row. Orphan rows centre themselves
-   with empty space on either side (cleaner than stretching tiles to fill).
-   On mobile we switch to exact-50% tiles so we always get two-up rows.
-   Tiles are transparent — logos uploaded to Odoo are PNGs with their own
-   transparency, so we let the ivory chapter background show through. */
-.partner-grid {
-  display: flex; flex-wrap: wrap; justify-content: center;
-  gap: clamp(18px, 2.5vw, 36px); margin-top: 54px;
+/* Section VI (Nos clients) now renders as a seamless infinite marquee
+   instead of a static grid — one continuous ribbon of logos scrolls
+   horizontally, matching the mobile-friendly pattern the client showed
+   in their reference video. The .partner-marquee is the viewport; the
+   .partner-track (built by the inline script) is doubled-up so the
+   -50% translate loops back to a visually-identical frame. */
+.partner-marquee {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 42px;
+  /* Fade both edges so logos dissolve in/out rather than pop. */
+  -webkit-mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+          mask-image: linear-gradient(to right, transparent 0, #000 8%, #000 92%, transparent 100%);
+}
+.partner-track {
+  display: flex;
+  gap: clamp(24px, 4vw, 56px);
+  width: max-content;
+  animation: partnerMarquee var(--marquee-duration, 32s) linear infinite;
+  will-change: transform;
+}
+@keyframes partnerMarquee {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+/* Arabic reverses reading direction; scroll the ribbon the other way so
+   logos still enter from the leading edge. */
+html[dir="rtl"] .partner-track { animation-direction: reverse; }
+.partner-marquee:hover .partner-track,
+.partner-marquee:focus-within .partner-track { animation-play-state: paused; }
+@media (prefers-reduced-motion: reduce) {
+  .partner-track { animation: none; transform: translateX(0); }
+  .partner-marquee { overflow-x: auto; }
 }
 .partner-tile {
-  flex: 0 0 auto; width: 220px; aspect-ratio: 4 / 3;
+  flex: 0 0 auto; width: 200px; aspect-ratio: 4 / 3;
   display: flex; align-items: center; justify-content: center;
-  padding: 22px;
+  padding: 18px;
 }
 @media (max-width: 900px){
-  .partner-tile { width: 180px; padding: 18px; }
+  .partner-tile { width: 160px; padding: 14px; }
 }
 @media (max-width: 560px){
-  .partner-grid { gap: 14px; }
-  .partner-tile { width: calc(50% - 7px); padding: 10px; }
+  .partner-tile { width: 130px; padding: 10px; }
 }
 /* No background on .partner-tile, so no hover-bg either — the logo's own
    colour-shift (filter transition below) carries the hover affordance. */

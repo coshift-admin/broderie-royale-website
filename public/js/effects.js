@@ -5,16 +5,21 @@
   "use strict";
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-  /* ---------- OVERTURE dismiss ---------- */
+  /* ---------- OVERTURE dismiss ----------
+     Client asked for a snappier intro: total splash budget 1.5-2s.
+     Crest animates in over 0.9s (see @keyframes overtureIn), line
+     fades in at 0.3s+0.55s, then we start the fade-out. Fade lasts
+     0.4s (see #overture transition), display:none clears the layer.
+     Fallback timer still fires in case window.load never resolves
+     (some proxies stall long-poll requests). */
   const overture = document.getElementById("overture");
   function dismissOverture() {
     if (!overture) return;
     overture.classList.add("done");
-    setTimeout(() => overture && (overture.style.display = "none"), 1100);
+    setTimeout(() => overture && (overture.style.display = "none"), 450);
   }
-  window.addEventListener("load", () => setTimeout(dismissOverture, 2400));
-  // safety fallback
-  setTimeout(dismissOverture, 4200);
+  window.addEventListener("load", () => setTimeout(dismissOverture, 1200));
+  setTimeout(dismissOverture, 2200);
 
   /* ---------- NAV: scrolled state + progress ---------- */
   const nav = document.getElementById("nav");
@@ -37,6 +42,47 @@
       else window.scrollTo({ top, behavior: "smooth" });
     });
   });
+
+  /* ---------- STAT COUNT-UP on enter ----------
+     .stat-num elements animate from 0 to their final numeric value
+     when they first scroll into view. Ease-out cubic keeps the last
+     third slow — brand-appropriate calm. i18n changes overwrite the
+     text (via data-i18n) so we cache the target once and re-run
+     if the value gets stomped. Reduced-motion visitors just see the
+     final number immediately. */
+  const countEls = Array.from(document.querySelectorAll(".stat-num"));
+  function animateCount(el) {
+    const raw = (el.textContent || "").trim();
+    // Preserve any trailing "+", "%" etc so 40+ stays 40+
+    const m = raw.match(/^(\d+)(.*)$/);
+    if (!m) return;
+    const target = parseInt(m[1], 10);
+    const suffix = m[2] || "";
+    if (prefersReduced || target < 2) { el.textContent = target + suffix; return; }
+    // Big numbers (years like 1986) start closer so we don't count from 0
+    // — 1986 counting from 0 would take too long or look absurd. For
+    // 4-digit years, start 100 below and interpolate.
+    const start = target >= 1000 ? target - 100 : 0;
+    const dur = target >= 1000 ? 1400 : 1600;
+    const t0 = performance.now();
+    function frame(now) {
+      const p = Math.min(1, (now - t0) / dur);
+      const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
+      const val = Math.round(start + (target - start) * eased);
+      el.textContent = val + suffix;
+      if (p < 1) requestAnimationFrame(frame);
+    }
+    requestAnimationFrame(frame);
+  }
+  const countIO = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { animateCount(e.target); countIO.unobserve(e.target); }
+    });
+  }, { threshold: 0.4 });
+  countEls.forEach(el => countIO.observe(el));
+  // If the language switches after the count already ran, [data-i18n] will
+  // overwrite our animated text with the raw target — that's fine, the
+  // final value is what we ended on anyway.
 
   /* ---------- REVEAL on enter ---------- */
   const revealEls = Array.from(document.querySelectorAll(".reveal"));

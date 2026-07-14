@@ -43,11 +43,27 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <hr class="gold-rule reveal d1" />
         <h2 class="chap-title reveal d1" data-i18n="her.title">Une maison familiale de référence.</h2>
         <p class="lead reveal d2 measure" data-i18n="her.body">Depuis 1986, Broderie Royale Algérie cultive un savoir-faire rare : donner aux institutions, aux corps constitués et aux marques une identité textile durable, conçue pour marquer les esprits.</p>
+        {/* Value chips: hover (desktop) or tap (mobile) reveals the client-
+            approved short description. Chip stays compact; tooltip appears
+            above with a smooth gold-thread swell — matching the brand's
+            "detail reveals itself" tone. */}
         <div class="values-row reveal d3">
-          <span class="value-chip" data-i18n="her.v1">Excellence</span>
-          <span class="value-chip" data-i18n="her.v2">Précision</span>
-          <span class="value-chip" data-i18n="her.v3">Tradition</span>
-          <span class="value-chip" data-i18n="her.v4">Prestige</span>
+          <span class="value-chip" tabindex="0">
+            <span class="vc-name" data-i18n="her.v1">Expérience</span>
+            <span class="vc-tip" role="tooltip" data-i18n="her.v1d">Un parcours familial depuis 1986 dans les drapeaux et les produits textiles officiels.</span>
+          </span>
+          <span class="value-chip" tabindex="0">
+            <span class="vc-name" data-i18n="her.v2">Qualité</span>
+            <span class="vc-tip" role="tooltip" data-i18n="her.v2d">Des matières sélectionnées, des couleurs stables et une finalisation adaptée aux usages officiels.</span>
+          </span>
+          <span class="value-chip" tabindex="0">
+            <span class="vc-name" data-i18n="her.v3">Professionnalisme</span>
+            <span class="vc-tip" role="tooltip" data-i18n="her.v3d">Une organisation claire des commandes, un suivi rigoureux et le respect des exigences de chaque institution.</span>
+          </span>
+          <span class="value-chip" tabindex="0">
+            <span class="vc-name" data-i18n="her.v4">Maîtrise</span>
+            <span class="vc-tip" role="tooltip" data-i18n="her.v4d">Une attention précise à chaque détail, du design au dernier point de broderie.</span>
+          </span>
         </div>
       </div>
       <div class="stat-stack reveal d2">
@@ -262,15 +278,20 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="chap-title reveal d1" data-i18n="pt.title">La confiance des institutions.</h2>
       <p class="lead reveal d2" data-i18n="pt.sub">Corps constitués, collectivités, clubs et grandes marques nous confient leur image depuis près de quarante ans.</p>
       {/* Populated at runtime by the inline script below from
-          /api/v1/website/partners. The skeleton tiles are placeholders
-          for the brief moment before the fetch resolves; if there are
-          no partners in Odoo, the whole section is hidden. */}
-      <div class="partner-grid reveal d2" id="partnersGrid">
-        <div class="partner-tile partner-skel"></div>
-        <div class="partner-tile partner-skel"></div>
-        <div class="partner-tile partner-skel"></div>
-        <div class="partner-tile partner-skel"></div>
-        <div class="partner-tile partner-skel"></div>
+          /api/v1/website/partners. Rendered as a seamless infinite
+          horizontal marquee: the .partner-track child is built with
+          the logo list duplicated end-to-end, then CSS translates the
+          track by -50% over its full duration so it loops back to a
+          visually-identical starting frame. Edges are masked so
+          logos don't pop in/out abruptly. */}
+      <div class="partner-marquee reveal d2" id="partnersGrid" aria-label="Nos clients">
+        <div class="partner-track">
+          <div class="partner-tile partner-skel"></div>
+          <div class="partner-tile partner-skel"></div>
+          <div class="partner-tile partner-skel"></div>
+          <div class="partner-tile partner-skel"></div>
+          <div class="partner-tile partner-skel"></div>
+        </div>
       </div>
 
       <script is:inline data-astro-rerun>
@@ -303,13 +324,26 @@ import BaseLayout from '../layouts/BaseLayout.astro';
                 return;
               }
               if (section) section.style.display = "";
-              grid.innerHTML = partners.map(function (p) {
+              function tileFor(p, hidden) {
                 var img = '<img src="' + esc(p.logo_url) + '" alt="' + esc(p.name) + '" width="220" height="165" loading="lazy" decoding="async" />';
+                var attrs = hidden ? ' aria-hidden="true" tabindex="-1"' : '';
                 if (p.website_url) {
-                  return '<a class="partner-tile" href="' + esc(p.website_url) + '" target="_blank" rel="noopener">' + img + '</a>';
+                  return '<a class="partner-tile" href="' + esc(p.website_url) + '" target="_blank" rel="noopener"' + attrs + '>' + img + '</a>';
                 }
-                return '<div class="partner-tile">' + img + '</div>';
-              }).join("");
+                return '<div class="partner-tile"' + attrs + '>' + img + '</div>';
+              }
+              // Seamless-marquee trick: emit the logo list twice back-to-back.
+              // The CSS animation translates the track by -50% (= exactly one
+              // copy's width), landing back at a frame indistinguishable from
+              // the start — no visible jump.
+              var first = partners.map(function (p) { return tileFor(p, false); }).join("");
+              var dup   = partners.map(function (p) { return tileFor(p, true); }).join("");
+              grid.innerHTML = '<div class="partner-track">' + first + dup + '</div>';
+              // Speed proportional to number of logos so density feels
+              // consistent. ~4s per logo * count = full loop duration.
+              var seconds = Math.max(16, partners.length * 4);
+              var track = grid.firstElementChild;
+              if (track) track.style.setProperty("--marquee-duration", seconds + "s");
             } catch (err) {
               console.error("[BR] partners fetch failed", err);
               if (section) section.style.display = "none";
@@ -471,45 +505,10 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <h2 class="chap-title reveal d1" data-i18n="ca.title">Explorez le catalogue.</h2>
       <p class="lead reveal d2" style="max-width:60ch;margin:0 auto;" data-i18n="ca.lead">Six familles de produits, un seul niveau d’exigence. Donnez à votre identité une visibilité d’exception.</p>
 
-      <div class="cat-cards reveal d2">
-        <a class="cat-card" href="/boutique?cat=drapeaux"><span class="cc-idx">01</span><div class="cc-name" data-i18n="me.1n">Drapeaux</div><p class="cc-desc" data-i18n="me.1d"></p></a>
-        <a class="cat-card" href="/boutique?cat=ecussons"><span class="cc-idx">02</span><div class="cc-name" data-i18n="me.2n">Écussons</div><p class="cc-desc" data-i18n="me.2d"></p></a>
-        <a class="cat-card" href="/boutique?cat=fanions"><span class="cc-idx">03</span><div class="cc-name" data-i18n="me.3n">Fanions</div><p class="cc-desc" data-i18n="me.3d"></p></a>
-        <a class="cat-card" href="/boutique?cat=broderie"><span class="cc-idx">04</span><div class="cc-name" data-i18n="me.4n">Broderie</div><p class="cc-desc" data-i18n="me.4d"></p></a>
-        <a class="cat-card" href="/boutique?cat=polyester"><span class="cc-idx">05</span><div class="cc-name" data-i18n="me.5n">Impression polyester</div><p class="cc-desc" data-i18n="me.5d"></p></a>
-      </div>
-
       <button class="btn-royal reveal d2" onclick="location.href='/boutique'">
-        <span data-i18n="ca.cta">Explorer le catalogue</span>
+        <span data-i18n="ca.cta">Explorer le guide</span>
         <span class="ar"></span>
       </button>
-
-      <div class="maisons reveal d2">
-        <div class="maison">
-          <div class="ml" data-i18n="ms.alger.l">Showroom principal</div>
-          <div class="mt" data-i18n="ms.alger.t">Alger</div>
-          <div class="md">
-            Lotissement Soufflerie n°12,<br />Dar El-Beida, 16100, Alger.<br />
-            <a href="tel:+213238230081">+213 23 82 30 81</a>
-          </div>
-        </div>
-        <div class="maison">
-          <div class="ml" data-i18n="ms.djelfa.l">Showroom</div>
-          <div class="mt" data-i18n="ms.djelfa.t">Djelfa</div>
-          <div class="md">
-            RN n°1, BP 273,<br />Aïn Ouessara, 17200, Djelfa.<br />
-            <a href="tel:+213278220096">+213 27 82 20 96</a>
-          </div>
-        </div>
-        <div class="maison">
-          <div class="ml" data-i18n="ms.boumerdes.l">Showroom</div>
-          <div class="mt" data-i18n="ms.boumerdes.t">Boumerdès</div>
-          <div class="md">
-            [Adresse à compléter],<br />35000, Boumerdès.<br />
-            <a href="tel:+213000000000">+213 — à compléter</a>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 
