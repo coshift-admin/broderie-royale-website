@@ -28,17 +28,17 @@ var I18N = {
   "hero.scroll": { fr: "Suivez le fil", ar: "تتبّع الخيط", en: "Follow the thread" },
 
   // ---- heritage ----
-  "her.num":   { fr: "I — La Maison",  ar: "١ — الدار",   en: "I — The House" },
-  "her.title": { fr: "Une maison familiale de référence.", ar: "دارٌ عائلية مرجعية.", en: "A family house of reference." },
+  "her.num":   { fr: "I — L’Institution", ar: "١ — المؤسسة", en: "I — The Institution" },
+  "her.title": { fr: "Une référence textile institutionnelle.", ar: "مؤسسة نسيجية مرجعية.", en: "A reference in institutional textile identity." },
   "her.body": {
-    fr: "Depuis 1986, Broderie Royale Algérie cultive un savoir-faire rare : donner aux institutions, aux corps constitués et aux marques une identité textile durable, conçue pour marquer les esprits.",
-    ar: "منذ عام 1986، تصون الطرز الملكي الجزائري حرفةً نادرة: منح المؤسسات والهيئات الرسمية والعلامات هويةً نسيجيةً دائمة، صُمّمت لتبقى في الأذهان.",
-    en: "Since 1986, Broderie Royale Algérie has cultivated a rare savoir-faire: giving institutions, official bodies and brands a lasting textile identity, designed to leave a mark."
+    fr: "Depuis 1986, Broderie Royale Algérie développe un savoir-faire familial spécialisé dans la fabrication de drapeaux officiels, d’écussons brodés, d’étendards et de produits textiles personnalisés, afin d’offrir aux institutions, organismes et marques une présence visuelle élégante et fiable.",
+    ar: "منذ عام 1986، تطوّر Broderie Royale Algérie خبرة عائلية متخصصة في صناعة الأعلام الرسمية، الشارات المطرزة، الرايات، والمنتجات النسيجية المخصصة، لتمنح المؤسسات والهيئات والعلامات حضورًا بصريًا راقيًا وموثوقًا.",
+    en: "Since 1986, Broderie Royale Algérie has developed a family-based expertise in official flags, embroidered badges, ceremonial banners and custom textile products, giving institutions, organizations and brands a refined and reliable visual presence."
   },
-  "her.v1": { fr: "Excellence", ar: "تميّز",   en: "Excellence" },
-  "her.v2": { fr: "Précision",  ar: "دقّة",    en: "Precision" },
-  "her.v3": { fr: "Tradition",  ar: "أصالة",   en: "Tradition" },
-  "her.v4": { fr: "Prestige",   ar: "رِفعة",   en: "Prestige" },
+  "her.v1": { fr: "Expérience",       ar: "خبرة",     en: "Experience" },
+  "her.v2": { fr: "Qualité",          ar: "جودة",    en: "Quality" },
+  "her.v3": { fr: "Professionnalisme", ar: "احترافية", en: "Professionalism" },
+  "her.v4": { fr: "Maîtrise",         ar: "إتقان",   en: "Mastery" },
   "her.s1n": { fr: "1986", ar: "1986", en: "1986" },
   "her.s1l": { fr: "L’année fondatrice", ar: "عام التأسيس", en: "The founding year" },
   "her.s2n": { fr: "40", ar: "40", en: "40" },
@@ -47,47 +47,47 @@ var I18N = {
   "her.s3l": { fr: "Maisons — Alger, Djelfa & Boumerdès", ar: "ثلاث دور — الجزائر، الجلفة وبومرداس", en: "Showrooms — Algiers, Djelfa & Boumerdès" },
 
   // ---- atelier ----
-  "at.num":   { fr: "II — Le Geste", ar: "٢ — الحرفة", en: "II — The Craft" },
-  "at.title": { fr: "Le fil, l’aiguille, la main.", ar: "الخيط، الإبرة، اليد.", en: "The thread, the needle, the hand." },
+  "at.num":   { fr: "II — Le Savoir-faire", ar: "٢ — الحرفة", en: "II — Craftsmanship" },
+  "at.title": { fr: "Des détails réalisés avec précision.", ar: "تفاصيل تُحاك بدقّة.", en: "Details crafted with precision." },
   "at.body": {
-    fr: "Chaque écusson naît d’un geste précis, répété des milliers de fois. Le fil d’or épouse le tissu, point après point, jusqu’à révéler la couronne. La broderie est notre signature ; le détail, notre obsession.",
-    ar: "تُولد كل شارة من حركةٍ دقيقة، تتكرّر آلاف المرّات. يعانق الخيط الذهبي النسيج، غرزةً بعد غرزة، حتى يكشف التاج. التطريز توقيعنا، والتفصيل هَوَسُنا.",
-    en: "Every crest is born of a precise gesture, repeated thousands of times. Gold thread embraces the cloth, stitch after stitch, until the crown appears. Embroidery is our signature; detail, our obsession."
+    fr: "Du choix du tissu et du fil à la broderie et à la finalisation, chaque pièce passe par des étapes de soin minutieux qui préservent sa forme et sa valeur. Chez Broderie Royale Algérie, le savoir-faire est un standard de qualité qui accompagne chaque produit afin de refléter l’identité de l’institution avec clarté et stabilité.",
+    ar: "من اختيار القماش والخيط إلى الطرز والإتمام، تمرّ كل قطعة بمراحل عناية دقيقة تحفظ شكلها وقيمتها؛ فالحرفة في Broderie Royale Algérie معيار جودة يرافق كل منتج حتى يعكس هوية المؤسسة بوضوح وثبات.",
+    en: "From the choice of fabric and thread to embroidery and finalization, every piece goes through careful stages that preserve its form and value. At Broderie Royale Algérie, craftsmanship is a quality standard that guides every product so it reflects the institution’s identity with clarity and consistency."
   },
   "at.cap": { fr: "Broderie machine multi-têtes — Atelier d’Alger", ar: "تطريز آلي متعدد الرؤوس — مشغل الجزائر", en: "Multi-head machine embroidery — Algiers atelier" },
 
   // ---- metiers ----
-  "me.num":   { fr: "III — Les Métiers", ar: "٣ — المهن", en: "III — The Crafts" },
-  "me.title": { fr: "Cinq métiers, une exigence.", ar: "خمسُ مهنٍ،<br>معيارٌ واحد.", en: "Five crafts, one standard." },
-  "me.sub":   { fr: "Faites défiler pour découvrir chaque métier.", ar: "تابع التمرير لاكتشاف كل مهنة.", en: "Scroll to discover each craft." },
+  "me.num":   { fr: "III — Domaines d’expertise", ar: "٣ — مجالات الخبرة", en: "III — Areas of Expertise" },
+  "me.title": { fr: "Un même standard,<br>plusieurs expertises.", ar: "معيارٌ واحد،<br>مجالاتٌ متعدّدة.", en: "One standard,<br>many expertises." },
+  "me.sub":   { fr: "Des drapeaux aux écussons, étendards et produits personnalisés, nous appliquons le même standard : qualité d’exécution, précision des détails et présence adaptée aux institutions.", ar: "من الأعلام إلى الشارات والرايات والمنتجات المخصّصة، يرافقنا نفس المعيار: جودة في التنفيذ، دقّة في التفاصيل، وحضور يليق بالمؤسسات.", en: "From flags to badges, banners and custom products, we apply the same standard: quality execution, precise details and a presence suited to institutions." },
   "me.1n": { fr: "Drapeaux", ar: "الأعلام", en: "Flags" },
-  "me.1d": { fr: "Drapeaux nationaux, internationaux, de table et de mât, sur supports haute résistance.", ar: "أعلام وطنية ودولية، مكتبية وعلى السواري، على دعائم عالية المتانة.", en: "National, international, table and mast flags on high-resistance supports." },
-  "me.2n": { fr: "Écussons", ar: "الشارات", en: "Crests" },
-  "me.2d": { fr: "Patches et insignes brodés, fil d’or sur tissu, pour corps et clubs.", ar: "شاراتٌ وأوسمةٌ مطرّزة، خيطٌ ذهبي على القماش، للهيئات والأندية.", en: "Embroidered patches and insignia, gold thread on cloth, for corps and clubs." },
-  "me.3n": { fr: "Fanions", ar: "الرايات", en: "Pennants" },
-  "me.3d": { fr: "Fanions cérémoniels et décoratifs, frange dorée, finition main.", ar: "راياتٌ احتفالية وزخرفية، شراريب ذهبية، تشطيبٌ يدوي.", en: "Ceremonial and decorative pennants, gold fringe, hand-finished." },
+  "me.1d": { fr: "Drapeaux nationaux et internationaux, de bureau et d’extérieur, réalisés avec des matières résistantes.", ar: "أعلام وطنية ودولية، مكتبية وخارجية، بخامات متينة.", en: "National and international flags, desk and outdoor flags, made with durable materials." },
+  "me.2n": { fr: "Écussons", ar: "الشارات", en: "Badges" },
+  "me.2d": { fr: "Écussons et insignes brodés pour organismes, clubs et institutions.", ar: "شارات وأوسمة مطرّزة للهيئات، الأندية والمؤسسات.", en: "Embroidered badges and insignia for organizations, clubs and institutions." },
+  "me.3n": { fr: "Étendards", ar: "الرايات", en: "Banners" },
+  "me.3d": { fr: "Étendards officiels et cérémoniels, avec une finalisation soignée et une présence distinctive.", ar: "رايات رسمية واحتفالية بإتمام راقٍ وحضور مميّز.", en: "Official and ceremonial banners with refined finalization and a distinctive presence." },
   "me.4n": { fr: "Broderie", ar: "التطريز", en: "Embroidery" },
-  "me.4d": { fr: "Personnalisation premium : polos, t-shirts, casquettes et vêtements de travail.", ar: "تخصيصٌ فاخر: قمصان بولو، تيشيرتات، قبعات وملابس العمل.", en: "Premium personalisation: polos, t-shirts, caps and workwear." },
-  "me.5n": { fr: "Impression polyester", ar: "طباعة البوليستر", en: "Polyester printing" },
-  "me.5d": { fr: "Impression numérique sur tissu polyester, couleurs éclatantes et tenue durable.", ar: "طباعة رقمية على نسيج البوليستر، ألوانٌ زاهية وثباتٌ دائم.", en: "Digital printing on polyester fabric, vivid colours and lasting hold." },
+  "me.4d": { fr: "Broderie personnalisée sur vêtements, casquettes et tenues professionnelles.", ar: "تطريز مخصّص على الملابس، القبعات والزيّ المهني.", en: "Custom embroidery on clothing, caps and professional uniforms." },
+  "me.5n": { fr: "Impression textile", ar: "الطباعة النسيجية", en: "Textile printing" },
+  "me.5d": { fr: "Impression numérique nette et durable sur tissu.", ar: "طباعة رقمية واضحة وثابتة على القماش.", en: "Clear and durable digital printing on fabric." },
 
   // ---- flag ----
   "fl.num":   { fr: "V — Le Drapeau", ar: "٥ — العَلَم", en: "V — The Flag" },
   "fl.quote": {
-    fr: "Du salon d’honneur à la tribune officielle, nos drapeaux portent <em>haut les couleurs.</em>",
-    ar: "من قاعة الشرف إلى المنصّة الرسمية، تحمل أعلامنا <em>الألوان عاليًا.</em>",
-    en: "From the hall of honour to the official tribune, our flags carry <em>the colours high.</em>"
+    fr: "Des salles d’honneur aux tribunes officielles, nos drapeaux <em>se hissent avec stabilité et présence.</em>",
+    ar: "من قاعات الشرف إلى المنصّات الرسمية، تُرفع أعلامنا <em>بثبات وحضور.</em>",
+    en: "From halls of honour to official platforms, our flags <em>are raised with stability and presence.</em>"
   },
   "fl.body": {
-    fr: "Conception et fabrication de drapeaux institutionnels, événementiels et publicitaires. La Maison du Drapeau, au service de la Nation.",
-    ar: "تصميم وصناعة الأعلام المؤسسية والاحتفالية والإعلانية. دار العَلَم، في خدمة الوطن.",
-    en: "Design and manufacture of institutional, event and advertising flags. The House of the Flag, in service of the Nation."
+    fr: "Nous concevons et fabriquons des drapeaux institutionnels, cérémoniels et publicitaires, avec des matières résistantes et une exécution précise adaptée aux événements et aux espaces officiels. Maison du Drapeau, au service de la nation.",
+    ar: "نصمّم ونصنع الأعلام المؤسسية، الاحتفالية والإعلانية، بخامات متينة وتنفيذ دقيق يليق بالمناسبات والفضاءات الرسمية. دار العَلَم، في خدمة الوطن.",
+    en: "We design and manufacture institutional, ceremonial and advertising flags using durable materials and precise execution suited to official events and spaces. Maison du Drapeau, at the service of the nation."
   },
 
   // ---- prestige ----
   "pr.num":   { fr: "VI — La Confiance", ar: "٦ — الثقة", en: "VI — Trust" },
-  "pr.title": { fr: "Ils nous ont fait confiance.", ar: "وضعوا ثقتهم فينا.", en: "They placed their trust in us." },
-  "pr.lead":  { fr: "Des commandes officielles et de grande envergure, portées par la même exigence.", ar: "طلباتٌ رسمية وكبرى، تحملها العناية نفسها.", en: "Official, large-scale commissions, carried by the same exacting standard." },
+  "pr.title": { fr: "Grands projets, même exigence.", ar: "مشاريع كبرى، ومعيار لا يتغيّر.", en: "Major projects, one unchanging standard." },
+  "pr.lead":  { fr: "Des commandes officielles et institutionnelles réunies par la précision d’exécution et le respect du symbole.", ar: "طلبات رسمية ومؤسسية، تجمعها دقّة التنفيذ واحترام الرمز.", en: "Official and institutional orders brought together by precise execution and respect for the symbol." },
   "pr.1n": { fr: "XVIIᵉ Conférence ministérielle du Mouvement des Non-Alignés", ar: "المؤتمر الوزاري السابع عشر لحركة عدم الانحياز", en: "XVII Ministerial Conference of the Non-Aligned Movement" },
   "pr.1p": { fr: "Palais des Nations · Club des Pins", ar: "قصر الأمم · نادي الصنوبر", en: "Palais des Nations · Club des Pins" },
   "pr.2n": { fr: "Algerian Scholar Award", ar: "جائزة الباحث الجزائري", en: "Algerian Scholar Award" },
@@ -101,19 +101,19 @@ var I18N = {
 
   // ---- serve ----
   "sv.num":   { fr: "IV — Au Service de", ar: "٤ — في خدمة", en: "IV — In Service Of" },
-  "sv.title": { fr: "Au service de ceux qui représentent.", ar: "في خدمة من يُمثّلون.", en: "In service of those who represent." },
-  "sv.1": { fr: "Corps constitués & institutions de l’État", ar: "الهيئات الرسمية ومؤسسات الدولة", en: "Constituted bodies & State institutions" },
+  "sv.title": { fr: "Des entités qui représentent leur identité avec confiance.", ar: "جهات تمثّل هويتها بثقة.", en: "Entities that represent their identity with confidence." },
+  "sv.1": { fr: "Organismes officiels et institutions de l’État", ar: "الهيئات الرسمية ومؤسسات الدولة", en: "Official bodies and state institutions" },
   "sv.2": { fr: "Collectivités locales", ar: "الجماعات المحلية", en: "Local authorities" },
-  "sv.3": { fr: "Sociétés de sécurité & de gardiennage", ar: "شركات الأمن والحراسة", en: "Security & guarding companies" },
-  "sv.4": { fr: "Hôtels & restaurants", ar: "الفنادق والمطاعم", en: "Hotels & restaurants" },
+  "sv.3": { fr: "Sociétés de sécurité et de gardiennage", ar: "شركات الأمن والحراسة", en: "Security and guarding companies" },
+  "sv.4": { fr: "Hôtels et restaurants", ar: "الفنادق والمطاعم", en: "Hotels and restaurants" },
   "sv.5": { fr: "Clubs sportifs", ar: "الأندية الرياضية", en: "Sports clubs" },
-  "sv.6": { fr: "Particuliers", ar: "الأفراد", en: "Private individuals" },
+  "sv.6": { fr: "Particuliers et demandes spécifiques", ar: "الأفراد والطلبات الخاصة", en: "Individuals and special requests" },
 
   // ---- catalogue / contact ----
-  "ca.num":   { fr: "VII — Le Catalogue", ar: "٧ — الكتالوج", en: "VII — The Catalogue" },
-  "ca.title": { fr: "Explorez le catalogue.", ar: "اكتشف الكتالوج.", en: "Explore the catalogue." },
-  "ca.lead":  { fr: "Six familles de produits, un seul niveau d’exigence. Donnez à votre identité une visibilité d’exception.", ar: "ستّ عائلات من المنتجات، مستوى واحد من الإتقان. امنح هويتك حضورًا استثنائيًا.", en: "Six product families, one standard of excellence. Give your identity exceptional visibility." },
-  "ca.cta":   { fr: "Explorer le catalogue", ar: "تصفّح الكتالوج", en: "Explore the catalogue" },
+  "ca.num":   { fr: "VII — Guide des produits", ar: "٧ — دليل المنتجات", en: "VII — Product Guide" },
+  "ca.title": { fr: "Découvrez nos produits.", ar: "استعرض منتجاتنا.", en: "Explore our products." },
+  "ca.lead":  { fr: "Des produits spécialisés, avec un même standard de maîtrise. Offrez à votre identité la présence qu’elle mérite.", ar: "منتجات متخصصة، ومعيار واحد من الإتقان. امنحوا هويتكم حضورًا يليق بها.", en: "Specialized products with one shared standard of mastery. Give your identity the presence it deserves." },
+  "ca.cta":   { fr: "Explorer le guide", ar: "تصفّح الدليل", en: "Explore the guide" },
 
   "ms.alger.l": { fr: "Showroom principal", ar: "صالة العرض الرئيسية", en: "Main showroom" },
   "ms.alger.t": { fr: "Alger", ar: "الجزائر", en: "Algiers" },
@@ -221,6 +221,8 @@ var I18N = {
   "ct.alger":    { fr: "Showroom Alger", ar: "صالة العرض — الجزائر", en: "Showroom Algiers" },
   "ct.djelfa":   { fr: "Showroom Djelfa", ar: "صالة العرض — الجلفة", en: "Showroom Djelfa" },
   "ct.boumerdes":{ fr: "Showroom Boumerdès", ar: "صالة العرض — بومرداس", en: "Showroom Boumerdès" },
+  "ct.boumerdes_addr": { fr: "Adresse à confirmer.<br>35000, Boumerdès", ar: "العنوان قيد التحديث.<br>35000، بومرداس", en: "Address to be confirmed.<br>35000, Boumerdès" },
+  "ct.boumerdes_phone":{ fr: "Téléphone à confirmer.", ar: "رقم الهاتف قيد التحديث.", en: "Phone number to be confirmed." },
   "ct.phones":   { fr: "Téléphones", ar: "الهواتف", en: "Telephones" },
   "ct.messaging":{ fr: "Mobile · Viber · WeChat · WhatsApp", ar: "موبايل · فايبر · وي‌شات · واتساب", en: "Mobile · Viber · WeChat · WhatsApp" },
   "ct.svc_print":{ fr: "Service print & drapeaux", ar: "خدمة الطباعة والأعلام", en: "Print & flags service" },
@@ -235,20 +237,20 @@ var I18N = {
   "nav.galerie": { fr: "Galerie", ar: "المعرض", en: "Gallery" },
   "nav.devis":   { fr: "Devis", ar: "طلب عرض", en: "Quote" },
 
-  // ============ PARTNERS (homepage band) ============
-  "pt.eyebrow": { fr: "PARTENAIRES & RÉFÉRENCES", ar: "شركاء ومراجع", en: "PARTNERS & REFERENCES" },
-  "pt.title":   { fr: "La confiance des institutions.", ar: "ثقة المؤسسات.", en: "Trusted by institutions." },
-  "pt.sub":     { fr: "Corps constitués, collectivités, clubs et grandes marques nous confient leur image depuis près de quarante ans.", ar: "الهيئات الرسمية والجماعات والأندية والعلامات الكبرى تأتمننا على صورتها منذ ما يقارب أربعين عامًا.", en: "Constituted bodies, authorities, clubs and major brands have entrusted us with their image for nearly forty years." },
+  // ============ PARTNERS (homepage band) — logos edited in Odoo CMS ============
+  "pt.eyebrow": { fr: "NOS CLIENTS", ar: "عملاؤنا", en: "OUR CLIENTS" },
+  "pt.title":   { fr: "Des noms qui nous ont accordé leur confiance.", ar: "أسماء وضعت ثقتها فينا.", en: "Names that placed their trust in us." },
+  "pt.sub":     { fr: "Depuis 1986, Broderie Royale Algérie accompagne des organismes officiels et de grandes institutions à travers des produits textiles qui portent leur identité et honorent leur image.", ar: "منذ 1986، ترافق Broderie Royale Algérie جهات رسمية ومؤسسات كبرى عبر منتجات نسيجية تحمل هويتها وتليق بمقامها.", en: "Since 1986, Broderie Royale Algérie has supported official bodies and major institutions through textile products that carry their identity and honor their image." },
 
-  // ============ TESTIMONIALS ============
+  // ============ TESTIMONIALS — entries edited in Odoo CMS ============
   "ts.eyebrow": { fr: "TÉMOIGNAGES", ar: "شهادات", en: "TESTIMONIALS" },
-  "ts.title":   { fr: "La voix de nos clients.", ar: "صوت عملائنا.", en: "The voice of our clients." },
-  "ts.sub":     { fr: "Quelques retours de ceux qui nous ont confié leur identité textile.", ar: "مختارات من آراء من ائتمنونا على هويتهم النسيجية.", en: "A few words from those who entrusted us with their textile identity." },
+  "ts.title":   { fr: "Paroles de nos clients.", ar: "كلمات من عملائنا.", en: "Words from our clients." },
+  "ts.sub":     { fr: "Une sélection d’avis d’organismes ayant choisi Broderie Royale Algérie pour représenter leur image à travers des produits textiles à la hauteur de leur statut.", ar: "آراء مختارة من جهات اختارت Broderie Royale Algérie لتمثيل صورتها عبر منتجات نسيجية تليق بمقامها.", en: "A selection of feedback from organizations that chose Broderie Royale Algérie to represent their image through textile products worthy of their standing." },
 
-  // ============ FAQ ============
+  // ============ FAQ — questions & answers edited in Odoo CMS ============
   "fq.eyebrow": { fr: "QUESTIONS FRÉQUENTES", ar: "الأسئلة المتكرّرة", en: "FREQUENTLY ASKED" },
-  "fq.title":   { fr: "Bon à savoir.", ar: "ما ينبغي معرفته.", en: "Good to know." },
-  "fq.sub":     { fr: "Les réponses aux questions que l’on nous pose le plus souvent.", ar: "إجابات على الأسئلة التي تُطرح علينا أكثر من غيرها.", en: "Answers to the questions we’re asked most often." },
+  "fq.title":   { fr: "Ce qu’il faut savoir.", ar: "ما ينبغي معرفته.", en: "What you need to know." },
+  "fq.sub":     { fr: "Des réponses aux questions qui nous sont le plus souvent posées.", ar: "إجابات على الأسئلة التي تُطرح علينا أكثر من غيرها.", en: "Clear answers to the questions we receive most often." },
 
   // ============ GALERIE ============
   "ga.eyebrow": { fr: "RÉALISATIONS · MAISON DU DRAPEAU", ar: "إنجازات · دار العَلَم", en: "REALISATIONS · HOUSE OF THE FLAG" },
