@@ -23,40 +23,58 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <button class="filter-chip" data-f="event" data-i18n="ga.f_event">Événements</button>
       <button class="filter-chip" data-f="brod" data-i18n="ga.f_brod">Broderie</button>
     </div>
+    {/* ============================================================
+        GALLERY LAYOUT — one repeating row pattern (4 images):
+
+          Column 1        Column 2          Column 3
+          ┌────────┐      ┌──────────┐      ┌────────┐
+          │        │      │ landscape│      │        │
+          │        │      │   4 : 3  │      │        │
+          │portrait│      ├──────────┤      │portrait│
+          │  2 : 3 │      │ landscape│      │  2 : 3 │
+          │        │      │   4 : 3  │      │        │
+          └────────┘      └──────────┘      └────────┘
+
+        Portrait aspect ratio:  2 wide × 3 tall  (e.g. 800×1200 px)
+        Landscape aspect ratio: 4 wide × 3 tall  (e.g. 1200×900 px)
+
+        Client uploads images in this fixed order per row —
+        [portrait, landscape, landscape, portrait] — and the
+        grid places them automatically. Keep the pattern in
+        multiples of 4 for clean rows.
+        ============================================================ */}
     <div class="gal-grid" id="galGrid">
-      <figure class="gal-item tall" data-cat="flags" data-img="/assets/photo-flag-international.webp" data-capkey="g1">
+      {/* Row 1 */}
+      <figure class="gal-item gal-portrait" data-cat="flags" data-img="/assets/photo-flag-international.webp" data-capkey="g1">
         <img src="/assets/photo-flag-international.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g1"></span></figcaption>
       </figure>
-      <figure class="gal-item" data-cat="crest" data-img="/assets/texture-embroidery-patch.webp" data-capkey="g2">
+      <figure class="gal-item gal-landscape" data-cat="crest" data-img="/assets/texture-embroidery-patch.webp" data-capkey="g2">
         <img src="/assets/texture-embroidery-patch.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g2"></span></figcaption>
       </figure>
-      <figure class="gal-item" data-cat="event" data-img="/assets/photo-flags-row.webp" data-capkey="g3">
+      <figure class="gal-item gal-landscape" data-cat="event" data-img="/assets/photo-flags-row.webp" data-capkey="g3">
         <img src="/assets/photo-flags-row.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g3"></span></figcaption>
       </figure>
-      <figure class="gal-item tall" data-cat="crest" data-img="/assets/photo-pennant.webp" data-capkey="g4">
+      <figure class="gal-item gal-portrait" data-cat="crest" data-img="/assets/photo-pennant.webp" data-capkey="g4">
         <img src="/assets/photo-pennant.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g4"></span></figcaption>
       </figure>
-      <figure class="gal-item" data-cat="brod" data-img="/assets/metier-broderie.webp" data-capkey="g5">
-        <img src="/assets/metier-broderie.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g5"></span></figcaption>
-      </figure>
-      <figure class="gal-item" data-cat="flags" data-img="/assets/photo-flag-lobby.webp" data-capkey="g6">
-        <img src="/assets/photo-flag-lobby.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g6"></span></figcaption>
-      </figure>
-      <figure class="gal-item tall" data-cat="event" data-img="/assets/photo-desk-flags-br.webp" data-capkey="g7">
+      {/* Row 2 */}
+      <figure class="gal-item gal-portrait" data-cat="event" data-img="/assets/photo-desk-flags-br.webp" data-capkey="g7">
         <img src="/assets/photo-desk-flags-br.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g7"></span></figcaption>
       </figure>
-      <figure class="gal-item" data-cat="crest" data-img="/assets/texture-embroidery-patch.webp" data-capkey="g8">
-        <img src="/assets/texture-embroidery-patch.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g8"></span></figcaption>
+      <figure class="gal-item gal-landscape" data-cat="brod" data-img="/assets/metier-broderie.webp" data-capkey="g5">
+        <img src="/assets/metier-broderie.webp" alt="" loading="lazy" />
+        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g5"></span></figcaption>
       </figure>
-      <figure class="gal-item" data-cat="flags" data-img="/assets/metier-polyester.webp" data-capkey="g9">
+      <figure class="gal-item gal-landscape" data-cat="flags" data-img="/assets/photo-flag-lobby.webp" data-capkey="g6">
+        <img src="/assets/photo-flag-lobby.webp" alt="" loading="lazy" />
+        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g6"></span></figcaption>
+      </figure>
+      <figure class="gal-item gal-portrait" data-cat="flags" data-img="/assets/metier-polyester.webp" data-capkey="g9">
         <img src="/assets/metier-polyester.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g9"></span></figcaption>
       </figure>

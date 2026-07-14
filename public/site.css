@@ -871,17 +871,46 @@ html[lang="ar"] .partners-note { font-size: 15px; }
 /* ===== GALERIE ===== */
 .gal-body { max-width: 1280px; margin: 0 auto; padding: clamp(36px,4vw,56px) clamp(20px,6vw,120px) 90px; }
 .gal-filters { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 34px; }
-.gal-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; grid-auto-flow: dense; }
-@media (max-width: 900px){ .gal-grid { grid-template-columns: repeat(2, 1fr); } }
-@media (max-width: 560px){ .gal-grid { grid-template-columns: 1fr; } }
+/* Gallery grid: fixed 4-image row pattern
+     [portrait 2:3] [landscape 4:3 stacked ×2] [portrait 2:3]
+   3 columns; each portrait spans 2 grid rows so its natural
+   height matches two stacked landscapes. Aspect ratios are
+   applied via aspect-ratio on the tiles themselves so the
+   client can add matching images later without CSS work. */
+/* Gallery grid: fixed 4-image row pattern
+     [portrait 2:3] [landscape 4:3 stacked ×2] [portrait 2:3]
+   Landscapes are pinned to column 2 (grid-column: 2). Portraits
+   are auto-placed with a 2-row span — dense flow puts one in
+   col 1, then the next in col 3, filling the row. Each repeating
+   4-item group therefore lands as:
+       item 1 portrait  -> col 1, rows N..N+1
+       item 2 landscape -> col 2, row  N
+       item 3 landscape -> col 2, row  N+1
+       item 4 portrait  -> col 3, rows N..N+1
+*/
+.gal-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  grid-auto-flow: dense;
+  gap: 14px;
+}
 .gal-item {
   position: relative; overflow: hidden; border-radius: var(--r-md); cursor: pointer;
   border: 1px solid var(--ivory-line); background: var(--ivory-warm);
 }
-.gal-item.tall { grid-row: span 2; }
+.gal-item.gal-portrait  { aspect-ratio: 2 / 3; grid-row: span 2; }
+.gal-item.gal-landscape { aspect-ratio: 4 / 3; grid-row: span 1; grid-column: 2; }
 .gal-item img, .gal-item image-slot { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform .8s var(--ease); }
-.gal-item { min-height: 260px; }
-.gal-item.tall { min-height: 534px; }
+@media (max-width: 900px){
+  /* Below 900px the fixed 3-col row pattern doesn't fit cleanly —
+     collapse to a single natural-flow column. Each tile keeps its
+     own aspect ratio so images still render at the right proportions;
+     the rhythm just becomes vertical. */
+  .gal-grid { grid-template-columns: 1fr; grid-auto-flow: row; }
+  .gal-item.gal-portrait,
+  .gal-item.gal-landscape { grid-row: auto; grid-column: auto; }
+}
 .gal-item:hover img, .gal-item:hover image-slot { transform: scale(1.06); }
 .gal-item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(16,16,16,.82)); opacity: 0; transition: opacity .5s var(--ease); }
 .gal-item:hover::after { opacity: 1; }
