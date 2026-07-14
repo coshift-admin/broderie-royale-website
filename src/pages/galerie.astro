@@ -24,42 +24,33 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <button class="filter-chip" data-f="brod" data-i18n="ga.f_brod">Broderie</button>
     </div>
     {/* ============================================================
-        GALLERY LAYOUT — one repeating row pattern (4 images):
+        GALLERY LAYOUT — 3 images per row:
 
-          Column 1        Column 2          Column 3
-          ┌────────┐      ┌──────────┐      ┌────────┐
-          │        │      │ landscape│      │        │
-          │        │      ├──────────┤      │        │
-          │portrait│      │ landscape│      │portrait│
-          │  2 : 3 │      │          │      │  2 : 3 │
-          └────────┘      └──────────┘      └────────┘
+          Column 1        Columns 2-3       Column 4
+          ┌────────┐      ┌───────────────┐ ┌────────┐
+          │        │      │               │ │        │
+          │portrait│      │   landscape   │ │portrait│
+          │  2 : 3 │      │     4 : 3     │ │  2 : 3 │
+          │        │      │               │ │        │
+          └────────┘      └───────────────┘ └────────┘
 
-        Frame sizing (fixed by CSS):
-          - Portrait frames are 2 : 3 (width : height).
-          - Each landscape frame is exactly half the portrait
-            height (minus the 14px row gap). Its rendered aspect
-            is ≈ 4 : 2.86 (close to 4:3 but a hair less tall so
-            the two stacked landscapes align top+bottom with the
-            portraits — zero dead space between them).
+        Portrait spans 1 column; landscape spans 2. Both frames
+        end up the same height (1.5 × col_w) so their top and
+        bottom edges line up perfectly across the row.
 
         Recommended source-image aspect ratios for uploads:
           - Portrait:  2 : 3  (e.g. 800×1200, 1200×1800 px)
-          - Landscape: 4 : 3  (e.g. 1200×900,  1600×1200 px)
-        object-fit: cover crops slightly if the source doesn't
-        match — safe to use any close ratio.
+          - Landscape: 4 : 3  (e.g. 1200×900, 1600×1200 px)
+        object-fit: cover safely crops any close ratio.
 
-        DOM order per row: [portrait, landscape, landscape, portrait].
-        Keep uploads in multiples of 4 for whole rows.
+        DOM order per row: [portrait, landscape, portrait].
+        Keep uploads in multiples of 3 for whole rows.
         ============================================================ */}
     <div class="gal-grid" id="galGrid">
       {/* Row 1 */}
       <figure class="gal-item gal-portrait" data-cat="flags" data-img="/assets/photo-flag-international.webp" data-capkey="g1">
         <img src="/assets/photo-flag-international.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g1"></span></figcaption>
-      </figure>
-      <figure class="gal-item gal-landscape" data-cat="crest" data-img="/assets/texture-embroidery-patch.webp" data-capkey="g2">
-        <img src="/assets/texture-embroidery-patch.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g2"></span></figcaption>
       </figure>
       <figure class="gal-item gal-landscape" data-cat="event" data-img="/assets/photo-flags-row.webp" data-capkey="g3">
         <img src="/assets/photo-flags-row.webp" alt="" loading="lazy" />
@@ -78,13 +69,22 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <img src="/assets/metier-broderie.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g5"></span></figcaption>
       </figure>
+      <figure class="gal-item gal-portrait" data-cat="flags" data-img="/assets/metier-polyester.webp" data-capkey="g9">
+        <img src="/assets/metier-polyester.webp" alt="" loading="lazy" />
+        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g9"></span></figcaption>
+      </figure>
+      {/* Row 3 */}
+      <figure class="gal-item gal-portrait" data-cat="crest" data-img="/assets/texture-embroidery-patch.webp" data-capkey="g2">
+        <img src="/assets/texture-embroidery-patch.webp" alt="" loading="lazy" />
+        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g2"></span></figcaption>
+      </figure>
       <figure class="gal-item gal-landscape" data-cat="flags" data-img="/assets/photo-flag-lobby.webp" data-capkey="g6">
         <img src="/assets/photo-flag-lobby.webp" alt="" loading="lazy" />
         <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g6"></span></figcaption>
       </figure>
-      <figure class="gal-item gal-portrait" data-cat="flags" data-img="/assets/metier-polyester.webp" data-capkey="g9">
-        <img src="/assets/metier-polyester.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g9"></span></figcaption>
+      <figure class="gal-item gal-portrait" data-cat="crest" data-img="/assets/texture-embroidery-patch.webp" data-capkey="g8">
+        <img src="/assets/texture-embroidery-patch.webp" alt="" loading="lazy" />
+        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g8"></span></figcaption>
       </figure>
     </div>
 
