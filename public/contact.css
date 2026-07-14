@@ -1,7 +1,25 @@
 /* ============================================================
    contact.css — Contact page (extends brand/site/shop)
    ============================================================ */
-.contact-body { max-width: 1240px; margin: 0 auto; padding: clamp(40px,6vw,72px) clamp(20px,6vw,120px) 80px; }
+.contact-body { max-width: 1240px; margin: 0 auto; padding: clamp(40px,6vw,72px) clamp(16px,5vw,120px) 80px; }
+/* Narrow phones — trim body padding & info-block internal padding so the
+   showroom cards don't feel cramped and the copy has breathing room. */
+@media (max-width: 560px) {
+  .contact-body { padding-inline: 14px; padding-bottom: 60px; }
+  .info-block { padding: 22px 18px; }
+  .info-block h3 { font-size: 1.18rem; }
+  .info-block .addr { font-size: 14px; margin-bottom: 14px; }
+  .msg-highlight { padding: 14px 14px; }
+  .msg-highlight a { font-size: 1.05rem; word-break: break-all; }
+  .contact-line { padding: 10px 0; gap: 10px; }
+  .contact-line .ci { width: 30px; height: 30px; }
+  .contact-line .ci svg { width: 15px; height: 15px; }
+  .contact-line a { font-size: 14.5px; word-break: break-word; }
+  .svc-cell { padding: 18px 18px; }
+  .svc-cell .sc-name { font-size: 0.98rem; margin-bottom: 8px; }
+  .svc-cell a { font-size: 14px; }
+  .info-col { gap: 16px; }
+}
 
 /* ---- mode toggle (Devis ⇄ Nous écrire) ---- */
 .contact-toggle {
@@ -36,6 +54,11 @@ html[lang="ar"] .ctab { font-family: var(--font-arabic); font-size: 17px; }
 
 /* ---- form card ---- */
 .contact-card { background: var(--bg-elevated); border: 1px solid var(--ivory-line); border-radius: var(--r-md); padding: clamp(26px,3vw,40px); box-shadow: var(--shadow-md); position: sticky; top: 92px; }
+/* Kill sticky as soon as the two-column grid collapses (≤920px). On mobile
+   the info column stacks below the form; if the form stayed sticky it
+   would obscure the showroom blocks whenever the visitor scrolled to
+   read them. */
+@media (max-width: 920px) { .contact-card { position: static; top: auto; } }
 .contact-card h2 { font-family: var(--font-display); font-weight: 700; color: var(--ink); font-size: clamp(1.3rem,2vw,1.7rem); margin: 0 0 22px; }
 html[lang="ar"] .contact-card h2 { font-family: var(--font-arabic); }
 .contact-form { display: grid; gap: 16px; }
@@ -181,11 +204,13 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .map-label-num { font-size: clamp(12px, 2.8vw, 14px); min-width: 24px; }
 }
 
-/* ----- Phone (≤560px) — DEAD-SIMPLE STATIC MAP -----
+/* ----- Phone & small tablet (≤720px) — DEAD-SIMPLE STATIC MAP -----
+   Threshold synced with the JS smallScreen check (matchMedia
+   '(max-width: 720px)') so behaviour and layout stay in lock-step.
    No sticky, no scroll-driven animation, no city-label sidebar.
    Sticky padding is horizontal-zero so the map uses the FULL
    viewport width (head text keeps its own inner padding). */
-@media (max-width: 560px) {
+@media (max-width: 720px) {
   .map-section { min-height: auto; }
   .map-sticky {
     position: static;
@@ -218,7 +243,12 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
     height: 100%;
     display: block;
     max-width: none;
+    overflow: visible; /* pins that sit near the top of the viewBox mustn't get clipped */
   }
+  /* Make the tap-targets on the pins bigger for finger accuracy — they
+     already scale on :hover for desktop, but touch has no hover. Add a
+     larger transparent hit box via padding on the wrapping <a>. */
+  .alg-map a { -webkit-tap-highlight-color: transparent; }
 }
 
 .alg-map .m-wash { opacity: 0; }

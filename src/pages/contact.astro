@@ -658,7 +658,13 @@ function lookupI18n(key) {
       // Don't call setVB on mobile (skipped zoom), but reset to FULL
       // on desktop reduced-motion path.
       if (!smallScreen) setVB(1);
-      vanish.style.opacity = 1;
+      // vanish rect is a desktop-only "fog of war" that fades the south of
+      // Algeria to opaque ink so the zoomed view only reveals the north.
+      // On mobile there's no zoom — the whole country needs to stay visible,
+      // so DO NOT show the vanish overlay. This was the bug that made the map
+      // appear "not to draw" on phones: everything south of Algiers was
+      // painted over by the fog.
+      vanish.style.opacity = smallScreen ? 0 : 1;
       pins.forEach(function(pin){
         pin.querySelector('.marker').style.opacity = 1;
         pin.querySelector('.marker').style.transform = 'none';
