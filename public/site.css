@@ -391,11 +391,21 @@ html[lang="ar"] .stat-lab { letter-spacing: 0.02em; font-size: 15px; }
    polish is lost.
    ============================================================ */
 #metiers-pin { background: var(--ink); position: relative; }
-.metiers-stack-head { position: relative; z-index: 10; padding: clamp(70px, 10vh, 120px) clamp(20px, 6vw, 120px) clamp(20px, 3vh, 40px); max-width: 720px; }
+/* Section III header: centered block. The eyebrow, rule, title and
+   supporting line all read as one stack, centered horizontally in the
+   ink chapter so the title sits directly under the eyebrow instead of
+   drifting to a corner (was left-aligned in LTR, right-aligned in RTL —
+   both looked visually broken because the eyebrow was already centered). */
+.metiers-stack-head {
+  position: relative; z-index: 10;
+  padding: clamp(70px, 10vh, 120px) clamp(20px, 6vw, 120px) clamp(20px, 3vh, 40px);
+  max-width: 820px;
+  margin-inline: auto;
+  text-align: center;
+}
+.metiers-stack-head .gold-rule { margin-inline: auto; }
 .metiers-stack-head .chap-title { color: var(--ivory); font-size: clamp(2rem, 4.6vw, 3.8rem); }
-.metiers-stack-head .lead { color: var(--fg-on-dark-2); margin-top: 14px; }
-html[lang="ar"] .metiers-stack-head { margin-inline-start: auto; text-align: right; }
-html[lang="ar"] .metiers-stack-head .gold-rule { margin-inline-start: auto; }
+.metiers-stack-head .lead { color: var(--fg-on-dark-2); margin-top: 14px; margin-inline: auto; max-width: 62ch; }
 
 .metiers-stack {
   position: relative;
