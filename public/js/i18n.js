@@ -43,11 +43,11 @@ var I18N = {
   "her.v3d": { fr: "Une organisation claire des commandes, un suivi rigoureux et le respect des exigences de chaque institution.", ar: "تنظيم في الطلب، وضوح في المتابعة، واحترام لمتطلبات كل مؤسسة.", en: "Organized orders, clear follow-up and respect for each institution’s requirements." },
   "her.v4":  { fr: "Maîtrise",          ar: "إتقان",   en: "Mastery" },
   "her.v4d": { fr: "Une attention précise à chaque détail, du design au dernier point de broderie.", ar: "عناية دقيقة بكل تفصيل، من التصميم إلى آخر غرزة.", en: "Careful attention to every detail, from design to the final stitch." },
-  "her.s1n": { fr: "Plus de 40 ans", ar: "+40 سنة", en: "40+ years" },
+  "her.s1n": { fr: "40+ ans", ar: "+40 سنة", en: "40+ years" },
   "her.s1l": { fr: "D’expérience", ar: "من الخبرة", en: "Of expertise" },
-  "her.s2n": { fr: "Plus de 360 000", ar: "+360 ألف", en: "360,000+" },
+  "her.s2n": { fr: "360 000+", ar: "+360 ألف", en: "360,000+" },
   "her.s2l": { fr: "Drapeaux réalisés", ar: "علم مُنجز", en: "Flags produced" },
-  "her.s3n": { fr: "Plus d’un million", ar: "+1 مليون", en: "1 million+" },
+  "her.s3n": { fr: "1 million+", ar: "+1 مليون", en: "1 million+" },
   "her.s3l": { fr: "De pièces brodées", ar: "قطعة مطرّزة", en: "Embroidered pieces" },
 
   // ---- atelier ----
