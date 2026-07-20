@@ -17,7 +17,7 @@ var I18N = {
   // ---- hero ----
   "hero.title": {
     fr: "La perfection <em>c’est notre métier.</em>",
-    ar: "الإتقان <em>هو حرفتنا.</em>",
+    ar: "الإتقان <em>حرفتنا.</em>",
     en: "Perfection <em>is our craft.</em>"
   },
   "hero.sub": {
