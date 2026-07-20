@@ -138,6 +138,14 @@
       opts = opts || {};
       return rawFetch("/api/v1/website/references", { lang: opts.lang || clientLang() });
     },
+    getGallery: function (opts) {
+      opts = opts || {};
+      return rawFetch("/api/v1/website/gallery", {
+        lang: opts.lang || clientLang(),
+        category: opts.category,
+        limit: opts.limit,
+      });
+    },
 
     // --- orders ---
     createOrder: function (body) {

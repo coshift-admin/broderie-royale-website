@@ -72,8 +72,8 @@ var I18N = {
   "me.3d": { fr: "Étendards officiels et cérémoniels, avec une finalisation soignée et une présence distinctive.", ar: "رايات رسمية واحتفالية بإتمام راقٍ وحضور مميّز.", en: "Official and ceremonial banners with refined finalization and a distinctive presence." },
   "me.4n": { fr: "Broderie", ar: "التطريز", en: "Embroidery" },
   "me.4d": { fr: "Broderie personnalisée sur vêtements, casquettes et tenues professionnelles.", ar: "تطريز مخصّص على الملابس، القبعات والزيّ المهني.", en: "Custom embroidery on clothing, caps and professional uniforms." },
-  "me.5n": { fr: "Impression polyester", ar: "الطباعة على البوليستر", en: "Polyester printing" },
-  "me.5d": { fr: "Impression numérique nette et durable sur tissu polyester.", ar: "طباعة رقمية واضحة وثابتة على قماش البوليستر.", en: "Clear and durable digital printing on polyester fabric." },
+  "me.5n": { fr: "Impression textile", ar: "الطباعة النسيجية", en: "Textile printing" },
+  "me.5d": { fr: "Impression numérique nette et durable sur tissu.", ar: "طباعة رقمية واضحة وثابتة على القماش.", en: "Clear and durable digital printing on fabric." },
   "me.cta": { fr: "Voir le catalogue", ar: "استعرض الكتالوج", en: "View the catalogue" },
 
   // ---- flag ----
@@ -194,6 +194,24 @@ var I18N = {
   "co.confirm":   { fr: "Confirmer la commande", ar: "تأكيد الطلب", en: "Confirm order" },
   "co.required":  { fr: "Merci de remplir les champs requis.", ar: "يرجى ملء الحقول المطلوبة.", en: "Please fill the required fields." },
   "co.qty":       { fr: "Qté", ar: "الكمية", en: "Qty" },
+  "co.delivery_type":   { fr: "Mode de livraison", ar: "طريقة التوصيل", en: "Delivery method" },
+  "co.delivery_home":   { fr: "Livraison à domicile", ar: "التوصيل إلى المنزل", en: "Home delivery" },
+  "co.delivery_pickup": { fr: "Point relais", ar: "نقطة استلام", en: "Pickup point" },
+  "co.pickup_point":    { fr: "Point relais", ar: "نقطة الاستلام", en: "Pickup point" },
+  "co.pickup_choose":   { fr: "Choisissez une wilaya d’abord", ar: "اختر ولاية أولاً", en: "Choose a wilaya first" },
+  "co.pickup_hint":     { fr: "Sélectionnez d’abord une wilaya pour voir les points relais disponibles.", ar: "اختر ولاية أولاً لعرض نقاط الاستلام المتاحة.", en: "Select a wilaya first to see available pickup points." },
+  "co.attach_label":    { fr: "Joindre des fichiers (optionnel)", ar: "إرفاق ملفات (اختياري)", en: "Attach files (optional)" },
+  "co.loading":         { fr: "Chargement", ar: "جارٍ التحميل", en: "Loading" },
+
+  // ---- storefront / product / cart loading + form labels ----
+  "bo.loading":         { fr: "Chargement de la collection", ar: "جارٍ تحميل المجموعة", en: "Loading the collection" },
+  "pa.loading":         { fr: "Chargement du panier", ar: "جارٍ تحميل السلة", en: "Loading your cart" },
+  "pd.loading":         { fr: "Chargement du produit", ar: "جارٍ تحميل المنتج", en: "Loading the product" },
+
+  // ---- contact / devis form file uploads ----
+  "ct.attach_label":    { fr: "Joindre des fichiers (optionnel)", ar: "إرفاق ملفات (اختياري)", en: "Attach files (optional)" },
+  "dv.attach_label":    { fr: "Joindre des fichiers (logos, maquettes, charte graphique)", ar: "إرفاق ملفات (الشعارات، النماذج، الميثاق البصري)", en: "Attach files (logos, mock-ups, brand guidelines)" },
+
 
   "cf.title":     { fr: "Merci pour votre commande !", ar: "شكرًا على طلبكم!", en: "Thank you for your order!" },
   "cf.msg":       { fr: "Votre commande a bien été enregistrée. Notre équipe vous contactera très prochainement pour la confirmer.", ar: "تم تسجيل طلبكم بنجاح. سيتواصل معكم فريقنا قريبًا جدًا للتأكيد.", en: "Your order has been registered. Our team will contact you very soon to confirm it." },
@@ -268,6 +286,7 @@ var I18N = {
   "ga.f_brod":  { fr: "Broderie", ar: "التطريز", en: "Embroidery" },
   "ga.cta_h":   { fr: "Un projet sur-mesure ?", ar: "مشروع حسب الطلب؟", en: "A bespoke project?" },
   "ga.cta_p":   { fr: "Confiez-nous votre identité textile. Demandez un devis personnalisé.", ar: "ائتمنونا على هويتكم النسيجية. اطلبوا عرض سعر مخصّصًا.", en: "Entrust us with your textile identity. Request a tailored quote." },
+  "ga.loading": { fr: "Chargement de la galerie…", ar: "جارٍ تحميل المعرض…", en: "Loading the gallery…" },
   "ga.g1": { fr: "Drapeau national de cérémonie", ar: "علم وطني للمراسم", en: "National ceremonial flag" },
   "ga.g2": { fr: "Écusson brodé fil d’or", ar: "شارة مطرّزة بخيط ذهبي", en: "Gold-thread embroidered crest" },
   "ga.g3": { fr: "Mouvement des Non-Alignés", ar: "حركة عدم الانحياز", en: "Non-Aligned Movement" },

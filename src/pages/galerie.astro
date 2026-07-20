@@ -24,68 +24,21 @@ import BaseLayout from '../layouts/BaseLayout.astro';
       <button class="filter-chip" data-f="brod" data-i18n="ga.f_brod">Broderie</button>
     </div>
     {/* ============================================================
-        GALLERY LAYOUT — 3 images per row:
+        GALLERY LAYOUT — dynamic, CMS-driven.
 
-          Column 1        Columns 2-3       Column 4
-          ┌────────┐      ┌───────────────┐ ┌────────┐
-          │        │      │               │ │        │
-          │portrait│      │   landscape   │ │portrait│
-          │  2 : 3 │      │     4 : 3     │ │  2 : 3 │
-          │        │      │               │ │        │
-          └────────┘      └───────────────┘ └────────┘
+        Photos live in Odoo: Website CMS ▸ Content ▸ Gallery. Each
+        entry has an image, translatable caption, orientation
+        (portrait / landscape) and category. The list is fetched at
+        page load via /api/v1/website/gallery and rendered here.
 
-        Portrait spans 1 column; landscape spans 2. Both frames
-        end up the same height (1.5 × col_w) so their top and
-        bottom edges line up perfectly across the row.
-
-        Recommended source-image aspect ratios for uploads:
-          - Portrait:  2 : 3  (e.g. 800×1200, 1200×1800 px)
-          - Landscape: 4 : 3  (e.g. 1200×900, 1600×1200 px)
-        object-fit: cover safely crops any close ratio.
-
-        DOM order per row: [portrait, landscape, portrait].
-        Keep uploads in multiples of 3 for whole rows.
+        The 3-column grid keeps the portrait / landscape / portrait
+        rhythm — admin should upload matching mixes for cleanest
+        result, but any orientation combination will still render
+        (each tile takes its own aspect based on the orientation
+        field). Below 900px collapses to a single column.
         ============================================================ */}
-    <div class="gal-grid" id="galGrid">
-      {/* Row 1 */}
-      <figure class="gal-item gal-portrait" data-cat="flags" data-img="/assets/photo-flag-international-p.webp" data-capkey="g1">
-        <img src="/assets/photo-flag-international-p.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g1"></span></figcaption>
-      </figure>
-      <figure class="gal-item gal-landscape" data-cat="event" data-img="/assets/photo-flags-row.webp" data-capkey="g3">
-        <img src="/assets/photo-flags-row.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g3"></span></figcaption>
-      </figure>
-      <figure class="gal-item gal-portrait" data-cat="crest" data-img="/assets/photo-pennant-p.webp" data-capkey="g4">
-        <img src="/assets/photo-pennant-p.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g4"></span></figcaption>
-      </figure>
-      {/* Row 2 */}
-      <figure class="gal-item gal-portrait" data-cat="event" data-img="/assets/photo-desk-flags-br-p.webp" data-capkey="g7">
-        <img src="/assets/photo-desk-flags-br-p.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g7"></span></figcaption>
-      </figure>
-      <figure class="gal-item gal-landscape" data-cat="flags" data-img="/assets/photo-flag-lobby.webp" data-capkey="g6">
-        <img src="/assets/photo-flag-lobby.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g6"></span></figcaption>
-      </figure>
-      <figure class="gal-item gal-portrait" data-cat="brod" data-img="/assets/metier-broderie-p.webp" data-capkey="g9">
-        <img src="/assets/metier-broderie-p.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g9"></span></figcaption>
-      </figure>
-      {/* Row 3 */}
-      <figure class="gal-item gal-portrait" data-cat="crest" data-img="/assets/texture-embroidery-patch-p.webp" data-capkey="g2">
-        <img src="/assets/texture-embroidery-patch-p.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g2"></span></figcaption>
-      </figure>
-      <figure class="gal-item gal-landscape" data-cat="brod" data-img="/assets/metier-polyester.webp" data-capkey="g5">
-        <img src="/assets/metier-polyester.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g5"></span></figcaption>
-      </figure>
-      <figure class="gal-item gal-portrait" data-cat="flags" data-img="/assets/metier-polyester-p.webp" data-capkey="g8">
-        <img src="/assets/metier-polyester-p.webp" alt="" loading="lazy" />
-        <figcaption class="gal-cap"><span class="gc-k">Broderie Royale</span><span class="gc-t" data-i18n="ga.g8"></span></figcaption>
-      </figure>
+    <div class="gal-grid" id="galGrid" aria-live="polite">
+      <div class="br-loading" data-i18n="ga.loading">Chargement de la galerie…</div>
     </div>
 
     <section class="gal-cta">
@@ -103,34 +56,113 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   <figure><img id="lbImg" src="" alt="" /><figcaption id="lbCap"></figcaption></figure>
 </div>
 
-<script is:inline>
-(function(){
-  var grid=document.getElementById('galGrid');
-  var items=Array.prototype.slice.call(grid.querySelectorAll('.gal-item'));
-  document.getElementById('galFilters').addEventListener('click',function(e){
-    var b=e.target.closest('.filter-chip'); if(!b) return;
-    document.querySelectorAll('#galFilters .filter-chip').forEach(function(x){x.classList.remove('active');});
-    b.classList.add('active');
-    var f=b.dataset.f;
-    items.forEach(function(it){ it.style.display=(f==='all'||it.dataset.cat===f)?'':'none'; });
+<script is:inline data-astro-rerun>
+(async function(){
+  var grid = document.getElementById('galGrid');
+  if (!grid) return;
+  // Wait for BR_API to be ready (bottom-of-body script). On SPA nav
+  // via ClientRouter it's already there.
+  if (document.readyState === 'loading') {
+    await new Promise(function(r){ document.addEventListener('DOMContentLoaded', r, { once: true }); });
+  }
+  if (!window.BR_API) return;
+
+  function esc(s) {
+    if (s == null) return '';
+    return String(s).replace(/[&<>"']/g, function(c){
+      return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c];
+    });
+  }
+
+  function tileFor(item) {
+    var orient = item.orientation === 'portrait' ? 'gal-portrait' : 'gal-landscape';
+    var cap = item.caption || '';
+    return '<figure class="gal-item ' + orient + '" data-cat="' + esc(item.category) +
+           '" data-img="' + esc(item.image_url) + '">' +
+             '<img src="' + esc(item.image_url) + '" alt="' + esc(cap) + '" loading="lazy" />' +
+             '<figcaption class="gal-cap">' +
+               '<span class="gc-k">Broderie Royale</span>' +
+               '<span class="gc-t">' + esc(cap) + '</span>' +
+             '</figcaption>' +
+           '</figure>';
+  }
+
+  var items = [];
+  try {
+    var res = await window.BR_API.getGallery();
+    items = (res && res.gallery) || [];
+  } catch (err) {
+    console.error('[BR] gallery fetch failed', err);
+    grid.innerHTML = '';
+    return;
+  }
+  if (!items.length) {
+    grid.innerHTML = '';
+    return;
+  }
+  grid.innerHTML = items.map(tileFor).join('');
+
+  // Filter chips
+  var itemEls = Array.prototype.slice.call(grid.querySelectorAll('.gal-item'));
+  var filters = document.getElementById('galFilters');
+  if (filters && !filters.dataset.bound) {
+    filters.dataset.bound = '1';
+    filters.addEventListener('click', function(e){
+      var b = e.target.closest('.filter-chip'); if (!b) return;
+      filters.querySelectorAll('.filter-chip').forEach(function(x){ x.classList.remove('active'); });
+      b.classList.add('active');
+      var f = b.dataset.f;
+      itemEls.forEach(function(it){ it.style.display = (f === 'all' || it.dataset.cat === f) ? '' : 'none'; });
+    });
+  }
+
+  // Staggered scroll-in reveal. The global effects.js gallery IO runs
+  // at page load, before this fetch resolves — so we wire a fresh IO
+  // here for the newly-inserted tiles (same 80ms stagger).
+  var galIO = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if (!e.isIntersecting) return;
+      var idx = itemEls.indexOf(e.target);
+      e.target.style.transitionDelay = Math.max(0, idx) * 80 + 'ms';
+      e.target.classList.add('gal-in');
+      galIO.unobserve(e.target);
+    });
+  }, { threshold: 0.15, rootMargin: '0px 0px -6% 0px' });
+  itemEls.forEach(function(el){ galIO.observe(el); });
+
+  // Lightbox
+  var lb = document.getElementById('lightbox'),
+      lbImg = document.getElementById('lbImg'),
+      lbCap = document.getElementById('lbCap');
+  var cur = 0;
+  function visible(){ return itemEls.filter(function(it){ return it.style.display !== 'none' && it.dataset.img; }); }
+  function show(i){
+    var v = visible(); if (!v.length) return;
+    cur = (i + v.length) % v.length;
+    var it = v[cur];
+    lbImg.src = it.dataset.img;
+    var cap = it.querySelector('.gc-t');
+    lbCap.innerHTML = '<b>Broderie Royale</b> — ' + (cap ? cap.textContent : '');
+  }
+  grid.addEventListener('click', function(e){
+    var it = e.target.closest('.gal-item'); if (!it) return;
+    if (!it.dataset.img) return;
+    var v = visible(); cur = v.indexOf(it); show(cur);
+    lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false');
   });
-  var lb=document.getElementById('lightbox'), lbImg=document.getElementById('lbImg'), lbCap=document.getElementById('lbCap');
-  var cur=0;
-  /* Only real photos participate in filtering + lightbox — placeholder
-     slot tiles (no data-img) sit in the grid to preserve the visual
-     template until the client uploads real content. */
-  function visible(){ return items.filter(function(it){return it.style.display!=='none' && it.dataset.img;}); }
-  function show(i){ var v=visible(); if(!v.length) return; cur=(i+v.length)%v.length; var it=v[cur];
-    lbImg.src=it.dataset.img; var cap=it.querySelector('.gc-t'); lbCap.innerHTML='<b>Broderie Royale</b> — '+(cap?cap.textContent:''); }
-  grid.addEventListener('click',function(e){ var it=e.target.closest('.gal-item'); if(!it) return;
-    if(!it.dataset.img) return; /* placeholder — do nothing */
-    var v=visible(); cur=v.indexOf(it); show(cur); lb.classList.add('open'); lb.setAttribute('aria-hidden','false'); });
-  document.getElementById('lbClose').addEventListener('click',function(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); });
-  document.getElementById('lbNext').addEventListener('click',function(){ show(cur+1); });
-  document.getElementById('lbPrev').addEventListener('click',function(){ show(cur-1); });
-  lb.addEventListener('click',function(e){ if(e.target===lb) { lb.classList.remove('open'); lb.setAttribute('aria-hidden','true'); } });
-  document.addEventListener('keydown',function(e){ if(!lb.classList.contains('open'))return;
-    if(e.key==='Escape'){lb.classList.remove('open');} if(e.key==='ArrowRight'){show(cur+1);} if(e.key==='ArrowLeft'){show(cur-1);} });
+  if (lb && !lb.dataset.bound) {
+    lb.dataset.bound = '1';
+    document.getElementById('lbClose').addEventListener('click', function(){ lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); });
+    document.getElementById('lbNext').addEventListener('click', function(){ show(cur + 1); });
+    document.getElementById('lbPrev').addEventListener('click', function(){ show(cur - 1); });
+    lb.addEventListener('click', function(e){ if (e.target === lb) { lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); } });
+    document.addEventListener('keydown', function(e){
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') { lb.classList.remove('open'); }
+      if (e.key === 'ArrowRight') { show(cur + 1); }
+      if (e.key === 'ArrowLeft') { show(cur - 1); }
+    });
+  }
 })();
 </script>
 </BaseLayout>
