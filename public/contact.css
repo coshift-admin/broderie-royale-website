@@ -278,3 +278,27 @@ html[lang="ar"] .map-label-name { font-family: var(--font-arabic); }
   .alg-map .m-wash, .alg-map .marker, .alg-map .halo, .alg-map .lbl-group { opacity: 1 !important; transform: none !important; }
   .alg-map .beacon { display: none; }
 }
+
+/* Mobile map: simple CSS-driven reveal. The scroll-driven desktop path
+   is skipped under 720px — instead, renderStatic() is called from the
+   inline script AFTER window.load + IntersectionObserver enter, and
+   the transitions below carry the intermediate state → final state
+   animation. Border draws first, wash fades in, then pins cascade. */
+@media (max-width: 720px) and (prefers-reduced-motion: no-preference) {
+  .map-section .alg-map .m-border {
+    transition: stroke-dashoffset 900ms var(--ease);
+  }
+  .map-section .alg-map .m-wash {
+    transition: opacity 800ms var(--ease) 300ms;
+  }
+  .map-section .alg-map .marker {
+    transition: opacity 480ms var(--ease), transform 520ms var(--ease);
+  }
+  .map-section .alg-map .pin:nth-of-type(1) .marker { transition-delay: 900ms; }
+  .map-section .alg-map .pin:nth-of-type(2) .marker { transition-delay: 1040ms; }
+  .map-section .alg-map .pin:nth-of-type(3) .marker { transition-delay: 1180ms; }
+}
+/* Guarantee no horizontal overflow at any size — the map SVG scales
+   inside .map-wrap, but a stale inline width from JS could otherwise
+   push out on very narrow devices. */
+.map-section, .map-sticky, .map-stage, .map-wrap { max-width: 100%; }

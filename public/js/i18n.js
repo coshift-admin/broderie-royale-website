@@ -43,12 +43,12 @@ var I18N = {
   "her.v3d": { fr: "Une organisation claire des commandes, un suivi rigoureux et le respect des exigences de chaque institution.", ar: "تنظيم في الطلب، وضوح في المتابعة، واحترام لمتطلبات كل مؤسسة.", en: "Organized orders, clear follow-up and respect for each institution’s requirements." },
   "her.v4":  { fr: "Maîtrise",          ar: "إتقان",   en: "Mastery" },
   "her.v4d": { fr: "Une attention précise à chaque détail, du design au dernier point de broderie.", ar: "عناية دقيقة بكل تفصيل، من التصميم إلى آخر غرزة.", en: "Careful attention to every detail, from design to the final stitch." },
-  "her.s1n": { fr: "1986", ar: "1986", en: "1986" },
-  "her.s1l": { fr: "L’année fondatrice", ar: "عام التأسيس", en: "The founding year" },
-  "her.s2n": { fr: "40", ar: "40", en: "40" },
-  "her.s2l": { fr: "Années de savoir-faire", ar: "عامًا من الخبرة", en: "Years of savoir-faire" },
-  "her.s3n": { fr: "3", ar: "3", en: "3" },
-  "her.s3l": { fr: "Maisons — Alger, Djelfa & Boumerdès", ar: "ثلاث دور — الجزائر، الجلفة وبومرداس", en: "Showrooms — Algiers, Djelfa & Boumerdès" },
+  "her.s1n": { fr: "Plus de 40 ans", ar: "+40 سنة", en: "40+ years" },
+  "her.s1l": { fr: "D’expérience", ar: "من الخبرة", en: "Of expertise" },
+  "her.s2n": { fr: "Plus de 360 000", ar: "+360 ألف", en: "360,000+" },
+  "her.s2l": { fr: "Drapeaux réalisés", ar: "علم مُنجز", en: "Flags produced" },
+  "her.s3n": { fr: "Plus d’un million", ar: "+1 مليون", en: "1 million+" },
+  "her.s3l": { fr: "De pièces brodées", ar: "قطعة مطرّزة", en: "Embroidered pieces" },
 
   // ---- atelier ----
   "at.num":   { fr: "II — Le Savoir-faire", ar: "٢ — الحرفة", en: "II — Craftsmanship" },
@@ -72,8 +72,9 @@ var I18N = {
   "me.3d": { fr: "Étendards officiels et cérémoniels, avec une finalisation soignée et une présence distinctive.", ar: "رايات رسمية واحتفالية بإتمام راقٍ وحضور مميّز.", en: "Official and ceremonial banners with refined finalization and a distinctive presence." },
   "me.4n": { fr: "Broderie", ar: "التطريز", en: "Embroidery" },
   "me.4d": { fr: "Broderie personnalisée sur vêtements, casquettes et tenues professionnelles.", ar: "تطريز مخصّص على الملابس، القبعات والزيّ المهني.", en: "Custom embroidery on clothing, caps and professional uniforms." },
-  "me.5n": { fr: "Impression textile", ar: "الطباعة النسيجية", en: "Textile printing" },
-  "me.5d": { fr: "Impression numérique nette et durable sur tissu.", ar: "طباعة رقمية واضحة وثابتة على القماش.", en: "Clear and durable digital printing on fabric." },
+  "me.5n": { fr: "Impression polyester", ar: "الطباعة على البوليستر", en: "Polyester printing" },
+  "me.5d": { fr: "Impression numérique nette et durable sur tissu polyester.", ar: "طباعة رقمية واضحة وثابتة على قماش البوليستر.", en: "Clear and durable digital printing on polyester fabric." },
+  "me.cta": { fr: "Voir le catalogue", ar: "استعرض الكتالوج", en: "View the catalogue" },
 
   // ---- flag ----
   "fl.num":   { fr: "V — Le Drapeau", ar: "٥ — العَلَم", en: "V — The Flag" },

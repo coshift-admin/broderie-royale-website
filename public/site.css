@@ -174,11 +174,32 @@ body.mobile-menu-open { overflow: hidden; }
 /* ============================================================
    THREAD — the gold line that draws down the journey
    ============================================================ */
-.thread-track { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+.thread-track {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; z-index: 1;
+  /* Idle-invisible by default. effects.js toggles .thread-active during
+     scroll and drops it ~400ms after scroll stops — a subtle decorative
+     motion that never sits over the text at rest. */
+  opacity: 0;
+  transition: opacity 260ms var(--ease);
+}
+.thread-track.thread-active { opacity: 1; }
 .thread-track svg { width: 100%; height: 100%; display: block; }
 .thread-base { fill: none; stroke: color-mix(in srgb, var(--gold) 14%, transparent); stroke-width: 1.4; }
 .thread-draw { fill: none; stroke: url(#threadGrad); stroke-width: 1.6; stroke-linecap: round; filter: drop-shadow(0 0 4px color-mix(in srgb, var(--gold) 55%, transparent)); }
 .thread-needle { fill: var(--gold-bright); filter: drop-shadow(0 0 8px var(--gold)); }
+@media (max-width: 900px) {
+  /* Tablet: reduce presence — cap peak opacity even when active. */
+  .thread-track.thread-active { opacity: 0.55; }
+}
+@media (max-width: 560px) {
+  /* Phones: hide entirely — the thread would inevitably overlap tight
+     content columns, and the readability cost outweighs the decor. */
+  .thread-track { display: none !important; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .thread-track { display: none !important; }
+}
 
 /* ============================================================
    SECTIONS / CHAPTERS
@@ -356,14 +377,44 @@ html[lang="ar"] .scroll-hint span { letter-spacing: 0.08em; font-size: 14px; }
 }
 html[lang="ar"] .value-chip { letter-spacing: 0.03em; font-size: 15px; }
 html[lang="ar"] .vc-tip { font-family: var(--font-arabic); font-size: 15px; letter-spacing: 0; line-height: 1.7; }
-@media (max-width: 560px) {
-  /* On mobile the tooltip would overflow the viewport if narrower chips
-     shift toward the edge; clamp it to the row and let it wrap freely. */
-  .vc-tip { min-width: min(78vw, 260px); max-width: 88vw; }
+@media (max-width: 720px) {
+  /* Touch widths: promote the tooltip from an absolute-positioned hover
+     card to an always-visible inline description under the chip. This
+     fixes the vertical overflow above the section eyebrow AND satisfies
+     the "no essential info depends on hover" mandate — desktop hover-
+     reveal only, mobile shows everything inline. */
+  .values-row { flex-direction: column; align-items: stretch; gap: 14px; }
+  .value-chip {
+    display: flex; flex-direction: column; align-items: flex-start;
+    padding: 14px 18px 16px; gap: 8px;
+    cursor: default;
+  }
+  .vc-name { font-weight: 600; }
+  .vc-tip {
+    position: static;
+    left: auto; bottom: auto;
+    opacity: 1; visibility: visible; pointer-events: auto;
+    transform: none;
+    min-width: 0; max-width: 100%;
+    background: transparent; color: var(--fg2);
+    padding: 0; border: none; box-shadow: none;
+    font-size: 13px; line-height: 1.6;
+    text-align: start;
+    z-index: auto;
+  }
+  .vc-tip::before, .vc-tip::after { display: none; }
 }
 .stat-stack { display: grid; gap: 26px; }
 .stat { border-inline-start: 2px solid var(--gold); padding-inline-start: 22px; }
-.stat-num { font-family: var(--font-display); font-weight: 700; font-size: clamp(2.4rem, 4vw, 3.4rem); color: var(--royal-red); line-height: 1; }
+/* Stat headline now carries a full phrase like "Plus de 40 ans" — so we
+   trim the display size and let it wrap on its own gold bar. text-wrap:
+   balance keeps the two-line breaks visually even. */
+.stat-num {
+  font-family: var(--font-display); font-weight: 700;
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  color: var(--royal-red); line-height: 1.1;
+  text-wrap: balance;
+}
 .stat-lab { font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--fg2); margin-top: 8px; }
 html[lang="ar"] .stat-lab { letter-spacing: 0.02em; font-size: 15px; }
 
@@ -390,6 +441,7 @@ html[lang="ar"] .stat-lab { letter-spacing: 0.02em; font-size: 15px; }
    run for any reason, the CSS stack still works on its own — only the
    polish is lost.
    ============================================================ */
+#metiers { background: var(--ink); color: var(--fg-on-dark); position: relative; }
 #metiers-pin { background: var(--ink); position: relative; }
 /* Section III header: centered block. The eyebrow, rule, title and
    supporting line all read as one stack, centered horizontally in the
@@ -477,6 +529,185 @@ html[lang="ar"] .metier-stack-name { font-family: var(--font-arabic); }
   .metier-stack-card { position: relative; height: auto; padding: 40px clamp(16px, 4vw, 60px); }
 }
 
+/* ============================================================
+   Section III — METIERS (category-swap showcase)
+   Replaces the older sticky-stack pattern. One category at a time,
+   two-panel layout (image | text+CTA), 01/N progress, dot + arrow nav.
+   Mobile collapses to a vertical stack so every card is visible at
+   once without a swipe gesture.
+   ============================================================ */
+.metiers-header {
+  /* The parent #metiers.chapter already supplies vertical padding, so
+     the header only needs to constrain width + center itself. */
+  padding-bottom: clamp(20px, 3vh, 40px);
+  max-width: 820px; margin-inline: auto; text-align: center;
+}
+.metiers-header .gold-rule { margin-inline: auto; }
+.metiers-header .chap-title { color: var(--ivory); font-size: clamp(2rem, 4.6vw, 3.8rem); }
+.metiers-header .lead { color: var(--fg-on-dark-2); margin-top: 14px; margin-inline: auto; max-width: 62ch; }
+
+.metiers-showcase {
+  position: relative;
+  max-width: 1200px;
+  margin: clamp(28px, 5vh, 64px) auto 0;
+}
+.ms-viewport {
+  position: relative;
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: color-mix(in srgb, var(--ink) 90%, var(--gold) 10%);
+  border: 1px solid color-mix(in srgb, var(--gold) 24%, transparent);
+  box-shadow: var(--shadow-lg);
+}
+.ms-track {
+  position: relative;
+  display: grid;
+  /* All slides overlay in the same grid cell; only .is-active is
+     visible. Aspect keeps the pane a stable height between slides. */
+  grid-template-columns: 1fr;
+  grid-template-rows: minmax(360px, 62vh);
+}
+.ms-slide {
+  grid-column: 1; grid-row: 1;
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  align-items: stretch;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(.985);
+  transition: opacity .55s var(--ease), transform .55s var(--ease), visibility 0s linear .55s;
+  pointer-events: none;
+}
+.ms-slide.is-active {
+  opacity: 1; visibility: visible; transform: none; pointer-events: auto;
+  transition: opacity .55s var(--ease), transform .55s var(--ease), visibility 0s;
+}
+html[dir="rtl"] .ms-slide { grid-template-columns: 1fr 1.05fr; }
+.ms-image {
+  position: relative;
+  overflow: hidden;
+  background: var(--ink-80);
+}
+.ms-image img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.ms-slide.is-active .ms-image img {
+  animation: msImgIn .9s var(--ease);
+}
+@keyframes msImgIn { from { transform: scale(1.04); } to { transform: none; } }
+.ms-body {
+  display: flex; flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 4vw, 56px) clamp(28px, 4vw, 56px);
+  color: var(--fg-on-dark);
+}
+.ms-idx {
+  font-family: var(--font-display); font-style: italic;
+  color: var(--gold);
+  font-size: clamp(13px, 1.3vw, 16px); letter-spacing: 0.2em;
+  margin-bottom: 6px;
+}
+.ms-name {
+  font-family: var(--font-display); font-weight: 700; color: var(--ivory);
+  font-size: clamp(1.6rem, 2.6vw, 2.2rem);
+  margin: 4px 0 14px;
+  line-height: 1.1;
+}
+html[lang="ar"] .ms-name { font-family: var(--font-arabic); line-height: 1.35; }
+.ms-desc {
+  color: var(--fg-on-dark-2);
+  font-size: clamp(0.95rem, 1.15vw, 1.05rem);
+  line-height: 1.6;
+  max-width: 52ch;
+  margin: 0 0 22px;
+}
+.ms-cta { align-self: flex-start; }
+html[dir="rtl"] .ms-cta { align-self: flex-end; }
+/* Arrow nav — subtle, sit on the viewport edges, larger touch target */
+.ms-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  width: 42px; height: 42px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--gold) 36%, transparent);
+  background: color-mix(in srgb, var(--ink) 55%, transparent);
+  color: var(--ivory);
+  display: grid; place-items: center;
+  cursor: pointer;
+  z-index: 5;
+  transition: background .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
+}
+.ms-nav:hover, .ms-nav:focus-visible {
+  background: color-mix(in srgb, var(--gold) 22%, transparent);
+  border-color: var(--gold);
+  outline: none;
+  transform: translateY(-50%) scale(1.06);
+}
+.ms-prev { inset-inline-start: 14px; }
+.ms-next { inset-inline-end: 14px; }
+html[dir="rtl"] .ms-prev svg,
+html[dir="rtl"] .ms-next svg { transform: scaleX(-1); }
+/* Controls row: 01/05 progress + dots */
+.ms-controls {
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 20px;
+  margin-top: clamp(20px, 3vh, 32px);
+  padding: 0 8px;
+}
+.ms-progress {
+  font-family: var(--font-display); color: var(--gold);
+  font-size: clamp(15px, 1.2vw, 18px); letter-spacing: 0.14em;
+  display: flex; align-items: center; gap: 8px;
+}
+.ms-progress .ms-sep { color: color-mix(in srgb, var(--gold) 50%, transparent); }
+.ms-dots { display: flex; gap: 10px; }
+.md {
+  width: 10px; height: 10px; padding: 0;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--gold) 40%, transparent);
+  background: transparent;
+  cursor: pointer;
+  transition: background .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease);
+}
+.md:hover, .md:focus-visible { border-color: var(--gold); outline: none; }
+.md.is-active { background: var(--gold); border-color: var(--gold); transform: scale(1.15); }
+
+/* Mobile: vertical stack of every category — the client's brief was
+   explicit about NOT forcing the desktop swipe/animation onto phones. */
+@media (max-width: 820px) {
+  .ms-viewport {
+    border: 0; background: transparent; box-shadow: none;
+    border-radius: 0;
+    overflow: visible;
+  }
+  .ms-nav { display: none; }
+  .ms-track {
+    grid-template-rows: none;
+    gap: clamp(24px, 4vw, 36px);
+  }
+  .ms-slide {
+    grid-column: auto; grid-row: auto;
+    opacity: 1; visibility: visible; transform: none; pointer-events: auto;
+    display: block;
+    border-radius: var(--r-md);
+    overflow: hidden;
+    background: color-mix(in srgb, var(--ink) 92%, var(--gold) 8%);
+    border: 1px solid color-mix(in srgb, var(--gold) 20%, transparent);
+    animation: none;
+  }
+  .ms-slide.is-active .ms-image img { animation: none; }
+  .ms-image { aspect-ratio: 4 / 3; }
+  .ms-body { padding: clamp(20px, 5vw, 32px); }
+  .ms-name { font-size: clamp(1.4rem, 6vw, 1.9rem); }
+  .ms-desc { font-size: clamp(0.95rem, 3.6vw, 1.05rem); }
+  .ms-controls { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ms-slide { transition: none; }
+  .ms-slide .ms-image img { animation: none !important; }
+}
+
 /* ----- Mobile (≤720px) ----- Fullscreen card. The PC version surrounds
    the inner card with dark padding + a gold-edge border, but on phones
    that "black container" wastes the whole viewport. Drop padding,
@@ -532,6 +763,26 @@ html[lang="ar"] .flag-scrim { background:
 .flag-inner { max-width: 620px; }
 .flag-quote { font-family: var(--font-display); font-weight: 700; color: var(--ivory); font-size: clamp(2rem, 4.6vw, 4rem); line-height: 1.08; letter-spacing: -0.015em; }
 .flag-quote em { font-style: italic; color: var(--gold-bright); }
+@media (max-width: 720px) {
+  /* Mobile: portrait crop of the lobby photo puts the flag dead-center
+     horizontally. The desktop side-gradient scrim would darken half the
+     flag, so swap in a top-bottom scrim (dark at top for the title, clear
+     through the flag, subtle dark at bottom for the body copy) and lift
+     the title to the top so it sits over the dark portion. */
+  .flag-scrim,
+  html[lang="ar"] .flag-scrim {
+    background:
+      linear-gradient(180deg,
+        rgba(16,16,16,.82) 0%,
+        rgba(16,16,16,.42) 22%,
+        transparent 48%,
+        rgba(16,16,16,.28) 80%,
+        rgba(16,16,16,.62) 100%);
+  }
+  .flag-content { align-items: flex-start; padding-top: clamp(48px, 8vh, 96px); }
+  .flag-quote { font-size: clamp(1.5rem, 5.4vw, 2rem); }
+  .flag-inner { max-width: 100%; }
+}
 
 /* ============================================================
    PRESTIGE (La Confiance)
@@ -576,18 +827,30 @@ html[lang="ar"] .prestige-place { letter-spacing: 0.02em; font-size: 15px; }
 .serve-cell .st { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.15rem, 1.6vw, 1.45rem); color: var(--ink); line-height: 1.3; text-wrap: balance; position: relative; z-index: 2; transition: color .55s var(--ease), transform .55s var(--ease); }
 html[lang="ar"] .serve-cell .st { line-height: 1.55; }
 /* Filet d'or hover */
-.serve-cell:hover { background: var(--ivory-warm); }
-.serve-cell:hover .serve-rule { width: 72px; }
-.serve-cell:hover .sn { color: var(--gold-deep); transform: translateX(7px); }
-.serve-cell:hover .st { color: var(--royal-red); transform: translateX(7px); }
-html[lang="ar"] .serve-cell:hover .sn, html[lang="ar"] .serve-cell:hover .st { transform: translateX(-7px); }
+/* Base "in-view" state: card is revealed automatically by the reveal IO
+   (adds .in on scroll enter). Icon + widened rule become the visible
+   resting state so nothing depends on hover. Desktop hover then layers a
+   subtle emphasis on top (guarded by (hover: hover) below). */
+.serve-cell.in .serve-rule { width: 46px; }
+.serve-cell.in .serve-motif { opacity: .18; transform: none; }
+.serve-cell.in .serve-motif path,
+.serve-cell.in .serve-motif line,
+.serve-cell.in .serve-motif polyline,
+.serve-cell.in .serve-motif circle { stroke-dashoffset: 0; }
+@media (hover: hover) and (pointer: fine) {
+  .serve-cell:hover { background: var(--ivory-warm); }
+  .serve-cell:hover .serve-rule { width: 72px; }
+  .serve-cell:hover .sn { color: var(--gold-deep); transform: translateX(7px); }
+  .serve-cell:hover .st { color: var(--royal-red); transform: translateX(7px); }
+  html[lang="ar"] .serve-cell:hover .sn,
+  html[lang="ar"] .serve-cell:hover .st { transform: translateX(-7px); }
+  .serve-cell:hover .serve-motif { opacity: .28; }
+}
 /* gold emblem that stitches itself in on hover */
 .serve-motif { position: absolute; z-index: 1; bottom: 16px; inset-inline-end: 16px; width: clamp(94px, 9vw, 128px); height: auto; color: var(--gold); opacity: 0; transform: translateX(12px) scale(.94); transition: opacity .6s var(--ease), transform .7s var(--ease); pointer-events: none; }
 html[lang="ar"] .serve-motif { transform: translateX(-12px) scale(.94); }
-.serve-cell:hover .serve-motif { opacity: .2; transform: none; }
 .serve-motif path, .serve-motif line, .serve-motif polyline, .serve-motif circle { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; stroke-dashoffset: 1; transition: stroke-dashoffset .95s var(--ease); }
-.serve-cell:hover .serve-motif path, .serve-cell:hover .serve-motif line, .serve-cell:hover .serve-motif polyline, .serve-cell:hover .serve-motif circle { stroke-dashoffset: 0; }
-@media (prefers-reduced-motion: reduce){ .serve-motif path, .serve-motif line, .serve-motif polyline, .serve-motif circle { stroke-dashoffset: 0; } .serve-cell:hover .serve-motif { transform: none; } }
+@media (prefers-reduced-motion: reduce){ .serve-motif path, .serve-motif line, .serve-motif polyline, .serve-motif circle { stroke-dashoffset: 0; } .serve-cell .serve-motif { transform: none; opacity: .18; } }
 
 /* ============================================================
    CATALOGUE / CONTACT / FOOTER
@@ -840,19 +1103,24 @@ html[dir="rtl"] .partner-track { animation-direction: reverse; }
   .partner-tile { width: 160px; padding: 14px; }
 }
 @media (max-width: 560px){
+  /* Client spec: ~2–3 logos visible at a time on mobile. At 375px viewport
+     with 12px gap, 130px tiles = 2 whole + edge fade. */
   .partner-tile { width: 130px; padding: 10px; }
+  .partner-track { gap: 12px; }
 }
-/* No background on .partner-tile, so no hover-bg either — the logo's own
-   colour-shift (filter transition below) carries the hover affordance. */
+/* Logos render in their original colors permanently — no hover or tap
+   required to reveal them. Desktop hover only adds a subtle scale +
+   brightness lift; touch devices see the same colored logo always. */
 .partner-tile image-slot,
 .partner-tile img {
   width: 100%; height: 100%; max-width: 100%; max-height: 100%;
   display: block; object-fit: contain;
-  filter: grayscale(1) opacity(.55);
-  transition: filter .5s var(--ease), transform .5s var(--ease);
+  transition: transform .5s var(--ease), filter .5s var(--ease);
 }
-.partner-tile:hover image-slot,
-.partner-tile:hover img { filter: grayscale(0) opacity(1); transform: scale(1.03); }
+@media (hover: hover) and (pointer: fine) {
+  .partner-tile:hover image-slot,
+  .partner-tile:hover img { transform: scale(1.04); filter: brightness(1.06); }
+}
 a.partner-tile { text-decoration: none; color: inherit; }
 /* Brief skeleton before /api/v1/website/partners resolves */
 .partner-skel {
@@ -893,6 +1161,16 @@ html[lang="ar"] .partners-note { font-size: 15px; }
 .gal-item {
   position: relative; overflow: hidden; border-radius: var(--r-md); cursor: pointer;
   border: 1px solid var(--ivory-line); background: var(--ivory-warm);
+  /* Base pre-reveal state — the gallery IO in effects.js adds .gal-in
+     with a per-index transition-delay for staggered arrival. */
+  opacity: 0;
+  transform: translateY(22px) scale(.985);
+  box-shadow: 0 0 0 0 transparent;
+  transition: opacity .8s var(--ease), transform .8s var(--ease), box-shadow .5s var(--ease);
+}
+.gal-item.gal-in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce){
+  .gal-item { opacity: 1; transform: none; transition: box-shadow .3s var(--ease); }
 }
 .gal-item.gal-portrait  { aspect-ratio: 2 / 3; }
 .gal-item.gal-landscape { aspect-ratio: 4 / 3; }
@@ -910,7 +1188,15 @@ html[lang="ar"] .partners-note { font-size: 15px; }
      while keeping its own aspect ratio. */
   .gal-grid { grid-template-columns: 1fr; }
 }
-.gal-item:hover img, .gal-item:hover image-slot { transform: scale(1.06); }
+@media (hover: hover) and (pointer: fine) {
+  .gal-item:hover img,
+  .gal-item:hover image-slot { transform: scale(1.06); }
+  .gal-item:hover {
+    box-shadow:
+      0 0 0 2px color-mix(in srgb, var(--gold) 55%, transparent),
+      0 14px 32px -18px rgba(0,0,0,.32);
+  }
+}
 .gal-item::after { content: ""; position: absolute; inset: 0; background: linear-gradient(180deg, transparent 50%, rgba(16,16,16,.82)); opacity: 0; transition: opacity .5s var(--ease); }
 .gal-item:hover::after { opacity: 1; }
 .gal-cap { position: absolute; inset-inline: 20px; bottom: 18px; z-index: 2; color: var(--ivory); opacity: 0; transform: translateY(8px); transition: opacity .5s var(--ease), transform .5s var(--ease); }
@@ -922,8 +1208,11 @@ html[lang="ar"] .gal-cap .gc-t { font-family: var(--font-arabic); }
 .lightbox { position: fixed; inset: 0; z-index: 1500; background: color-mix(in srgb, var(--ink) 92%, transparent); backdrop-filter: blur(6px); display: none; place-items: center; padding: 5vh 4vw; }
 .lightbox.open { display: grid; animation: lbIn .4s var(--ease); }
 @keyframes lbIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes lbImgIn { from { opacity: 0; transform: scale(.96); } to { opacity: 1; transform: none; } }
 .lightbox figure { margin: 0; max-width: 1000px; text-align: center; }
 .lightbox img { max-width: 100%; max-height: 78vh; border-radius: var(--r-md); border: 1px solid color-mix(in srgb, var(--gold) 30%, transparent); }
+.lightbox.open img { animation: lbImgIn .5s var(--ease); }
+@media (prefers-reduced-motion: reduce){ .lightbox.open img { animation: none; } }
 .lightbox figcaption { color: var(--ivory); margin-top: 16px; font-family: var(--font-display); }
 .lightbox figcaption b { color: var(--gold-bright); font-style: italic; font-weight: 400; }
 .lb-close { position: absolute; top: 24px; inset-inline-end: 30px; width: 46px; height: 46px; border-radius: 50%; border: 1px solid color-mix(in srgb,var(--gold) 40%, transparent); background: none; color: var(--ivory); font-size: 22px; cursor: pointer; transition: all .3s var(--ease); }

@@ -53,23 +53,29 @@
   const countEls = Array.from(document.querySelectorAll(".stat-num"));
   function animateCount(el) {
     const raw = (el.textContent || "").trim();
-    // Preserve any trailing "+", "%" etc so 40+ stays 40+
-    const m = raw.match(/^(\d+)(.*)$/);
-    if (!m) return;
-    const target = parseInt(m[1], 10);
-    const suffix = m[2] || "";
-    if (prefersReduced || target < 2) { el.textContent = target + suffix; return; }
-    // Big numbers (years like 1986) start closer so we don't count from 0
-    // — 1986 counting from 0 would take too long or look absurd. For
-    // 4-digit years, start 100 below and interpolate.
-    const start = target >= 1000 ? target - 100 : 0;
-    const dur = target >= 1000 ? 1400 : 1600;
+    // Match the first digit run anywhere in the string, allowing thousands
+    // separators (space, NBSP, narrow-NBSP, comma, Arabic thousand-mark) so
+    // "Plus de 360 000" or "360,000+" both work. Whatever wraps the number
+    // ("+40 سنة", "40+ years", "Plus de 40 ans") is preserved verbatim.
+    const m = raw.match(/^(.*?)(\d[\d\s  ,٬]*\d|\d)(.*)$/s);
+    if (!m) return; // no digit → nothing to animate ("Plus d'un million")
+    const prefix = m[1], numStr = m[2], suffix = m[3];
+    const target = parseInt(numStr.replace(/[^\d]/g, ''), 10);
+    if (!isFinite(target) || target < 5) { el.textContent = raw; return; }
+    if (prefersReduced) { el.textContent = raw; return; }
+    // Mirror the separator style the target uses so intermediate frames read cleanly
+    const sepMatch = numStr.match(/[\s  ,٬]/);
+    const sep = sepMatch ? sepMatch[0] : '';
+    const fmt = sep
+      ? (n) => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, sep)
+      : (n) => String(n);
+    const dur = target >= 100000 ? 1800 : target >= 1000 ? 1500 : 1400;
     const t0 = performance.now();
     function frame(now) {
       const p = Math.min(1, (now - t0) / dur);
       const eased = 1 - Math.pow(1 - p, 3); // ease-out cubic
-      const val = Math.round(start + (target - start) * eased);
-      el.textContent = val + suffix;
+      const val = Math.round(target * eased);
+      el.textContent = prefix + fmt(val) + suffix;
       if (p < 1) requestAnimationFrame(frame);
     }
     requestAnimationFrame(frame);
@@ -83,6 +89,26 @@
   // If the language switches after the count already ran, [data-i18n] will
   // overwrite our animated text with the raw target — that's fine, the
   // final value is what we ended on anyway.
+
+  /* ---------- GALLERY staggered reveal ----------
+     Each .gal-item fades + rises in as it scrolls into view. Per-index
+     transitionDelay creates the "cascade" effect the review brief asked
+     for — images don't appear simultaneously. Reduced-motion visitors
+     get the final state instantly via the CSS media guard. */
+  const galleryGrid = document.getElementById("galGrid");
+  if (galleryGrid) {
+    const galItems = Array.from(galleryGrid.querySelectorAll(".gal-item"));
+    const galIO = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        const idx = galItems.indexOf(e.target);
+        e.target.style.transitionDelay = Math.max(0, idx) * 80 + "ms";
+        e.target.classList.add("gal-in");
+        galIO.unobserve(e.target);
+      });
+    }, { threshold: 0.15, rootMargin: "0px 0px -6% 0px" });
+    galItems.forEach(el => galIO.observe(el));
+  }
 
   /* ---------- REVEAL on enter ---------- */
   const revealEls = Array.from(document.querySelectorAll(".reveal"));
@@ -239,10 +265,23 @@
   }
 
   /* ---------- master scroll loop ---------- */
+  // Golden-thread idle fade: mark active on every scroll tick, drop after
+  // ~420ms of scroll inactivity. Longer than a single frame so a fast
+  // series of scroll events doesn't flicker on/off; short enough that the
+  // thread reads as "part of the scroll gesture." Below 560px CSS hides
+  // the track entirely, so this becomes a no-op there.
+  let threadIdleTimer = null;
+  function markThreadActive() {
+    if (!track) return;
+    track.classList.add("thread-active");
+    if (threadIdleTimer) clearTimeout(threadIdleTimer);
+    threadIdleTimer = setTimeout(() => { track.classList.remove("thread-active"); }, 420);
+  }
   let ticking = false;
   function onScroll() {
     if (ticking) return;
     ticking = true;
+    markThreadActive();
     requestAnimationFrame(() => { onScrollChrome(); drawThread(); revealInView(); ticking = false; });
   }
 
