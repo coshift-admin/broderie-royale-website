@@ -1233,6 +1233,15 @@ html[lang="ar"] .partners-note { font-size: 15px; }
 .gal-cap .gc-k { font-family: var(--font-display); font-style: italic; color: var(--gold-bright); font-size: 13px; }
 .gal-cap .gc-t { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; line-height: 1.2; }
 html[lang="ar"] .gal-cap .gc-t { font-family: var(--font-arabic); }
+@media (max-width: 720px) {
+  /* Touch: no hover — so the caption + gold kicker + bottom scrim
+     become the permanent resting state instead of a hover reveal.
+     Otherwise every image on mobile renders as a flat rectangle with
+     no context, and the caption is invisible until the user taps into
+     the lightbox. */
+  .gal-item::after { opacity: 1; }
+  .gal-cap { opacity: 1; transform: none; }
+}
 /* lightbox */
 .lightbox { position: fixed; inset: 0; z-index: 1500; background: color-mix(in srgb, var(--ink) 92%, transparent); backdrop-filter: blur(6px); display: none; place-items: center; padding: 5vh 4vw; }
 .lightbox.open { display: grid; animation: lbIn .4s var(--ease); }
