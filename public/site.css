@@ -379,17 +379,27 @@ html[lang="ar"] .value-chip { letter-spacing: 0.03em; font-size: 15px; }
 html[lang="ar"] .vc-tip { font-family: var(--font-arabic); font-size: 15px; letter-spacing: 0; line-height: 1.7; }
 @media (max-width: 720px) {
   /* Touch widths: promote the tooltip from an absolute-positioned hover
-     card to an always-visible inline description under the chip. This
-     fixes the vertical overflow above the section eyebrow AND satisfies
-     the "no essential info depends on hover" mandate — desktop hover-
-     reveal only, mobile shows everything inline. */
-  .values-row { flex-direction: column; align-items: stretch; gap: 14px; }
+     card to an always-visible inline description under the chip.
+     - Overrides the base pill radius: a full pill on a tall stacked card
+       reads as an oversized lozenge; a small card radius reads cleaner.
+     - Adds a subtle gold leading rule (mirrors the .stat-stack rhythm
+       right below) so the four value cards feel like part of the same
+       editorial column instead of floating pills. */
+  .values-row { flex-direction: column; align-items: stretch; gap: 12px; }
   .value-chip {
     display: flex; flex-direction: column; align-items: flex-start;
-    padding: 14px 18px 16px; gap: 8px;
+    padding: 14px 18px 16px;
+    gap: 6px;
+    border-radius: var(--r-md);
+    border-inline-start: 2px solid var(--gold);
     cursor: default;
   }
-  .vc-name { font-weight: 600; }
+  .vc-name {
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    font-size: 12px;
+  }
+  html[lang="ar"] .vc-name { letter-spacing: 0.02em; font-size: 14px; }
   .vc-tip {
     position: static;
     left: auto; bottom: auto;
@@ -398,10 +408,11 @@ html[lang="ar"] .vc-tip { font-family: var(--font-arabic); font-size: 15px; lett
     min-width: 0; max-width: 100%;
     background: transparent; color: var(--fg2);
     padding: 0; border: none; box-shadow: none;
-    font-size: 13px; line-height: 1.6;
+    font-size: 13.5px; line-height: 1.55;
     text-align: start;
     z-index: auto;
   }
+  html[lang="ar"] .vc-tip { font-size: 14.5px; }
   .vc-tip::before, .vc-tip::after { display: none; }
 }
 .stat-stack { display: grid; gap: 26px; }
