@@ -414,6 +414,24 @@ html[lang="ar"] .vc-tip { font-family: var(--font-arabic); font-size: 15px; lett
   }
   html[lang="ar"] .vc-tip { font-size: 14.5px; }
   .vc-tip::before, .vc-tip::after { display: none; }
+
+  /* Touch feedback: on tap the card lights up in place — thicker gold
+     leading rule, gold ring glow, faint gold-tinted background. Killing
+     the desktop translateY + color-change on the hover/focus/active
+     states so the text does NOT shift position under the finger. The
+     -webkit-tap-highlight silences the native blue flash on iOS/Android
+     so our glow reads as the single feedback signal. */
+  .value-chip { -webkit-tap-highlight-color: transparent; }
+  .value-chip:hover,
+  .value-chip:focus-visible,
+  .value-chip:active {
+    transform: none;
+    color: var(--gold-deep);
+    border-color: color-mix(in srgb, var(--gold) 55%, transparent);
+    border-inline-start-width: 3px;
+    background: color-mix(in srgb, var(--ivory-warm) 82%, var(--gold) 18%);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--gold) 18%, transparent);
+  }
 }
 .stat-stack { display: grid; gap: 26px; }
 .stat { border-inline-start: 2px solid var(--gold); padding-inline-start: 22px; }
