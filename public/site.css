@@ -414,6 +414,12 @@ html[lang="ar"] .vc-tip { font-family: var(--font-arabic); font-size: 15px; lett
   }
   html[lang="ar"] .vc-tip { font-size: 14.5px; }
   .vc-tip::before, .vc-tip::after { display: none; }
+  /* The static description must NOT inherit the desktop hover/focus tooltip
+     transform — otherwise a sticky-hover tap slides it off-screen left.
+     Pin it in place; only the box itself reacts to interaction below. */
+  .value-chip:hover .vc-tip,
+  .value-chip:focus-visible .vc-tip,
+  .value-chip:active .vc-tip { transform: none; }
 
   /* Touch feedback: on tap the card lights up in place — thicker gold
      leading rule, gold ring glow, faint gold-tinted background. Killing
