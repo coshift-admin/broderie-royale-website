@@ -252,8 +252,11 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
 <slot />
 
 <footer class="footer-banner">
-  <img class="fb-crest" src="/assets/footer-crest-white.png" alt="Broderie Royale" loading="lazy" decoding="async" />
-  <img class="fb-mark" src="/assets/footer-wordmark-white.png" alt="Broderie Royale Algérie — Maison du Drapeau · depuis 1986" loading="lazy" decoding="async" />
+  {/* Single full-lockup logo (crest + wordmark + AR + tagline in one
+      file). Replaces the two-part crest+wordmark stack whose relative
+      proportions ended up wrong — using the actual brand lockup keeps
+      the crest-to-text ratio the way the identity was designed. */}
+  <img class="fb-logo" src="/assets/logo-full-ivory.png" alt="Broderie Royale Algérie — Maison du Drapeau · depuis 1986" width="1440" height="1315" loading="lazy" decoding="async" />
   {/* Contact + social row — icon links matching the brand identity
       (ivory strokes with a gold-lift on hover). Each link exposes an
       aria-label for screen readers and a data-tooltip attribute that
@@ -287,6 +290,11 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
     </a>
     <a href="https://www.youtube.com/@broderieroyalealgerie691" aria-label="YouTube" data-tooltip="YouTube" target="_blank" rel="noopener">
       <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="6" width="19" height="12" rx="3"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor" stroke="none"/></svg>
+    </a>
+    <a href="https://dz.linkedin.com/company/broderie-royale-algerie" aria-label="LinkedIn" data-tooltip="LinkedIn" target="_blank" rel="noopener">
+      {/* LinkedIn: rounded square, small "in" dot + vertical bar, single-
+          curve "n" glyph. Stroked to match every other footer icon. */}
+      <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2.4"/><path d="M8 10v7"/><circle cx="8" cy="7" r="1" fill="currentColor" stroke="none"/><path d="M12 17v-7M12 13c0-1.7 1-3 2.6-3s2.4 1.2 2.4 3v4"/></svg>
     </a>
   </div>
   <div class="fb-legal" data-i18n="fb.legal">© Broderie Royale Algérie — Tous droits réservés.</div>

@@ -986,7 +986,11 @@ html[lang="ar"] .fb-contact a { direction: ltr; unicode-bidi: isolate; }
 /* Footer banner — the brand's signature red strip */
 .footer-banner { background: var(--royal-red); color: var(--ivory); padding: clamp(48px, 7vw, 90px) clamp(20px, 6vw, 120px); text-align: center; position: relative; }
 .footer-banner::before { content:""; position:absolute; top:0; left:0; right:0; height:1px; background: linear-gradient(90deg, transparent, var(--gold), transparent); }
-.fb-crest { width: 86px; margin: 0 auto 22px; }
+/* Full brand lockup — crest+wordmark+AR+tagline in one file, so the
+   proportions match the identity as designed (used to be two separate
+   images at hand-picked sizes, which made the crest read too small
+   relative to the wordmark). */
+.fb-logo { display: block; width: clamp(220px, 26vw, 320px); height: auto; margin: 0 auto 8px; }
 .fb-name { font-family: var(--font-display); font-weight: 700; letter-spacing: 0.16em; font-size: clamp(1.1rem, 2vw, 1.5rem); text-transform: uppercase; }
 .fb-ar { font-family: var(--font-arabic); font-size: 1.6rem; margin: 6px 0; color: var(--ivory); }
 .fb-tag { font-family: var(--font-display); font-style: italic; color: var(--gold-bright); margin-top: 6px; }
@@ -1088,7 +1092,6 @@ body.shop {
   background-repeat: no-repeat, repeat;
   background-size: auto, 540px auto;
 }
-.fb-mark { display: block; width: clamp(280px, 40vw, 380px); margin: 18px auto 0; }
 
 /* ===== PARTNERS BAND (homepage) ===== */
 .partners { background: var(--ivory); position: relative; }
