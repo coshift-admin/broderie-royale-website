@@ -1118,13 +1118,23 @@ body.shop {
   width: max-content;
   animation: partnerMarquee var(--marquee-duration, 32s) linear infinite;
   will-change: transform;
+  /* Force the track's own writing direction to LTR regardless of the
+     page's dir. Reason: under dir="rtl" the track's inline-start is the
+     RIGHT edge of the parent, so a width:max-content track overflows to
+     the LEFT — then translateX(-50%) shifts it FURTHER left, and for
+     half the animation cycle the visible window sits past the end of
+     the doubled content, showing no logos at all. Pinning direction: ltr
+     anchors the track to the parent's left edge in every mode, so the
+     -50% translate always lands on a visually-identical seam. */
+  direction: ltr;
 }
 @keyframes partnerMarquee {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
-/* Arabic reverses reading direction; scroll the ribbon the other way so
-   logos still enter from the leading edge. */
+/* Arabic reads right-to-left, so reverse the scroll so logos enter from
+   the reader's leading (right) edge. Only the animation direction flips
+   — the track itself stays LTR-anchored (see the direction:ltr above). */
 html[dir="rtl"] .partner-track { animation-direction: reverse; }
 .partner-marquee:hover .partner-track,
 .partner-marquee:focus-within .partner-track { animation-play-state: paused; }
