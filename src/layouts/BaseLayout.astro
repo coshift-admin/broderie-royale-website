@@ -60,7 +60,11 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
     nginx (see docker/nginx.conf). The browser still honours this <meta>
     form for tooling that can't inspect headers; keep the directives in
     sync between the two. */}
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: https://erp.broderieroyale.com; media-src 'self'; connect-src 'self' https://erp.broderieroyale.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; form-action 'self'; base-uri 'self'; object-src 'none';" />
+{/* connect-src also allows script.google.com + script.googleusercontent.com:
+    the Apps Script order mirror (public/js/sheet-mirror.js) POSTs there, and
+    an Apps Script /exec URL 302-redirects to googleusercontent.com — both
+    origins are needed or the write fails silently. */}
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; font-src 'self' data:; img-src 'self' data: https: https://erp.broderieroyale.com; media-src 'self'; connect-src 'self' https://erp.broderieroyale.com https://script.google.com https://script.googleusercontent.com; frame-src https://www.youtube-nocookie.com https://www.youtube.com; form-action 'self'; base-uri 'self'; object-src 'none';" />
 <meta http-equiv="X-Content-Type-Options" content="nosniff" />
 <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin" />
 <link rel="icon" type="image/png" href="/assets/favicon.png" />
@@ -343,6 +347,9 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
     <script is:inline src="/image-slot.js" data-astro-rerun></script>
     <script is:inline src="/js/config.js"></script>
     <script is:inline src="/js/api.js"></script>
+    {/* Loaded on every page (not just checkout) so a commande that failed
+        to reach the Sheet gets replayed on the visitor's next page view. */}
+    <script is:inline src="/js/sheet-mirror.js"></script>
     <script is:inline src="/js/i18n.js" data-astro-rerun></script>
     <script is:inline src="/js/shop-data.js" data-astro-rerun></script>
     <script is:inline src="/js/shop.js" data-astro-rerun></script>
@@ -367,6 +374,7 @@ const canonicalUrl = SITE + (pathname === "/" ? "/" : pathname.replace(/\/$/, ""
     <script is:inline src="/js/luxe.js" data-astro-rerun></script>
     <script is:inline src="/js/config.js"></script>
     <script is:inline src="/js/api.js"></script>
+    <script is:inline src="/js/sheet-mirror.js"></script>
     <script is:inline src="/js/file-picker.js"></script>
     <script is:inline src="/js/i18n.js" data-astro-rerun></script>
     {/* Fuse.js (basic build, ~6 KB gzipped) powers the boutique's

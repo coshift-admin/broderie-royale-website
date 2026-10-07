@@ -656,6 +656,35 @@
             date: Date.now(),
           };
           try { localStorage.setItem(ORDER_KEY, JSON.stringify(order)); } catch (err) {}
+          
+          // Miroir Google Sheets (public/js/sheet-mirror.js). Volontairement
+          // après l'écriture du ref et avant le vidage du panier : la commande
+          // est acquise côté Odoo, et `cart` tient encore les lignes. Libellés
+          // forcés en FR pour que la feuille reste homogène quelle que soit la
+          // langue du visiteur. Jamais bloquant : Odoo reste la source de vérité.
+          try {
+            if (window.BR_SheetMirror) {
+              window.BR_SheetMirror.record({
+                commande: res.order_ref,
+                client: name,
+                telephone: phone,
+                wilaya: (selectedWilaya() || {}).name || "",
+                adresse: deliveryState.type === "home"
+                  ? address
+                  : (ppSel && ppSel.options[ppSel.selectedIndex]
+                      ? ppSel.options[ppSel.selectedIndex].text : ""),
+                produit: cart.map(it => {
+                  const p = getProduct(it.id);
+                  return (p ? (p.name.fr || pname(p)) : "#" + it.id) + " x" + it.qty;
+                }).join(" | "),
+                amount: Number(res.total) || 0,
+                livraison: Number(res.delivery_price) || 0,
+                total: Number(res.customer_total) || 0,
+                paiement: "COD",
+              });
+            }
+          } catch (err) { /* le miroir ne doit jamais casser la commande */ }
+
           writeCart([]);
           location.href = "/confirmation";
         } catch (err) {

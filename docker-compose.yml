@@ -21,12 +21,16 @@ services:
     ports:
       # host:container — change "8080" to whichever public port the
       # client validation site should answer on.
-      - "${BR_PUBLIC_PORT:-8080}:80"
+      - "${BR_PUBLIC_PORT:-8081}:80"
     environment:
       # Picked up by docker/entrypoint.sh and rewritten into the
       # served public/js/config.js when the container starts.
       BR_API_BASE: "${BR_API_BASE:-}"
       BR_API_KEY:  "${BR_API_KEY:-}"
+      # Google Sheets order mirror (scripts/apps-script/Code.gs).
+      # Leave both empty to disable the mirror entirely.
+      BR_SHEET_URL:   "${BR_SHEET_URL:-}"
+      BR_SHEET_TOKEN: "${BR_SHEET_TOKEN:-}"
     networks:
       - storefront
     healthcheck:

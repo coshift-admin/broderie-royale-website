@@ -12,4 +12,14 @@ window.BR_CONFIG = window.BR_CONFIG || {
   // CORS allowlist + the read-only-ness of the GET endpoints as your real
   // boundary.
   apiKey: "unset-please-rotate-before-launch",
+
+  // Apps Script Web App qui recopie chaque commande boutique dans la
+  // feuille Google (voir scripts/apps-script/Code.gs). Laisser vide
+  // désactive proprement la recopie — le site fonctionne à l'identique.
+  sheetUrl: "",
+  // Jeton partagé avec SHARED_TOKEN de l'Apps Script. Comme apiKey, il est
+  // lisible par quiconque ouvre le site : c'est un filtre anti-spam, pas un
+  // secret. La feuille n'expose rien en lecture, l'Apps Script n'écrit
+  // qu'une ligne, et la déduplication limite les dégâts d'un rejeu.
+  sheetToken: "",
 };
