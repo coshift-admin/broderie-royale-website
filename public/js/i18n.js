@@ -46,7 +46,7 @@ var I18N = {
   "her.s1n": { fr: "40+ ans", ar: "+40 سنة", en: "40+ years" },
   "her.s1l": { fr: "D’expérience", ar: "من الخبرة", en: "Of expertise" },
   "her.s2n": { fr: "360 000+", ar: "+360 ألف", en: "360,000+" },
-  "her.s2l": { fr: "Drapeaux réalisés", ar: "علم مُنجز", en: "Flags produced" },
+  "her.s2l": { fr: "Drapeaux réalisés par an", ar: "علم مُنجز سنويًا", en: "Flags produced per year" },
   "her.s3n": { fr: "1 million+", ar: "+1 مليون", en: "1 million+" },
   "her.s3l": { fr: "De pièces brodées", ar: "قطعة مطرّزة", en: "Embroidered pieces" },
 
