@@ -48,7 +48,7 @@ var I18N = {
   "her.s2n": { fr: "360 000+", ar: "+360 ألف", en: "360,000+" },
   "her.s2l": { fr: "Drapeaux réalisés par an", ar: "علم مُنجز سنويًا", en: "Flags produced per year" },
   "her.s3n": { fr: "1 million+", ar: "+1 مليون", en: "1 million+" },
-  "her.s3l": { fr: "De pièces brodées", ar: "قطعة مطرّزة", en: "Embroidered pieces" },
+  "her.s3l": { fr: "De pièces brodées par an", ar: "قطعة مطرّزة سنويًا", en: "Embroidered pieces per year" },
 
   // ---- atelier ----
   "at.num":   { fr: "II — Le Savoir-faire", ar: "٢ — الحرفة", en: "II — Craftsmanship" },
